@@ -8,7 +8,6 @@ public class UploadfileResource {
     public static boolean isLoadAllUploadfile=false;//是否已经加载了员工集合
     public static final String UPLOADURL="";//上传到服务器的地址
     public static final String SAVEURL="";//本地保存的地址
-    public static int[] uploadtask;//上传中的任务数
     public static final String IP="169.254.195.223";//服务器ip地址
     public static final String PORT="6666";//服务器端口号
     public static final String RJSONESULT="";//服务器端返回的结果json

@@ -99,9 +99,9 @@
         <activity
             android:name="com.piaojin.ui.block.sharedfile.SharedFileActivity_"
             android:label="@string/title_activity_shared_file"
-            android:theme="@style/MyActivityTheme"
-            >
+            android:theme="@style/MyActivityTheme" >
         </activity>
+
     </application>
 
 </manifest>

@@ -1,19 +1,18 @@
 package com.piaojin.ui.block.sharedfile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.piaojin.domain.MyFile;
-
+import com.piaojin.ui.block.download.DownService;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
-
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -63,7 +62,8 @@ public class SharedFileItem extends LinearLayout {
 
     @Click
     void download(){
-        MyToast("download...");
+        Intent intent =new Intent(context,DownService.class);
+        context.startService(intent);
     }
 
     void MyToast(String msg) {

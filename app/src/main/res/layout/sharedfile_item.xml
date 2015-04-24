@@ -72,12 +72,13 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/download"
         android:layout_width="56dp"
         android:layout_height="36dp"
         android:text="下载"
         android:background="@drawable/btn_light_blue"
+        android:layout_gravity="right|center_vertical"
         />
-
 </LinearLayout>

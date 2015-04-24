@@ -26,10 +26,29 @@ public class HttpHepler {
     public final String ERROR = "error";
     public final String NULLERROR = "nullerror";
     //服务器ip地址
-    public static final String GETALLSHAREDFILE = "http://219.228.251.71:8080/cecWeb/employgetAllSharedFile";
-    public static final String LOGIN = "http://219.228.251.114:8080/cecWeb/employLogin";
-    public static final String GETALLEMPLOY = "http://219.228.251.71:8080/cecWeb/employgetAllEmploy";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.120:8080/cecWeb/employgetAllSharedFile";
+    public static final String LOGIN = "http://219.228.251.120:8080/cecWeb/employLogin";
+    public static final String GETALLEMPLOY = "http://219.228.251.120:8080/cecWeb/employgetAllEmploy";
+    public static final String DOWNFILE="http://219.228.251.120:8080/cecWeb/downDownFile";
 
+    //下载文件
+    public static InputStream DownFile(){
+        InputStream inputStream=null;
+        try {
+            HttpPost clientpost = new HttpPost(DOWNFILE);
+            //请求超时
+            clientpost.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
+            //读取超时
+            clientpost.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+            HttpResponse response = new DefaultHttpClient().execute(clientpost);
+            if (response.getStatusLine().getStatusCode() == 200) {    // 现在已经发现了数据了
+                inputStream = response.getEntity().getContent();
+            }
+        } catch (Exception e) {
+            System.out.println("@@@@@@@@@@@@@@@@" + e);
+        }
+        return inputStream;
+    }
     //获取所有共享文件集合
     public StringBuffer getAllSharedFile(){
         StringBuffer listjson = new StringBuffer("");
