@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:id="@+id/llRcontent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:background="#e4e4e4">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#e4e4e4"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/select_type"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/down"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_toEndOf="@id/select_type"
+                android:layout_toRightOf="@id/select_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SD 卡"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:layout_centerVertical="true" />
+
+            <Button
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="返回上一级"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/grey" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ababab" />
+
+        <LinearLayout
+            android:id="@+id/llphone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/grey"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:scaleType="fitCenter"
+                android:background="@drawable/phone"
+                android:layout_margin="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机存储"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ababab" />
+
+        <LinearLayout
+            android:id="@+id/llsd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/grey"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:scaleType="fitCenter"
+                android:background="@drawable/sd"
+                android:layout_margin="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SD 卡"
+                android:textSize="16sp"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/fileList"
+        android:layout_below="@id/llRcontent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/path"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#0099ff"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/upload"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_green"
+                android:textColor="#ffffff"
+                android:text="上传" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/btn_light_blue"
+                android:textColor="#ffffff"
+                android:text="取消" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="21dp"
+            android:background="#ffffff" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/nothing"
+        android:layout_width="86dp"
+        android:layout_height="86dp"
+        android:background="@drawable/empty"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

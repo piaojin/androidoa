@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="#0066ff"
+    android:layout_alignParentTop="true"
+    >
+
+<TextView
+    android:id="@+id/title"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="飘金OA-你的OA"
+    android:gravity="center"
+    android:textColor="#ffffff"
+    android:textSize="18sp"
+    android:layout_centerVertical="true"
+    />
+
+    <Button
+        android:id="@+id/send_msg"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="发微讯"
+        android:background="@drawable/btn_talk"
+        android:textColor="#ffffff"
+        android:textSize="13sp"
+        android:layout_centerVertical="true"
+        android:onClick="sendMsg"
+        />
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+   <rotate 
+       android:fromDegrees="0"   
+    android:toDegrees="-360"   
+    android:pivotX="50%"   
+    android:pivotY="50%"   
+    android:duration="1000" />   
+<!--    
+  fromDegrees   动画开始时的角度   
+  toDegrees     动画结束时物件的旋转角度,正代表顺时针     
+  pivotX    属性为动画相对于物件的X坐标的开始位置  
+  pivotY    属性为动画相对于物件的Y坐标的开始位置    -->  
+
+</set>

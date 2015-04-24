@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e4e4e4">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/pushicon"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="15dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="高嵩"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    android:layout_marginStart="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_toRightOf="@id/name"
+                    android:layout_toEndOf="@id/name"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:background="@drawable/avatar0"
+                    android:scaleType="fitCenter"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tel_title"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手机号:"
+                    android:textSize="12sp"
+                    android:textColor="#cccccc" />
+                <TextView
+                    android:id="@+id/tel"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13666902838"
+                    android:textSize="12sp"
+                    android:textColor="#cccccc"
+                    android:layout_toRightOf="@id/tel_title"
+                    android:layout_toEndOf="@id/tel_title"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffffff">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="地区"
+                    android:textColor="#000000"
+                    android:layout_margin="15dp"
+                    android:textSize="15sp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="福建   福州"
+                    android:textColor="#e4e4e5"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#e4e4e4"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="个人相册"
+                android:textColor="#000000"
+                android:layout_margin="15dp"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/sendMessageg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_logout"
+            android:textColor="#ffffff"
+            android:text="发微讯" />
+
+        <Button
+            android:id="@+id/call"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_green"
+            android:textColor="#ffffff"
+            android:text="打电话" />
+
+        <Button
+            android:id="@+id/sendSmS"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_light_blue"
+            android:textColor="#ffffff"
+            android:text="发短信" />
+
+        <Button
+            android:id="@+id/sendeMail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_white"
+            android:textColor="#000000"
+            android:text="发邮件" />
+    </LinearLayout>
+</ScrollView>

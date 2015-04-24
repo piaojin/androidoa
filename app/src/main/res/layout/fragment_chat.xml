@@ -1,0 +1,165 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.piaojin.fragments.MessageFragment"
+    android:background="#e4e4e4">
+
+    <!--聊天内容-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="爱你一万年！" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="vertical">
+        <!--文本框区域-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_bg">
+
+            <ImageButton
+                android:id="@+id/video"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/btn_video"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="7dp"
+                android:layout_centerVertical="true"
+                android:visibility="visible" />
+
+
+            <ImageButton
+                android:id="@+id/add"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/btn_add"
+                android:scaleType="fitCenter"
+                android:layout_margin="7dp"
+                android:layout_centerVertical="true" />
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="46dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/btn_green"
+                android:text="发送"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/video"
+                android:layout_toEndOf="@id/video"
+                android:layout_toLeftOf="@id/add"
+                android:layout_toStartOf="@id/add"
+                android:layout_centerVertical="true"
+                android:visibility="visible"
+                android:textColor="#000000"
+                />
+
+            <Button
+                android:id="@+id/start_speak"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/video"
+                android:layout_toEndOf="@id/video"
+                android:layout_toLeftOf="@id/add"
+                android:layout_toStartOf="@id/add"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:text="按住 说话"
+                android:textColor="#cccccc"
+                android:textSize="17sp"
+                android:background="@drawable/btn_start_speak" />
+
+            <ImageButton
+                android:id="@+id/look"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/btn_look"
+                android:scaleType="fitCenter"
+                android:layout_margin="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@id/msg"
+                android:layout_alignRight="@id/msg"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <!--表情，文件区域-->
+        <RelativeLayout
+            android:id="@+id/fileOrlook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
+
+            <!--表情-->
+            <RelativeLayout
+                android:id="@+id/lookContent"
+                android:layout_width="fill_parent"
+                android:layout_height="190dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <include layout="@layout/look" />
+            </RelativeLayout>
+
+            <!--文件-->
+            <LinearLayout
+                android:id="@+id/fileContent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pi"
+                    android:layout_margin="10dp"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/talk_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ox"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

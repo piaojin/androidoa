@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="oa.piaojin.com.androidoa" >
+    //打电话的权限
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    //发送短信权限
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    //接收短信权限
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    //网络访问权限
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:icon="@drawable/pushicon"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".MainActivity_"
+            android:icon="@drawable/pushicon"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeActivity_"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_home"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+        <activity
+            android:name="com.piaojin.ui.block.workmates.WorkMatesActivity_"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_home"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+        <activity
+            android:name="com.piaojin.ui.block.workmates.ContainerActivity_"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_container"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+
+        <service
+            android:name="com.piaojin.service.BackgroudService_"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name="com.piaojin.ui.block.schedule.ScheduleActivity_"
+            android:label="@string/title_activity_schedule"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity
+            android:name=".TestActivity2"
+            android:label="@string/title_activity_test"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <service
+            android:name="com.piaojin.service.MyAlarmService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver
+            android:name="com.piaojin.broadcastreceiver.MyAlarmReceiver"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.piaojin.remindalarm" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.piaojin.ui.block.personalfile.PersonalFileActivity_"
+            android:label="@string/title_activity_personal_file"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+
+        <service
+            android:name="com.piaojin.ui.block.upload.UploadService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name="com.piaojin.ui.block.sharedfile.SharedFileActivity_"
+            android:label="@string/title_activity_shared_file"
+            android:theme="@style/MyActivityTheme"
+            >
+        </activity>
+    </application>
+
+</manifest>

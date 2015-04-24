@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    >
+
+    <ImageView
+        android:id="@+id/head_icon"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/avatar0"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/head_icon">
+
+        <TextView
+            android:id="@+id/sender"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="桂煌"
+            android:textSize="17sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="后退，我要开始装逼了！"
+            android:textColor="#999999" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/last_time"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignTop="@id/head_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2015-3-26"
+        android:textColor="#ccff00" />
+</RelativeLayout>

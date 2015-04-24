@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">飘金OA</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_container">ContainerActivity</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_personal_file">PersonalFileActivity</string>
+    <string name="title_activity_upload">UploadActivity</string>
+    <string name="title_activity_shared_file">SharedFileActivity</string>
+
+</resources>

@@ -1,0 +1,117 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.piaojin.ui.block.schedule.ScheduleActivity"
+    android:orientation="vertical"
+    android:background="#e4e4e4"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.piaojin.ui.block.schedule.ScheduleActivity"
+        android:orientation="vertical"
+        android:background="#e4e4e4"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <com.piaojin.myview.ClearEditText
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:hint="请输入标题"
+            android:background="@drawable/shape_bg"
+            android:padding="10dp"
+            android:textColor="#000000"
+            />
+
+        <com.piaojin.myview.ClearEditText
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="情输入日程内容"
+            android:background="@drawable/shape_bg"
+            android:padding="10dp"
+            android:textColor="#000000"
+            />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/endtime"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:hint="结束时间"
+                android:textColor="#000000"
+                />
+
+            <Switch
+                android:id="@+id/remindSwitch"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textOn="提醒"
+               />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/remindtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="提醒时间"
+            android:textColor="#000000"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_green"
+            android:textColor="#ffffff"
+            android:text="保存" />
+
+        <Button
+            android:id="@+id/edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_light_blue"
+            android:textColor="#ffffff"
+            android:text="编辑"
+            android:enabled="true"
+            />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_exit"
+            android:textColor="#ffffff"
+            android:text="删除" />
+    </LinearLayout>
+</ScrollView>

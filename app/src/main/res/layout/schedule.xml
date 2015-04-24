@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.piaojin.ui.block.schedule.ScheduleActivity"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <!--日程列表容器-->
+    <LinearLayout
+        android:id="@+id/scontent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+        <ListView
+            android:id="@+id/Slistview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:divider="#000000"
+            />
+    </LinearLayout>
+
+    <!--日程详情容器-->
+    <LinearLayout
+        android:id="@+id/dcontent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+    </LinearLayout>
+</LinearLayout>

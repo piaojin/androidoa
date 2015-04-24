@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:gravity="center_vertical"
+    >
+<ImageView
+    android:id="@+id/fileicon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/file"
+    android:scaleType="fitCenter"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="21dp"
+    android:layout_marginLeft="21dp"
+    />
+    <LinearLayout
+        android:layout_toRightOf="@id/fileicon"
+        android:layout_toEndOf="@id/fileicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        >
+
+        <TextView
+            android:id="@+id/filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="真爱你的闪.mp3"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            />
+        <TextView
+            android:id="@+id/filetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015-4-26 16:36"
+            android:textColor="#ababab"
+            android:textSize="19sp"
+            android:layout_marginTop="5dp"
+            />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/remove"
+        android:scaleType="fitCenter"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        />
+</RelativeLayout>

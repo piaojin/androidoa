@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.piaojin.fragments.MessageFragment"
+    android:gravity="center"
+    >
+        <GridView
+            android:id="@+id/GVhome"
+            android:gravity="center"
+            android:layout_marginTop="36dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="4"
+            android:horizontalSpacing="7dp"
+            android:verticalSpacing="50dp"
+            />
+</RelativeLayout>
