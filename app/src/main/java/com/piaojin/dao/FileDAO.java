@@ -19,6 +19,7 @@ public class FileDAO {
     public static final String FILE =
             "create table IF NOT EXISTS myfile(" +
                     "fid INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "pid INTEGER,"+
                     "uid INTEGER not null," +
                     "type INTEGER not null default 0," +
                     "url varchar(100)," +
@@ -26,6 +27,7 @@ public class FileDAO {
                     "status INTEGER not null default 0," +
                     "describes varchar(50)," +
                     "absoluteurl varchar(50) not null," +
+                    "uname varchar(26),"+
                     "name varchar(100) not null," +
                     "filesize double not null default 0," +
                     "completedsize double default 0," +
@@ -46,12 +48,14 @@ public class FileDAO {
     public void save(MyFile file) {
         ContentValues values = new ContentValues();
         values.put("uid", file.getUid());
+        values.put("pid", file.getPid());
         values.put("type", file.getType());
         values.put("url", file.getUrl());
         values.put("httpurl", file.getHttpurl());
         values.put("status", file.getStatus());
         //values.put("describes", file.getDescribes());
         values.put("absoluteurl", file.getAbsoluteurl());
+        values.put("uname", file.getUname());
         values.put("name", file.getName());
         values.put("filesize", file.getFilesize());
         values.put("completedsize", file.getCompletedsize());
@@ -69,6 +73,7 @@ public class FileDAO {
             for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
+                file.setPid(result.getInt(result.getColumnIndex("pid")));
                 file.setUid(result.getInt(result.getColumnIndex("uid")));
                 file.setType(result.getInt(result.getColumnIndex("type")));
                 file.setUrl(result.getString(result.getColumnIndex("url")));
@@ -76,6 +81,7 @@ public class FileDAO {
                 file.setStatus(result.getInt(result.getColumnIndex("status")));
                 file.setDescribes(result.getString(result.getColumnIndex("describes")));
                 file.setAbsoluteurl(result.getString(result.getColumnIndex("absoluteurl")));
+                file.setUname(result.getString(result.getColumnIndex("uname")));
                 file.setName(result.getString(result.getColumnIndex("name")));
                 file.setFilesize(result.getDouble(result.getColumnIndex("filesize")));
                 file.setCompletedsize(result.getDouble(result.getColumnIndex("completedsize")));
@@ -98,6 +104,7 @@ public class FileDAO {
             for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
+                file.setPid(result.getInt(result.getColumnIndex("pid")));
                 file.setUid(result.getInt(result.getColumnIndex("uid")));
                 file.setType(result.getInt(result.getColumnIndex("type")));
                 file.setUrl(result.getString(result.getColumnIndex("url")));
@@ -105,6 +112,7 @@ public class FileDAO {
                 file.setStatus(result.getInt(result.getColumnIndex("status")));
                 file.setDescribes(result.getString(result.getColumnIndex("describes")));
                 file.setAbsoluteurl(result.getString(result.getColumnIndex("absoluteurl")));
+                file.setUname(result.getString(result.getColumnIndex("uname")));
                 file.setName(result.getString(result.getColumnIndex("name")));
                 file.setFilesize(result.getDouble(result.getColumnIndex("filesize")));
                 file.setCompletedsize(result.getDouble(result.getColumnIndex("completedsize")));

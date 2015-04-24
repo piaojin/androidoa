@@ -37,7 +37,7 @@ import oa.piaojin.com.androidoa.R;
     }
 
     //获取SD 卡路径
-    private static String getSDPath() {
+    public static String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
                 .equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在

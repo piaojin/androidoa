@@ -102,6 +102,11 @@
             android:theme="@style/MyActivityTheme" >
         </activity>
 
+        <service
+            android:name="com.piaojin.ui.block.download.DownloadService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

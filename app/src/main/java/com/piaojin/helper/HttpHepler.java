@@ -32,7 +32,7 @@ public class HttpHepler {
     public static final String DOWNFILE="http://219.228.251.120:8080/cecWeb/downDownFile";
 
     //下载文件
-    public static InputStream DownFile(){
+    public static InputStream DownFile(int pid){
         InputStream inputStream=null;
         try {
             HttpPost clientpost = new HttpPost(DOWNFILE);
@@ -40,6 +40,9 @@ public class HttpHepler {
             clientpost.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
             //读取超时
             clientpost.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("pid",String.valueOf(pid)));
+            clientpost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
             HttpResponse response = new DefaultHttpClient().execute(clientpost);
             if (response.getStatusLine().getStatusCode() == 200) {    // 现在已经发现了数据了
                 inputStream = response.getEntity().getContent();

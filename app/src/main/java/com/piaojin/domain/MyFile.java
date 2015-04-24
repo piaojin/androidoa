@@ -7,6 +7,16 @@ public class MyFile implements java.io.Serializable{
     // Fields
 
     private Integer fid;
+    private Integer pid;
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     private Integer uid;
     private Integer type;
     private String url;
@@ -17,6 +27,16 @@ public class MyFile implements java.io.Serializable{
     private String absoluteurl;
     private String completedate;
     private String name;
+    private String uname;
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
     private Double filesize;
     private Double completedsize;
     private Integer iscomplete;

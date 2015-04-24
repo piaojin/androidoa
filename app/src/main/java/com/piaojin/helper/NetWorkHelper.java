@@ -7,7 +7,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 /**
- * by xjz on 13-9-12.
+ * by piaojin on 13-9-12.
  */
 public class NetWorkHelper {
 
@@ -39,7 +39,7 @@ public class NetWorkHelper {
      * @return int 网络状态 {@link #NETWORKTYPE_2G},{@link #NETWORKTYPE_3G},
      * *{@link #NETWORKTYPE_INVALID},{@link #NETWORKTYPE_WAP}* <p>{@link #NETWORKTYPE_WIFI}
      */
-    public int getNetWorkType(Context context) {
+    public static int getNetWorkType(Context context) {
         int mNetWorkType = NETWORKTYPE_INVALID;
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
@@ -59,7 +59,7 @@ public class NetWorkHelper {
         return mNetWorkType;
     }
 
-    private boolean isFastMobileNetwork(Context context) {
+    private static boolean isFastMobileNetwork(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         switch (telephonyManager.getNetworkType()) {
             case TelephonyManager.NETWORK_TYPE_1xRTT:
@@ -99,7 +99,7 @@ public class NetWorkHelper {
         }
     }
 
-    public boolean isAvailableNetwork(Context context) {
+    public static boolean isAvailableNetwork(Context context) {
         return getNetWorkType(context) != NETWORKTYPE_INVALID;
     }
 

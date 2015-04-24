@@ -271,6 +271,7 @@ public class MyFileSelectDialog extends DialogFragment {
                 myfile.setUid(1);//
                 myfile.setUrl(UploadfileResource.UPLOADURL);
                 myfile.setHttpurl(UploadfileResource.SAVEURL);
+                myfile.setUname("飘金");
                 myfile.setName(file.getName());
                 myfile.setFilesize(Double.parseDouble((file.length() + "").trim()));
                 myfile.setStatus(FileResource.STATUS_DOWN);

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.piaojin.common.FileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.tools.FileUtil;
 
@@ -50,7 +51,11 @@ public class SharedFileAdapter extends BaseAdapter {
         }
         MyFile myFile=list.get(i);
         sharedFileItem.setMyFile(myFile);
+        if(myFile.getStatus()!= FileResource.STATUS_NOT_DOWN){
+            sharedFileItem.setVisibility(View.GONE);
+        }
         sharedFileItem.sharedfileicon.setBackgroundResource(FileUtil.getFileType(myFile.getName()));
+        sharedFileItem.sharedfileperson.setText("共享者:"+myFile.getUname());
         sharedFileItem.sharedfilename.setText(myFile.getName());
         sharedFileItem.sharedfilesize.setText(FileUtil.FormetFileSize(myFile.getFilesize().longValue()));
         sharedFileItem.sharedfiletime.setText(myFile.getCompletedate());

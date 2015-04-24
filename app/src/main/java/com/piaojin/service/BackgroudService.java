@@ -102,7 +102,8 @@ public class BackgroudService extends Service {
                 myFileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
                 myFileDAO.clear();
                 for(MyFile myfile:list){
-                    System.out.println(myfile.getName());
+                    myfile.setPid(myfile.getFid());
+                    System.out.println("myfile.getFid()"+myfile.getFid());
                     myfile.setUid(1);//
                     myFileDAO.save(myfile);
                 }
