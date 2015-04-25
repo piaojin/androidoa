@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/build.gradle" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/androidTest/java/oa/piaojin/com/androidoa/ApplicationTest.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/broadcastreceiver/MyAlarmReceiver.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/common/CommonResource.java" charset="UTF-8" />
@@ -22,6 +23,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadDataChangeEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadExceptionEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadFinishEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/SharedfileLoadFinishEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/StartDownloadEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/StartUploadEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/UploadCancelEvent.java" charset="UTF-8" />
@@ -41,6 +43,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/MyAnimationUtils.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/SortAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/SortModel.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/personalfile/ActionDialog.java" charset="UTF-8" />

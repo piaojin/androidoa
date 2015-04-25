@@ -3,22 +3,27 @@ package com.piaojin.ui.block.sharedfile;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.piaojin.common.CommonResource;
 import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.MyFile;
+import com.piaojin.event.DownloadFinishEvent;
+import com.piaojin.event.SharedfileLoadFinishEvent;
+import com.piaojin.event.StartDownloadEvent;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
+import com.piaojin.ui.block.download.DownloadDialog;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
-import java.util.Map;
 
 import oa.piaojin.com.androidoa.HomeActivity_;
 import oa.piaojin.com.androidoa.R;
@@ -26,6 +31,8 @@ import oa.piaojin.com.androidoa.R;
 @EActivity(R.layout.activity_shared_file)
 public class SharedFileActivity extends Activity {
 
+    @ViewById
+    LinearLayout lloading;
     private SharedFileAdapter sharedFileAdapter;
     private FileDAO fileDAO;
     private List<MyFile> list = null;
@@ -34,7 +41,7 @@ public class SharedFileActivity extends Activity {
     private MySqliteHelper mySqliteHelper;
 
     private void initList() {
-        if(list!=null){
+        if (list != null) {
             list.clear();
         }
         list = fileDAO.getAllNotDownFile();
@@ -55,12 +62,16 @@ public class SharedFileActivity extends Activity {
 
     @AfterViews
     void init() {
+        if (CommonResource.isSharedfileLoading) {
+            lloading.setVisibility(View.VISIBLE);
+        }
         mySqliteHelper = new MySqliteHelper(this);
         fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
         initList();
         initActionBar();
         initAdapter();
         sharedFileList.setAdapter(sharedFileAdapter);
+        close();
     }
 
     private void initActionBar() {
@@ -93,6 +104,38 @@ public class SharedFileActivity extends Activity {
         super.onDestroy();
         fileDAO.close();
         BusProvider.getInstance().unregister(this);
+    }
+
+    //加载共享文件结束
+    @Subscribe
+    public void onSharedfileLoadFinishEvent(SharedfileLoadFinishEvent sharedfileLoadFinishEvent) {
+        CommonResource.isSharedfileLoading=false;
+        lloading.setVisibility(View.GONE);
+    }
+
+    //开始上传文件
+    @Subscribe
+    public void onStartDownloadEvent(StartDownloadEvent startDownloadEvent) {
+        System.out.println("startDownloadEvent");
+        DownloadDialog downloadDialog = new DownloadDialog(startDownloadEvent.getMyFile());
+        downloadDialog.show(getFragmentManager(), "DownloadDialog");
+    }
+
+    //文件上传结束
+    @Subscribe
+    public void onDownloadFinishEvent(DownloadFinishEvent downloadFinishEvent) {
+
+        if (fileDAO == null) {
+            fileDAO = new FileDAO(mySqliteHelper.getReadableDatabase());
+        }
+        initList();
+        sharedFileAdapter.notifyDataSetChanged();
+    }
+
+    private void close() {
+        if (fileDAO != null) {
+            fileDAO.close();
+        }
     }
 
     void MyToast(String msg) {

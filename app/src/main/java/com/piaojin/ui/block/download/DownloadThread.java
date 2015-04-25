@@ -12,6 +12,7 @@ import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.MyFile;
 import com.piaojin.event.DataChangeEvent;
 import com.piaojin.event.DownloadCancelEvent;
+import com.piaojin.event.DownloadDataChangeEvent;
 import com.piaojin.event.DownloadExceptionEvent;
 import com.piaojin.event.DownloadFinishEvent;
 import com.piaojin.event.StartDownloadEvent;
@@ -44,11 +45,11 @@ public class DownloadThread implements Runnable {
     private Double length = Double.valueOf(0);
 
     public DownloadThread(Context context, MyFile myfile) {
+        handler = new MyHandler();
         this.myfile = myfile;
         this.context = context;
         this.mySqliteHelper = new MySqliteHelper(context);
         BusProvider.getInstance().register(this);
-        fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
     }
 
     public class MyHandler extends Handler {
@@ -62,7 +63,7 @@ public class DownloadThread implements Runnable {
                             DownloadThread.this.myfile));
                     break;
                 case DownloadfileResource.DATACHANGE:
-                    BusProvider.getInstance().post(new DataChangeEvent(
+                    BusProvider.getInstance().post(new DownloadDataChangeEvent(
                             length));
                     break;
                 case DownloadfileResource.DOWNLOADFINISH:
@@ -84,7 +85,15 @@ public class DownloadThread implements Runnable {
 
         inputStream = HttpHepler.DownFile(myfile.getPid());
         if (inputStream != null) {
-                Downfile(this.myfile);
+            sendMessage(DownloadfileResource.STARTDOWNLOAD);
+            Downfile(this.myfile);
+            sendMessage(DownloadfileResource.DOWNLOADFINISH);
+            if(!DownloadfileResource.isCancel){
+                //更新已经下载
+                fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
+                fileDAO.updateDownFile(myfile);
+            }
+            close();
         }
     }
 
@@ -92,48 +101,51 @@ public class DownloadThread implements Runnable {
 
         File dir = null;
         File file = null;
-        String SDPath = FileResource.getSDPath();
-        if (SDPath != null) {
-            //SD卡存在
-            dir = new File(SDPath + File.separator + "MyFile" + File.separator);
-            try {
-                if (!dir.exists())
-                    dir.mkdirs();
+        String SDPath = FileResource.getExternalSdCardPath();
+        dir = new File(SDPath + File.separator + "MyFile" + File.separator);
+        try {
+            if (!dir.exists())
+                dir.mkdirs();
+            file = new File(dir, myfile.getName());
+            if (!file.exists()) {
+                file.createNewFile();
+            } else {
+                //存在同名的文件,用日期重新命名文件
+                String tempname = myfile.getName();
+                String temppart1 = tempname.substring(0,
+                        tempname.indexOf("."));
+                String temppart2 = tempname
+                        .substring(tempname.indexOf("."));
+                myfile.setName(temppart1 + DateUtil.CurrentTime()
+                        + temppart2);
                 file = new File(dir, myfile.getName());
-                if (!file.exists()) {
-                    file.createNewFile();
-                } else {
-                    //存在同名的文件,用日期重新命名文件
-                    String tempname = myfile.getName();
-                    String temppart1 = tempname.substring(0,
-                            tempname.indexOf("."));
-                    String temppart2 = tempname
-                            .substring(tempname.indexOf("."));
-                    myfile.setName(temppart1 + DateUtil.CurrentTime()
-                            + temppart2);
-                    file = new File(dir, myfile.getName());
-                    file.createNewFile();
-                }
-
-                fileOutStream = new RandomAccessFile(file, "rwd");
-                fileOutStream.setLength(myfile.getFilesize().longValue());// 设置文件长度
-                byte[] buffer = new byte[1024];
-                int len = -1;
-                myfile.setAbsoluteurl(file.getAbsolutePath());
-                while ((len = inputStream.read(buffer)) != -1) {// 从输入流中读取数据写入到文件中
-                    fileOutStream.write(buffer, 0, len);
-                    length += len;
-                    System.out.println("长度:" + length+",len:"+len+",filesize:"+myfile.getFilesize());
-                    if(len==0||len==-1||length-myfile.getFilesize()==0){
-                        break;
-                    }
-                }
-                System.out.println("文件全部读完...");
-            } catch (IOException e) {
-                e.printStackTrace();
+                file.createNewFile();
             }
-        } else {
 
+            fileOutStream = new RandomAccessFile(file, "rwd");
+            fileOutStream.setLength(myfile.getFilesize().longValue());// 设置文件长度
+            byte[] buffer = new byte[1024];
+            int len = -1;
+            myfile.setAbsoluteurl(file.getAbsolutePath());
+            while (((len = inputStream.read(buffer)) != -1)) {// 从输入流中读取数据写入到文件中
+                if(DownloadfileResource.isCancel){
+                    inputStream.close();
+                    break;
+                }
+                fileOutStream.write(buffer, 0, len);
+                length += len;
+                //发送更新进度
+                this.myfile.setCompletedsize(Double.valueOf(len));
+                sendMessage(DownloadfileResource.DATACHANGE);
+                System.out.println("长度:" + length + ",len:" + len + ",filesize:" + myfile.getFilesize());
+                if (len == 0 || len == -1 || length - myfile.getFilesize() == 0) {
+                    break;
+                }
+            }
+            System.out.println("文件全部读完...");
+        } catch (IOException e) {
+            sendMessage(DownloadfileResource.DOWNLOADEXCEPTION);
+            e.printStackTrace();
         }
     }
 
@@ -147,6 +159,10 @@ public class DownloadThread implements Runnable {
         if (!thread.isInterrupted()) {
             thread.interrupt();
             System.out.println("关闭文件上传线程...");
+        }
+
+        if(fileDAO!=null){
+            fileDAO.close();
         }
     }
 }

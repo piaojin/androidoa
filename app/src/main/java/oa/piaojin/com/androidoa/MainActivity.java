@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.piaojin.common.FileResource;
 import com.piaojin.common.UserInfo;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MySqliteHelper;

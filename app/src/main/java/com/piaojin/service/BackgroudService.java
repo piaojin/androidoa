@@ -13,9 +13,12 @@ import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Employ;
 import com.piaojin.domain.MyFile;
+import com.piaojin.event.SharedfileLoadFinishEvent;
+import com.piaojin.event.StartDownloadEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.module.AppModule;
+import com.piaojin.otto.BusProvider;
 
 import org.androidannotations.annotations.EService;
 
@@ -58,6 +61,7 @@ public class BackgroudService extends Service {
     public void onCreate() {
         super.onCreate();
         //初始化dagger
+        BusProvider.getInstance().register(this);
         objectGraph = ObjectGraph.create(new AppModule(this));
         objectGraph.inject(this);
         mySharedPreferences = new MySharedPreferences(this);
@@ -78,7 +82,10 @@ public class BackgroudService extends Service {
         //判断是否获取过所有共享文件集合
         boolean isLoadAllSharedFile = mySharedPreferences.getBoolean("isLoadAllSharedFile", false);
         if (!isLoadAllSharedFile) {
+            CommonResource.isSharedfileLoading=true;
             new Thread(new HttpLoadAllSharedFileThread()).start();
+            CommonResource.isSharedfileLoading=false;
+            BusProvider.getInstance().post(new SharedfileLoadFinishEvent());
             mySharedPreferences.putBoolean("isLoadAllSharedFile", true);
         }
         if(isLoadAllEmploy&&isLoadAllSharedFile){
@@ -137,6 +144,12 @@ public class BackgroudService extends Service {
                 System.out.println("$$$error" + e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
     }
 
     void MyToast(String msg) {

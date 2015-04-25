@@ -135,7 +135,7 @@ public class FileDAO {
         String sql = "select * from myfile where name = " + "'" + filename + "' and status=1";
         String clum[]=new String[]{"uid"};//要查尋的字段
         Cursor result = db.rawQuery(sql, null);
-        System.out.println("result.getCount():"+result.getCount()+","+sql);
+        System.out.println("result.getCount():" + result.getCount() + "," + sql);
         if (result.getCount() > 0) {
             return true;
         } else {
@@ -169,6 +169,11 @@ public class FileDAO {
         return myfile;
     }
 
+    public void updateDownFile(MyFile myfile){
+        String sql="update myfile set status=1,iscomplete=1,absoluteurl="+"'"+myfile.getAbsoluteurl()
+                +"'"+" where fid = "+myfile.getFid();
+        db.execSQL(sql);
+    }
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

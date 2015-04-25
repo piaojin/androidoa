@@ -5,17 +5,17 @@ package com.piaojin.event;
  */
 public class DownloadDataChangeEvent {
 
-    private Double length;
+    private Double completedsize;
 
-    public Double getLength() {
-        return length;
+    public Double getCompletedsize() {
+        return completedsize;
     }
 
-    public void setLength(Double length) {
-        this.length = length;
+    public void setCompletedsize(Double completedsize) {
+        this.completedsize = completedsize;
     }
 
-    public DownloadDataChangeEvent(Double length) {
-        this.length = length;
+    public DownloadDataChangeEvent(Double completedsize) {
+        this.completedsize = completedsize;
     }
 }

@@ -3,12 +3,15 @@ package com.piaojin.ui.block.sharedfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.piaojin.common.FileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.ui.block.download.DownloadService;
@@ -66,16 +69,15 @@ public class SharedFileItem extends LinearLayout {
 
     @Click
     void download(){
-        MyToast("download");
-        if(NetWorkHelper.isAvailableNetwork(context)){
-            Intent intent =new Intent(context,DownloadService.class);
-            Bundle bundle=new Bundle();
-            bundle.putSerializable("downmyfile",myFile);
-            intent.putExtra("downmyfile_bundle",bundle);
-            context.startService(intent);
-        }else{
-            MyToast("没有网络!");
-        }
+            if(NetWorkHelper.isAvailableNetwork(context)){
+                Intent intent =new Intent(context,DownloadService.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("downmyfile",myFile);
+                intent.putExtra("downmyfile_bundle",bundle);
+                context.startService(intent);
+            }else{
+                MyToast("没有网络!");
+            }
     }
 
     void MyToast(String msg) {

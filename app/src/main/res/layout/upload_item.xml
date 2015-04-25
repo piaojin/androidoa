@@ -44,11 +44,12 @@
             android:orientation="horizontal"
             android:layout_marginTop="5dp">
 
-            <ProgressBar
+            <com.daimajia.numberprogressbar.NumberProgressBar
                 android:id="@+id/completedsize"
+                style="@style/NumberProgressBar_Default"
                 android:layout_width="200dp"
                 android:layout_height="20dp"
-                style="?android:attr/progressBarStyleHorizontal" />
+                />
 
             <TextView
                 android:id="@+id/percent"

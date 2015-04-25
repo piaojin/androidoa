@@ -6,6 +6,7 @@ import com.google.gson.Gson;
  * Created by piaojin on 2015/4/12.
  */
 public class CommonResource {
+    public static boolean isSharedfileLoading=false;
     public static Gson gson=new Gson();
     public static final int ACTION_MESSAGE=0;//删除聊天
     public static final int ACTION_FILE=1;//删除文件

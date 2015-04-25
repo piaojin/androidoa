@@ -26,10 +26,10 @@ public class HttpHepler {
     public final String ERROR = "error";
     public final String NULLERROR = "nullerror";
     //服务器ip地址
-    public static final String GETALLSHAREDFILE = "http://219.228.251.120:8080/cecWeb/employgetAllSharedFile";
-    public static final String LOGIN = "http://219.228.251.120:8080/cecWeb/employLogin";
-    public static final String GETALLEMPLOY = "http://219.228.251.120:8080/cecWeb/employgetAllEmploy";
-    public static final String DOWNFILE="http://219.228.251.120:8080/cecWeb/downDownFile";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.23:8080/cecWeb/employgetAllSharedFile";
+    public static final String LOGIN = "http://219.228.251.23:8080/cecWeb/employLogin";
+    public static final String GETALLEMPLOY = "http://219.228.251.23:8080/cecWeb/employgetAllEmploy";
+    public static final String DOWNFILE="http://219.228.251.23:8080/cecWeb/downDownFile";
 
     //下载文件
     public static InputStream DownFile(int pid){

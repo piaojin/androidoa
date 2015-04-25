@@ -55,10 +55,11 @@ public class SharedFileAdapter extends BaseAdapter {
             sharedFileItem.setVisibility(View.GONE);
         }
         sharedFileItem.sharedfileicon.setBackgroundResource(FileUtil.getFileType(myFile.getName()));
-        sharedFileItem.sharedfileperson.setText("共享者:"+myFile.getUname());
+        sharedFileItem.sharedfileperson.setText("共享者:" + myFile.getUname());
         sharedFileItem.sharedfilename.setText(myFile.getName());
         sharedFileItem.sharedfilesize.setText(FileUtil.FormetFileSize(myFile.getFilesize().longValue()));
         sharedFileItem.sharedfiletime.setText(myFile.getCompletedate());
+        sharedFileItem.download.setText(myFile.getStatus()==FileResource.STATUS_DOWN?"打开":"下载");
 
         return sharedFileItem;
     }

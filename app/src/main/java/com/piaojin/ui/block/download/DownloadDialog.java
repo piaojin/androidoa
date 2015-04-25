@@ -1,4 +1,4 @@
-package com.piaojin.ui.block.upload;
+package com.piaojin.ui.block.download;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -16,34 +16,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.piaojin.common.DownloadfileResource;
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.event.DataChangeEvent;
+import com.piaojin.event.DownloadDataChangeEvent;
+import com.piaojin.event.DownloadExceptionEvent;
+import com.piaojin.event.DownloadFinishEvent;
 import com.piaojin.event.UploadExceptionEvent;
 import com.piaojin.event.UploadFinishEvent;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.FileUtil;
 import com.squareup.otto.Subscribe;
+
 import java.io.File;
+
 import oa.piaojin.com.androidoa.R;
 
 /**
  * Created by piaojin on 2015/4/12.
  */
 
-public class UploadDialog extends DialogFragment {
+public class DownloadDialog extends DialogFragment {
 
     private View view;
-    private ImageView uploadfileicon;
-    private TextView uploadfilename;
+    private ImageView downloadfileicon;
+    private TextView downloadfilename;
     private TextView percent;
     private NumberProgressBar completedsize;
     private Button cancel;
     private MyFile myfile;
     private Handler handler;
 
-    public UploadDialog(MyFile myfile) {
+    public MyFile getMyfile() {
+        return myfile;
+    }
+
+    public void setMyfile(MyFile myfile) {
+        this.myfile = myfile;
+    }
+
+    public DownloadDialog(MyFile myfile) {
         this.myfile = myfile;
     }
 
@@ -51,7 +65,7 @@ public class UploadDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setCancelable(false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        view = inflater.inflate(R.layout.upload_item, null);
+        view = inflater.inflate(R.layout.download_item, null);
         init(view);
         return view;
     }
@@ -62,25 +76,25 @@ public class UploadDialog extends DialogFragment {
     private void setIcon() {
         int filetype = getFileType(new File(myfile.getAbsoluteurl()));
         if(filetype!=-1){
-            uploadfileicon.setBackgroundResource(filetype);
+            downloadfileicon.setBackgroundResource(filetype);
             return;
         }
-        uploadfileicon.setBackgroundResource(R.drawable.weizhi);
+        downloadfileicon.setBackgroundResource(R.drawable.weizhi);
     }
 
     private void init(View view) {
         handler = new MyHandler();
-        uploadfileicon = (ImageView) view.findViewById(R.id.uploadfileicon);
+        downloadfileicon = (ImageView) view.findViewById(R.id.downloadfileicon);
         cancel = (Button) view.findViewById(R.id.cancel);
-        uploadfilename = (TextView) view.findViewById(R.id.uploadfilename);
+        downloadfilename = (TextView) view.findViewById(R.id.downloadfilename);
         percent = (TextView) view.findViewById(R.id.percent);
         completedsize = (NumberProgressBar) view.findViewById(R.id.completedsize);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //发布结束文件上传
-                UploadfileResource.isCancel = true;
-                UploadDialog.this.dismiss();
+                DownloadfileResource.isCancel = true;
+                DownloadDialog.this.dismiss();
             }
         });
         setMax(myfile.getFilesize().intValue());
@@ -129,6 +143,7 @@ public class UploadDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        DownloadfileResource.isCancel = false;
         BusProvider.getInstance().unregister(this);
     }
 
@@ -145,31 +160,29 @@ public class UploadDialog extends DialogFragment {
 
     //更新文件上传进度
     @Subscribe
-    public void onDataChangeEvent(DataChangeEvent dataChangeEvent) {
+    public void onDownloadDataChangeEvent(DownloadDataChangeEvent downloadDataChangeEvent) {
         Message message = new Message();
-        message.obj = dataChangeEvent.getCompletedsize();
+        message.obj = downloadDataChangeEvent.getCompletedsize();
         handler.sendMessage(message);
     }
 
     //文件上传结束
     @Subscribe
-    public void onUploadFinishEvent(UploadFinishEvent uploadFinishEvent) {
-        MyFile tempfile = uploadFinishEvent.getFile();
+    public void onDownloadFinishEvent(DownloadFinishEvent downloadFinishEvent) {
+        MyFile tempfile = downloadFinishEvent.getMyFile();
         if (tempfile.getFilesize() - tempfile.getCompletedsize() == 0) {
-            MyToast("文件上传成功!");
-            FileUtil.saveFile(new File(tempfile.getAbsoluteurl()), Context.MODE_PRIVATE,getActivity());
+            MyToast("文件下载成功!");
         } else {
-            MyToast("文件上传失败!");
+            MyToast("文件下载失败!");
         }
         dismiss();
     }
 
     //文件上传出错
     @Subscribe
-    public void onUploadExceptionEvent(UploadExceptionEvent uploadExceptionEvent) {
-        BusProvider.getInstance().post(new UploadFinishEvent(
-                myfile));
-        MyToast("文件上传出错!");
+    public void onDownloadExceptionEvent(DownloadExceptionEvent downloadExceptionEvent) {
+        BusProvider.getInstance().post(new DownloadExceptionEvent());
+        MyToast("文件下载出错!");
         dismiss();
     }
 

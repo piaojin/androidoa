@@ -17,11 +17,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.tools.FileUtil;
 import com.piaojin.ui.block.upload.UploadService;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -129,8 +132,8 @@ public class MyFileSelectDialog extends DialogFragment {
         initList(SDPATH);
         fileListAdapter = new FileListAdapter(getActivity(), parentfile);
         simpleAdapter = new SimpleAdapter(getActivity(), list, R.layout.explore_item
-                , new String[]{"explorefileicon", "explorefilename", "explorefiletime","explorefilesize"}, new int[]{R.id.explorefileicon, R.id.explorefilename
-                , R.id.explorefiletime,R.id.explorefilesize});
+                , new String[]{"explorefileicon", "explorefilename", "explorefiletime", "explorefilesize"}, new int[]{R.id.explorefileicon, R.id.explorefilename
+                , R.id.explorefiletime, R.id.explorefilesize});
         fileList.setAdapter(simpleAdapter);
         fileList.setOnItemClickListener(new MyOnItemClickListener());
     }
@@ -165,42 +168,37 @@ public class MyFileSelectDialog extends DialogFragment {
 
     //初始化list
     private void initList(String path) {
-        if (path != null) {
-            parentfile = new File(path);
-            files = parentfile.listFiles();
-            if (files != null && files.length > 0) {
-                nothing.setVisibility(View.GONE);
-                for (int i = 0; i < files.length; i++) {
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    File file = files[i];
-                    boolean isfoler = file.isDirectory();//是否是文件夹
-                    if (isfoler) {
-                        map.put("explorefileicon", R.drawable.dir);
+        parentfile = new File(path);
+        files = parentfile.listFiles();
+        if (files != null && files.length > 0) {
+            nothing.setVisibility(View.GONE);
+            for (int i = 0; i < files.length; i++) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                File file = files[i];
+                boolean isfoler = file.isDirectory();//是否是文件夹
+                if (isfoler) {
+                    map.put("explorefileicon", R.drawable.dir);
+                } else {
+                    int filetype = getFileType(file);
+                    if (filetype != -1) {
+                        map.put("explorefileicon", filetype);
                     } else {
-                        int filetype = getFileType(file);
-                        if (filetype != -1) {
-                            map.put("explorefileicon", filetype);
-                        } else {
-                            map.put("explorefileicon", R.drawable.weizhi);
-                        }
-                        //文件夹没有大小，文件才有大小
-                        map.put("explorefilesize", FileUtil.FormetFileSize(file.length()));
+                        map.put("explorefileicon", R.drawable.weizhi);
                     }
-                    map.put("explorefilename", file.getName());
-                    //获取文件最后编辑的时间
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(file.lastModified());
-                    map.put("explorefiletime", sdf.format(cal.getTime()));
-                    list.add(map);
+                    //文件夹没有大小，文件才有大小
+                    map.put("explorefilesize", FileUtil.FormetFileSize(file.length()));
                 }
-            } else {
-                //目录为空
-                nothing.setVisibility(View.VISIBLE);
+                map.put("explorefilename", file.getName());
+                //获取文件最后编辑的时间
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(file.lastModified());
+                map.put("explorefiletime", sdf.format(cal.getTime()));
+                list.add(map);
             }
         } else {
-            //SD 卡不存在或不可用
-
+            //目录为空
+            nothing.setVisibility(View.VISIBLE);
         }
     }
 
@@ -264,7 +262,7 @@ public class MyFileSelectDialog extends DialogFragment {
                 return;
             }
             File file = new File(path.getText().toString());
-            if (file.isFile() && file.length() > 0&&!file.isDirectory()) {
+            if (file.isFile() && file.length() > 0 && !file.isDirectory()) {
                 MyFile myfile = new MyFile();
                 myfile.setType(FileResource.TYPE_MY);
                 myfile.setAbsoluteurl(file.getAbsolutePath());
@@ -277,10 +275,10 @@ public class MyFileSelectDialog extends DialogFragment {
                 myfile.setStatus(FileResource.STATUS_DOWN);
                 myfile.setCompletedsize(0.00);
                 myfile.setIscomplete(0);
-                Intent intent=new Intent(getActivity(),UploadService.class);
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("myfile",myfile);
-                intent.putExtra("myfile_bundle",bundle);
+                Intent intent = new Intent(getActivity(), UploadService.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("myfile", myfile);
+                intent.putExtra("myfile_bundle", bundle);
                 getActivity().startService(intent);
             }
         }
