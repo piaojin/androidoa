@@ -9,6 +9,26 @@ public class Task implements java.io.Serializable {
 	// Fields
 
 	private Integer tid;
+	private Integer eid;//任务接受员工
+
+	public Integer getEid() {
+		return eid;
+	}
+
+	public void setEid(Integer eid) {
+		this.eid = eid;
+	}
+
+	private Integer uid;//发布人
+
+	public Integer getUid() {
+		return uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+
 	private Employ employByUid;
 	private Employ employByEid;
 	private String time;
@@ -16,24 +36,6 @@ public class Task implements java.io.Serializable {
 	private String starttime;
 	private String endtime;
 	private Integer status;
-
-	// Constructors
-
-	/** default constructor */
-	public Task() {
-	}
-
-	/** full constructor */
-	public Task(Employ employByUid, Employ employByEid, String time,String title,
-			String starttime, String endtime, Integer status) {
-		this.employByUid = employByUid;
-		this.employByEid = employByEid;
-		this.time = time;
-		this.title = title;
-		this.starttime = starttime;
-		this.endtime = endtime;
-		this.status = status;
-	}
 
 	// Property accessors
 

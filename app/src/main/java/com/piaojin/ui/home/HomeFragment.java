@@ -17,6 +17,7 @@ import com.piaojin.common.CommonResource;
 import com.piaojin.ui.block.personalfile.PersonalFileActivity_;
 import com.piaojin.ui.block.schedule.ScheduleActivity_;
 import com.piaojin.ui.block.sharedfile.SharedFileActivity_;
+import com.piaojin.ui.block.task.TaskActivity_;
 import com.piaojin.ui.block.workmates.WorkMatesActivity_;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -74,6 +75,9 @@ public class HomeFragment extends Fragment {
                     break;
                 case CommonResource.SHAREDFILE://共享文件
                     SharedFileActivity_.intent(getActivity()).start();
+                    break;
+                case CommonResource.TASK://工作流
+                    TaskActivity_.intent(getActivity()).start();
                     break;
             }
         }

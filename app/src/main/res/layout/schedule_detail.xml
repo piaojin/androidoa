@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.piaojin.ui.block.schedule.ScheduleActivity"
     android:orientation="vertical"
-    android:background="#e4e4e4"
+    android:background="#ffffff"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context="com.piaojin.ui.block.schedule.ScheduleActivity"
         android:orientation="vertical"
         android:background="#e4e4e4"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:hint="请输入标题"
-            android:background="@drawable/shape_bg"
+            android:background="@drawable/edittext_bg"
             android:padding="10dp"
             android:textColor="#000000"
             />
@@ -36,9 +36,10 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:hint="情输入日程内容"
-            android:background="@drawable/shape_bg"
-            android:padding="10dp"
+            android:background="@drawable/edittext_bg"
+            android:padding="16dp"
             android:textColor="#000000"
+            android:singleLine="false"
             />
 
         <LinearLayout
@@ -54,6 +55,9 @@
                 android:layout_height="wrap_content"
                 android:hint="结束时间"
                 android:textColor="#000000"
+                android:background="@drawable/edittext_bg"
+                android:padding="10dp"
+                android:singleLine="false"
                 />
 
             <Switch
@@ -73,6 +77,9 @@
             android:textColor="#000000"
             android:layout_gravity="center_horizontal"
             android:visibility="gone"
+            android:background="@drawable/edittext_bg"
+            android:padding="10dp"
+            android:singleLine="false"
             />
         <Button
             android:id="@+id/save"

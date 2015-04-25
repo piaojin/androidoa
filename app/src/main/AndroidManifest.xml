@@ -107,6 +107,13 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name="com.piaojin.ui.block.task.TaskActivity_"
+            android:label="@string/title_activity_task"
+            android:theme="@style/MyActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>

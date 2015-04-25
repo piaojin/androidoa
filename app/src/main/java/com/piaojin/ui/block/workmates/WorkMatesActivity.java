@@ -40,7 +40,7 @@ import oa.piaojin.com.androidoa.HomeActivity_;
 import oa.piaojin.com.androidoa.R;
 
 /**
- * Created by Administrator on 2015/3/23.
+ * Created by piaojin on 2015/3/23.
  */
 @EActivity(R.layout.activity_workmates)
 public class WorkMatesActivity extends FragmentActivity {
