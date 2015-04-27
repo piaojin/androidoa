@@ -7,6 +7,16 @@ public class MyFile implements java.io.Serializable{
     // Fields
 
     private Integer fid;
+
+    public Integer getKid() {
+        return kid;
+    }
+
+    public void setKid(Integer kid) {
+        this.kid = kid;
+    }
+
+    private Integer kid;
     private Integer pid;
 
     public Integer getPid() {

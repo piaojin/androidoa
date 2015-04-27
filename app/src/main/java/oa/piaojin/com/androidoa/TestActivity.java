@@ -16,23 +16,12 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // /data/data/oa.piaojin.com.androidoa/files
         setContentView(R.layout.activity_test);
         piaojin=(Button)super.findViewById(R.id.piaojin);
-        piaojin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new MyThread()).start();
-            }
-        });
+        System.out.println(getApplication().getFilesDir().getAbsolutePath());
     }
 
-    private class MyThread implements Runnable{
-
-        @Override
-        public void run() {
-            HttpHepler.Post(HttpHepler.GETALLEMPLOY);
-        }
-    }
     @Override
     protected void onResume() {
         super.onResume();

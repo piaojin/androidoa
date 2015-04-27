@@ -9,6 +9,16 @@ public class Task implements java.io.Serializable {
 	// Fields
 
 	private Integer tid;
+
+	public Integer getKid() {
+		return kid;
+	}
+
+	public void setKid(Integer kid) {
+		this.kid = kid;
+	}
+
+	private Integer kid;
 	private Integer eid;//任务接受员工
 
 	public Integer getEid() {

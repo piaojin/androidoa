@@ -9,6 +9,16 @@ public class Schedule implements java.io.Serializable {
 	// Fields
 
 	private Integer sid;
+
+	public Integer getKid() {
+		return kid;
+	}
+
+	public void setKid(Integer kid) {
+		this.kid = kid;
+	}
+
+	private Integer kid;
 	private Integer uid;
 	private String title;
 	private String content;

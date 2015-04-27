@@ -19,6 +19,7 @@ public class FileDAO {
     public static final String FILE =
             "create table IF NOT EXISTS myfile(" +
                     "fid INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "kid INTEGER not null,"+
                     "pid INTEGER,"+
                     "uid INTEGER not null," +
                     "type INTEGER not null default 0," +

@@ -18,6 +18,7 @@ public class ScheduleDAO {
     private static final String TABLE = "schedule";
     public static final String SCHEDULE="create table IF NOT EXISTS schedule(" +
             "sid INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "kid INTEGER not null,"+
             "uid INTEGER not null," +
             "title varchar(20) not null," +
             "content varchar(100) not null," +

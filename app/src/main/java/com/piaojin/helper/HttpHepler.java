@@ -26,14 +26,15 @@ public class HttpHepler {
     public final String ERROR = "error";
     public final String NULLERROR = "nullerror";
     //服务器ip地址
-    public static final String GETALLSHAREDFILE = "http://219.228.251.23:8080/cecWeb/employgetAllSharedFile";
-    public static final String LOGIN = "http://219.228.251.23:8080/cecWeb/employLogin";
-    public static final String GETALLEMPLOY = "http://219.228.251.23:8080/cecWeb/employgetAllEmploy";
-    public static final String DOWNFILE="http://219.228.251.23:8080/cecWeb/downDownFile";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.102:8080/cecWeb/employgetAllSharedFile";
+    public static final String GETALLDEPARTMENT = "http://219.228.251.102:8080/cecWeb/departmentgetAllDepartment";
+    public static final String LOGIN = "http://219.228.251.102:8080/cecWeb/employLogin";
+    public static final String GETALLEMPLOY = "http://219.228.251.102:8080/cecWeb/employgetAllEmploy";
+    public static final String DOWNFILE = "http://219.228.251.102:8080/cecWeb/downDownFile";
 
     //下载文件
-    public static InputStream DownFile(int pid){
-        InputStream inputStream=null;
+    public static InputStream DownFile(int pid) {
+        InputStream inputStream = null;
         try {
             HttpPost clientpost = new HttpPost(DOWNFILE);
             //请求超时
@@ -41,7 +42,7 @@ public class HttpHepler {
             //读取超时
             clientpost.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("pid",String.valueOf(pid)));
+            params.add(new BasicNameValuePair("pid", String.valueOf(pid)));
             clientpost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
             HttpResponse response = new DefaultHttpClient().execute(clientpost);
             if (response.getStatusLine().getStatusCode() == 200) {    // 现在已经发现了数据了
@@ -52,12 +53,21 @@ public class HttpHepler {
         }
         return inputStream;
     }
+
+    //获取所有部门集合
+    public StringBuffer getAllDepartment() {
+        StringBuffer listjson = new StringBuffer("");
+        listjson.append(Post(GETALLDEPARTMENT));
+        return listjson;
+    }
+
     //获取所有共享文件集合
-    public StringBuffer getAllSharedFile(){
+    public StringBuffer getAllSharedFile() {
         StringBuffer listjson = new StringBuffer("");
         listjson.append(Post(GETALLSHAREDFILE));
         return listjson;
     }
+
     //登录验证
     public String Login(String[] name, String[] value) throws Exception {
         return clientpost(name, value, LOGIN);

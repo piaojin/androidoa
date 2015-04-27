@@ -7,13 +7,18 @@
     tools:context="com.piaojin.ui.block.task.TaskActivity">
 
     <ListView
-        android:id="@+id/mytask"
+        android:id="@+id/mytaskList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/lladdtask"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="#ffffff"
-        />
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+    </LinearLayout>
 </LinearLayout>

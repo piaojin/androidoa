@@ -16,6 +16,7 @@ import com.piaojin.event.SharedfileLoadFinishEvent;
 import com.piaojin.event.StartDownloadEvent;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
+import com.piaojin.tools.ExitApplication;
 import com.piaojin.ui.block.download.DownloadDialog;
 import com.squareup.otto.Subscribe;
 
@@ -58,6 +59,8 @@ public class SharedFileActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //把当前Activity放入集合，方便最后完全退出程序
+        ExitApplication.getInstance().addActivity(this);
     }
 
     @AfterViews

@@ -16,6 +16,7 @@ import com.piaojin.event.UploadFinishEvent;
 import com.piaojin.module.AppModule;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
+import com.piaojin.tools.ExitApplication;
 import com.piaojin.tools.FileUtil;
 import com.piaojin.ui.block.upload.UploadDialog;
 import com.squareup.otto.Subscribe;
@@ -56,6 +57,8 @@ public class PersonalFileActivity extends Activity {
         //初始化dagger
         objectGraph = ObjectGraph.create(new AppModule(this));
         objectGraph.inject(this);
+        //把当前Activity放入集合，方便最后完全退出程序
+        ExitApplication.getInstance().addActivity(this);
     }
 
     private void initMyFileList() {

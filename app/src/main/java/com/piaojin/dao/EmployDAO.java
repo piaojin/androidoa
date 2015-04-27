@@ -16,6 +16,7 @@ public class EmployDAO {
 
     public static final String EMPLOY="create table IF NOT EXISTS employ(" +
             "uid INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "kid INTEGER not null,"+
             "name varchar(20) not null," +
             "sex interger  not null default 0," +
             "tel varchar(20) not null," +
@@ -90,6 +91,7 @@ public class EmployDAO {
         for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {	// 采用循环的方式检索数据
             Employ employ=new Employ();
             employ.setUid(result.getInt(result.getColumnIndex("uid")));
+            employ.setKid(result.getInt(result.getColumnIndex("kid")));
             employ.setName(result.getString(result.getColumnIndex("name")));
             employ.setSex(result.getInt(result.getColumnIndex("sex")));
             employ.setTel(result.getString(result.getColumnIndex("tel")));

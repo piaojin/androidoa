@@ -11,6 +11,7 @@ public class MessageDAO {
 
     public static final String MESSAGE="create table IF NOT EXISTS message(" +
             "mid INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "kid INTEGER not null,"+
             "senderid INTEGER not null," +
             "receiverid INTEGER not null," +
             "sendtime varchar(26) not null," +

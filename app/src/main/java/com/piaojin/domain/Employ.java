@@ -9,6 +9,16 @@ public class Employ implements java.io.Serializable {
 	// Fields
 
 	private Integer uid;
+	private Integer kid;//员工服务器端的id
+
+	public Integer getKid() {
+		return kid;
+	}
+
+	public void setKid(Integer kid) {
+		this.kid = kid;
+	}
+
 	private String name;
 	private Integer sex;
 	private String tel;

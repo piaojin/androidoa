@@ -9,6 +9,16 @@ public class Message implements java.io.Serializable {
 	// Fields
 
 	private Integer mid;
+
+	public Integer getKid() {
+		return kid;
+	}
+
+	public void setKid(Integer kid) {
+		this.kid = kid;
+	}
+
+	private Integer kid;
 	private Employ employByReceiverid;
 	private Employ employBySenderid;
 	private String sendtime;

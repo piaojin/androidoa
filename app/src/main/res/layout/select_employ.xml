@@ -12,11 +12,44 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <ListView
+            android:id="@+id/departmentList"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/employList"
+    <LinearLayout
+        android:id="@+id/llemploy"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2" />
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/employList"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <!--提示加载-->
+        <LinearLayout
+            android:id="@+id/lloading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="#ffffff"
+            >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleLarge"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请稍后,加载中..."
+                />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

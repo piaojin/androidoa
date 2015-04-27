@@ -11,6 +11,7 @@ public class TaskDAO {
 
     public static final String TASK="create table IF NOT EXISTS task(" +
             "tid INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "kid INTEGER not null,"+
             "uid INTEGER not null," +
             "eid INTEGER not null," +
             "time varchar(20) not null," +
