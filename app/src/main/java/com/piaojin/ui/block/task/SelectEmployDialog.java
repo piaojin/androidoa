@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.piaojin.dao.DepartmentDAO;
 import com.piaojin.dao.EmployDAO;
@@ -41,7 +44,11 @@ public class SelectEmployDialog extends DialogFragment {
     private SimpleAdapter eadapter;
     private List<Department> d;
     private List<Employ> e;
+    private EditText taskEmploy;
 
+    public SelectEmployDialog(EditText employtext) {
+        this.taskEmploy = employtext;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,14 +65,14 @@ public class SelectEmployDialog extends DialogFragment {
         e = new ArrayList<Employ>();
         context = getActivity();
         mySqliteHelper = new MySqliteHelper(context);
-        dlist=new ArrayList<Map<String,Object>>();
-        elist=new ArrayList<Map<String,Object>>();
+        dlist = new ArrayList<Map<String, Object>>();
+        elist = new ArrayList<Map<String, Object>>();
         initD();
         initE();
         initDList();
         initEList();
-
-
+        departmentList.setOnItemClickListener(new DepartmentItemClick());
+        employList.setOnItemClickListener(new EmployItemClick());
     }
 
     private void initD() {
@@ -75,7 +82,7 @@ public class SelectEmployDialog extends DialogFragment {
         if (d != null && d.size() > 0) {
             d.clear();
         }
-        d=departmentDAO.getAllDepartment();
+        d = departmentDAO.getAllDepartment();
     }
 
     @Override
@@ -91,42 +98,74 @@ public class SelectEmployDialog extends DialogFragment {
         if (e != null && e.size() > 0) {
             e.clear();
         }
-        e=employDAO.getAllEmploy();
-        System.out.println("e:"+e.size());
+        e = employDAO.getAllEmploy();
     }
 
     private void initDList() {
 
-        if(d!=null&&d.size()>0){
-            for(Department department:d){
-                Map map=new HashMap<String,Object>();
-                map.put("name",department.getDname());
-                map.put("_id",department.getDid());
-                map.put("kid",department.getKid());
+        if (d != null && d.size() > 0) {
+            for (Department department : d) {
+                Map map = new HashMap<String, Object>();
+                map.put("name", department.getDname());
+                map.put("dpid", department.getDpid());
+                map.put("kid", department.getKid());
                 dlist.add(map);
             }
-            if(dadapter==null){
-                dadapter=new SimpleAdapter(context,dlist,R.layout.select_employ_item,
-                        new String[]{"name","id","kid"},new int[]{R.id.name,R.id._id,R.id.kid});
+            if (dadapter == null) {
+                dadapter = new SimpleAdapter(context, dlist, R.layout.select_employ_item,
+                        new String[]{"name", "dpid", "kid"}, new int[]{R.id.name, R.id.dpid, R.id.kid});
                 departmentList.setAdapter(dadapter);
             }
         }
     }
 
     private void initEList() {
-        if(e!=null&&e.size()>0){
-            for(Employ employ:e){
-                Map map=new HashMap<String,Object>();
-                map.put("name",employ.getName());
-                map.put("_id",employ.getUid());
-                map.put("kid",employ.getKid());
+        if(elist!=null){
+            elist.clear();
+        }
+        if (e != null && e.size() > 0) {
+            for (Employ employ : e) {
+                Map map = new HashMap<String, Object>();
+                map.put("name", employ.getName());
+                map.put("dpid", employ.getUid());
+                map.put("kid", employ.getKid());
                 elist.add(map);
             }
-            if(eadapter==null){
-                eadapter=new SimpleAdapter(context,elist,R.layout.select_employ_item,
-                        new String[]{"name","id","kid"},new int[]{R.id.name,R.id._id,R.id.kid});
+            if (eadapter == null) {
+                eadapter = new SimpleAdapter(context, elist, R.layout.select_employ_item,
+                        new String[]{"name", "dpid", "kid"}, new int[]{R.id.name, R.id.dpid, R.id.kid});
                 employList.setAdapter(eadapter);
             }
+        }
+    }
+
+
+    private class DepartmentItemClick implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
+            String kid = map.get("kid").toString();
+            e = employDAO.getEmployByDepartment(Integer.parseInt(kid));
+            if(e!=null&&e.size()>0){
+                initEList();
+                eadapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private class EmployItemClick implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
+            String kid = map.get("kid").toString();
+            String name = map.get("name").toString();
+            taskEmploy.setText(name);
+            taskEmploy.setTag(kid);
+            SelectEmployDialog.this.dismiss();
         }
     }
 
@@ -137,5 +176,9 @@ public class SelectEmployDialog extends DialogFragment {
         if (employDAO != null) {
             employDAO.close();
         }
+    }
+
+    void MyToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,10 +12,11 @@ import java.util.List;
  */
 public class EmployDAO {
     private SQLiteDatabase db=null;
-    private static final String TABLE="employ";
+    private static final String TABLE="myemploy";
 
-    public static final String EMPLOY="create table IF NOT EXISTS employ(" +
+    public static final String EMPLOY="create table IF NOT EXISTS myemploy(" +
             "uid INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "dpid INTEGER not null," +
             "kid INTEGER not null,"+
             "name varchar(20) not null," +
             "sex interger  not null default 0," +
@@ -24,8 +25,8 @@ public class EmployDAO {
             "address varchar(36) not null," +
             "employeeid interger  not null unique," +
             "pwd varchar(36) ," +
-            "department varchar(20) not null," +
             "head varchar(20)," +
+            "department varchar(20)," +
             "level interger  not null default 0" +
             ");";
 
@@ -35,19 +36,22 @@ public class EmployDAO {
     }
 
     public void deleteAll(){
-        String sql="delete from employ";
+        String sql="delete from myemploy";
         db.execSQL(sql);
     }
     public void save(Employ employ){
         ContentValues values=new ContentValues();
+        values.put("dpid", employ.getDpid());
+        values.put("kid", employ.getKid());
         values.put("name", employ.getName());
         values.put("sex", employ.getSex());
         values.put("tel", employ.getTel());
         values.put("email", employ.getEmail());
         values.put("address", employ.getAddress());
         values.put("employeeid", employ.getEmployeeid());
-        values.put("department", employ.getDepartment());
+        values.put("pwd", "1");
         values.put("head", employ.getHead());
+        values.put("department", "飘金操作系统研发部");
         values.put("level", employ.getLevel());
         db.insert(TABLE, null, values);
     }
@@ -77,7 +81,8 @@ public class EmployDAO {
             employ.setAddress(result.getString(result.getColumnIndex("address")));
             employ.setEmployeeid(result.getInt(result.getColumnIndex("employeeid")));
             employ.setPwd(result.getString(result.getColumnIndex("pwd")));
-            employ.setDepartment(result.getString(result.getColumnIndex("department")));
+            employ.setDpid(result.getInt(result.getColumnIndex("dpid")));
+            employ.setKid(result.getInt(result.getColumnIndex("kid")));
             employ.setHead(result.getString(result.getColumnIndex("head")));
             employ.setLevel(result.getInt(result.getColumnIndex("level")));
         }
@@ -99,7 +104,7 @@ public class EmployDAO {
             employ.setAddress(result.getString(result.getColumnIndex("address")));
             employ.setEmployeeid(result.getInt(result.getColumnIndex("employeeid")));
             employ.setPwd(result.getString(result.getColumnIndex("pwd")));
-            employ.setDepartment(result.getString(result.getColumnIndex("department")));
+            employ.setDpid(result.getInt(result.getColumnIndex("dpid")));
             employ.setHead(result.getString(result.getColumnIndex("head")));
             employ.setLevel(result.getInt(result.getColumnIndex("level")));
             all.add(employ);
@@ -107,6 +112,28 @@ public class EmployDAO {
         return all ;
     }
 
+    public List<Employ> getEmployByDepartment(int kid){
+        String sql="select * from myemploy where kid = "+kid;
+        List<Employ> all = new ArrayList<Employ>() ;
+        Cursor result = this.db.rawQuery(sql, null);// 这些条件根据自己的情况增加
+        for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
+            Employ employ=new Employ();
+            employ.setUid(result.getInt(result.getColumnIndex("uid")));
+            employ.setKid(result.getInt(result.getColumnIndex("kid")));
+            employ.setName(result.getString(result.getColumnIndex("name")));
+            employ.setSex(result.getInt(result.getColumnIndex("sex")));
+            employ.setTel(result.getString(result.getColumnIndex("tel")));
+            employ.setEmail(result.getString(result.getColumnIndex("email")));
+            employ.setAddress(result.getString(result.getColumnIndex("address")));
+            employ.setEmployeeid(result.getInt(result.getColumnIndex("employeeid")));
+            employ.setPwd(result.getString(result.getColumnIndex("pwd")));
+            employ.setDpid(result.getInt(result.getColumnIndex("dpid")));
+            employ.setHead(result.getString(result.getColumnIndex("head")));
+            employ.setLevel(result.getInt(result.getColumnIndex("level")));
+            all.add(employ);
+        }
+        return all;
+    }
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

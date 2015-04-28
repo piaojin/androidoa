@@ -1,5 +1,7 @@
 package com.piaojin.helper;
 
+import android.text.TextUtils;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,8 +14,11 @@ import org.apache.http.protocol.HTTP;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +31,82 @@ public class HttpHepler {
     public final String ERROR = "error";
     public final String NULLERROR = "nullerror";
     //服务器ip地址
-    public static final String GETALLSHAREDFILE = "http://219.228.251.102:8080/cecWeb/employgetAllSharedFile";
+    public static final String SENDTASK = "http://219.228.251.102:8080/cecWeb/taskAddTask";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.102:8080/cecWeb/filegetAllSharedFile";
     public static final String GETALLDEPARTMENT = "http://219.228.251.102:8080/cecWeb/departmentgetAllDepartment";
     public static final String LOGIN = "http://219.228.251.102:8080/cecWeb/employLogin";
     public static final String GETALLEMPLOY = "http://219.228.251.102:8080/cecWeb/employgetAllEmploy";
     public static final String DOWNFILE = "http://219.228.251.102:8080/cecWeb/downDownFile";
 
+    //发布任务
+    public String sendTask(String taskjson, String httpurl) {
+        return HttpPost(taskjson, httpurl);
+    }
+
+    //带大量数据的额请求,原生post方式
+    private String HttpPost(String taskjson, String httpurl){
+        StringBuffer result = new StringBuffer("");
+            try {
+                HttpPost clientpost = new HttpPost(httpurl);
+                //请求超时
+                clientpost.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000);
+                //读取超时
+                clientpost.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                    params.add(new BasicNameValuePair("taskjson", taskjson));
+                clientpost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+                HttpResponse response = new DefaultHttpClient().execute(clientpost);
+                if (response.getStatusLine().getStatusCode() == 200) {    // 现在已经发现了数据了
+                    InputStream input = response.getEntity().getContent();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(input));
+                    String readLine = null;
+                    while ((readLine = br.readLine()) != null) {
+                        result = result.append(readLine);
+                    }
+                    input.close();
+                    br.close();
+                }
+            } catch (Exception e) {
+                System.out.println("@@@@@@@@@@@@@@@@" + e);
+            }
+        System.out.println("@@@@@@@@@@@@@@@@" + result.toString());
+        return result.toString();
+    }
+    /*private String HttpPost(String taskjson, String httpurl) {
+        StringBuffer jsonresult = new StringBuffer("");
+        try {
+            URL url = new URL(httpurl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Length", httpurl.getBytes().length+"");
+            conn.setDoOutput(true);
+            OutputStream os = conn.getOutputStream();
+            os.write(httpurl.getBytes());//请求写给服务器
+            int code = conn.getResponseCode();
+            System.out.println("code:"+code);
+            if (code == 200) {
+                byte data[] = new byte[512];
+                int len = -1;
+                while ((len = conn.getInputStream().read(data)) != -1) {
+                    jsonresult.append(new String(data, 0, len));
+                }
+                System.out.println(jsonresult);
+                conn.getInputStream().close();
+            } else {
+                System.out.println("请求出错了亲!");
+                return null;
+            }
+        } catch (Exception e) {
+            System.out.println("@@@@@@@@@@" + e);
+        }
+        if (TextUtils.isEmpty(jsonresult)) {
+            return "";
+        }
+        return jsonresult.toString();
+    }
+*/
     //下载文件
     public static InputStream DownFile(int pid) {
         InputStream inputStream = null;

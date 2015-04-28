@@ -20,7 +20,6 @@ public class FileDAO {
             "create table IF NOT EXISTS myfile(" +
                     "fid INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "kid INTEGER not null,"+
-                    "pid INTEGER,"+
                     "uid INTEGER not null," +
                     "type INTEGER not null default 0," +
                     "url varchar(100)," +
@@ -49,7 +48,7 @@ public class FileDAO {
     public void save(MyFile file) {
         ContentValues values = new ContentValues();
         values.put("uid", file.getUid());
-        values.put("pid", file.getPid());
+        values.put("kid", file.getKid());
         values.put("type", file.getType());
         values.put("url", file.getUrl());
         values.put("httpurl", file.getHttpurl());
@@ -74,7 +73,7 @@ public class FileDAO {
             for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
-                file.setPid(result.getInt(result.getColumnIndex("pid")));
+                file.setKid(result.getInt(result.getColumnIndex("kid")));
                 file.setUid(result.getInt(result.getColumnIndex("uid")));
                 file.setType(result.getInt(result.getColumnIndex("type")));
                 file.setUrl(result.getString(result.getColumnIndex("url")));
@@ -98,14 +97,15 @@ public class FileDAO {
 
     public List<MyFile> getAllNotDownFile() {
         List<MyFile> list = null;
-        String sql = "select * from myfile where status=0";
-        Cursor result = db.rawQuery(sql, null);
+        String sql = "select * from myfile";
+        Cursor result = this.db.query(TABLE, null, null, null, null,
+                null, null);
         if (result.getCount() > 0) {
             list = new ArrayList<MyFile>();
             for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
-                file.setPid(result.getInt(result.getColumnIndex("pid")));
+                file.setKid(result.getInt(result.getColumnIndex("kid")));
                 file.setUid(result.getInt(result.getColumnIndex("uid")));
                 file.setType(result.getInt(result.getColumnIndex("type")));
                 file.setUrl(result.getString(result.getColumnIndex("url")));
@@ -152,6 +152,7 @@ public class FileDAO {
             result.moveToFirst();
             myfile = new MyFile();
             myfile.setFid(result.getInt(result.getColumnIndex("fid")));
+            myfile.setKid(result.getInt(result.getColumnIndex("kid")));
             myfile.setUid(result.getInt(result.getColumnIndex("uid")));
             myfile.setType(result.getInt(result.getColumnIndex("type")));
             myfile.setUrl(result.getString(result.getColumnIndex("url")));

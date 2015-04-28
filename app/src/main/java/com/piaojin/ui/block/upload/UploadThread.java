@@ -83,7 +83,7 @@ public class UploadThread implements Runnable {
     @Override
     public void run() {
         try {
-            socket = new Socket(IP, Integer.parseInt(PORT));
+            socket = new Socket(IP, Integer.parseInt(UPLOADPORT));
             if (socket != null && socket.isConnected()) {
 
                 String uploadfilejson = new Gson().toJson(this.myfile);
@@ -92,7 +92,6 @@ public class UploadThread implements Runnable {
                 PushbackInputStream inStream = new PushbackInputStream(socket.getInputStream());
                 /*写*/
                 //把文件转成json发给服务器端，等待服务器端解析并返回结果码
-                //uploadfilejson=uploadfilejson.getBytes("UTF-8").toString();
                 printStream.println(uploadfilejson);
                 /*读*/
                 //获取服务器端返回的结果码

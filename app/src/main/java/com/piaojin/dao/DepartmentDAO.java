@@ -15,10 +15,10 @@ import java.util.List;
  */
 public class DepartmentDAO {
     private SQLiteDatabase db = null;
-    private static final String TABLE = "department";
+    private static final String TABLE = "mydepartment";
 
-    public static final String DEPARTMENT = "create table IF NOT EXISTS department(" +
-            "did INTEGER PRIMARY KEY AUTOINCREMENT," +
+    public static final String DEPARTMENT = "create table IF NOT EXISTS mydepartment(" +
+            "dpid INTEGER PRIMARY KEY AUTOINCREMENT," +
             "kid INTEGER not null,"+
             "dname varchar(50) not null," +
             "uid INTEGER," +
@@ -31,7 +31,7 @@ public class DepartmentDAO {
     }
 
     public void clear() {
-        String sql = "delete from department";
+        String sql = "delete from mydepartment";
         db.execSQL(sql);
     }
 
@@ -48,14 +48,16 @@ public class DepartmentDAO {
         List<Department> all = new ArrayList<Department>();
         Cursor result = this.db.query(TABLE, null, null, null, null,
                 null, null);    // 这些条件根据自己的情况增加
-        for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {    // 采用循环的方式检索数据
-            Department department = new Department();
-            department.setUid(result.getInt(result.getColumnIndex("uid")));
-            department.setKid(result.getInt(result.getColumnIndex("kid")));
-            department.setDid(result.getInt(result.getColumnIndex("did")));
-            department.setDname(result.getString(result.getColumnIndex("dname")));
-            department.setDescript(result.getString(result.getColumnIndex("descript")));
-            all.add(department);
+        if(result.getCount()>0){
+            for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {// 采用循环的方式检索数据
+                Department department = new Department();
+                department.setDpid(result.getInt(result.getColumnIndex("dpid")));
+                department.setUid(result.getInt(result.getColumnIndex("uid")));
+                department.setKid(result.getInt(result.getColumnIndex("kid")));
+                department.setDname(result.getString(result.getColumnIndex("dname")));
+                department.setDescript(result.getString(result.getColumnIndex("descript")));
+                all.add(department);
+            }
         }
         return all;
     }

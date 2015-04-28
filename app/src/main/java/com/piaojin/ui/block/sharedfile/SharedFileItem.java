@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.piaojin.common.FileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.helper.NetWorkHelper;
+import com.piaojin.tools.MyAnimationUtils;
 import com.piaojin.ui.block.download.DownloadService;
 import com.piaojin.ui.block.upload.UploadService;
 
@@ -41,6 +43,10 @@ public class SharedFileItem extends LinearLayout {
     @ViewById
     Button download;
     @ViewById
+    LinearLayout lldownload;
+    @ViewById
+    LinearLayout llsharedcontent;
+    @ViewById
     ImageView sharedfileicon;
     @ViewById
     TextView sharedfilename;
@@ -50,7 +56,10 @@ public class SharedFileItem extends LinearLayout {
     TextView sharedfileperson;
     @ViewById
     TextView sharedfilesize;
+    @ViewById
+    TextView title;
     private MyFile myFile;
+    private boolean hide=true;
 
     public SharedFileItem(Context context) {
         super(context);
@@ -80,6 +89,17 @@ public class SharedFileItem extends LinearLayout {
             }
     }
 
+    @Click
+    void llsharedcontent(){
+        hide=!hide;
+        if(hide){
+            lldownload.setVisibility(View.GONE);
+            MyAnimationUtils.ScaleOut(lldownload,context);
+        }else{
+            lldownload.setVisibility(View.VISIBLE);
+            MyAnimationUtils.ScaleIn(lldownload, context);
+        }
+    }
     void MyToast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }

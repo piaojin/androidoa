@@ -9,10 +9,10 @@
     <ListView
         android:id="@+id/sharedFileList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="#ffffff"
         />
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/lloading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,5 +31,5 @@
             android:layout_height="wrap_content"
             android:text="请稍后,加载中..."
             />
-    </LinearLayout>
+    </LinearLayout>-->
 </RelativeLayout>

@@ -41,14 +41,14 @@ public class SharedFileAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        SharedFileItem sharedFileItem=null;
-        if(view==null){
+        SharedFileItem sharedFileItem=SharedFileItem_.build(context);
+        /*if(view==null){
             sharedFileItem=SharedFileItem_.build(context);
             view=sharedFileItem;
             view.setTag(sharedFileItem);
         }else{
             sharedFileItem=(SharedFileItem)view.getTag();
-        }
+        }*/
         MyFile myFile=list.get(i);
         sharedFileItem.setMyFile(myFile);
         if(myFile.getStatus()!= FileResource.STATUS_NOT_DOWN){
@@ -59,8 +59,9 @@ public class SharedFileAdapter extends BaseAdapter {
         sharedFileItem.sharedfilename.setText(myFile.getName());
         sharedFileItem.sharedfilesize.setText(FileUtil.FormetFileSize(myFile.getFilesize().longValue()));
         sharedFileItem.sharedfiletime.setText(myFile.getCompletedate());
-        sharedFileItem.download.setText(myFile.getStatus()==FileResource.STATUS_DOWN?"打开":"下载");
-
-        return sharedFileItem;
+        //sharedFileItem.download.setText(myFile.getStatus()==FileResource.STATUS_DOWN?"打开":"下载");
+        sharedFileItem.title.setText(myFile.getStatus()==FileResource.STATUS_DOWN?"已下载":"未下载");
+        view =sharedFileItem;
+        return view;
     }
 }

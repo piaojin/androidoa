@@ -1,7 +1,6 @@
 package com.piaojin.ui.block.download;
 
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,27 +10,19 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.piaojin.common.DownloadfileResource;
 import com.piaojin.common.FileResource;
-import com.piaojin.common.UploadfileResource;
 import com.piaojin.domain.MyFile;
-import com.piaojin.event.DataChangeEvent;
 import com.piaojin.event.DownloadDataChangeEvent;
 import com.piaojin.event.DownloadExceptionEvent;
 import com.piaojin.event.DownloadFinishEvent;
-import com.piaojin.event.UploadExceptionEvent;
-import com.piaojin.event.UploadFinishEvent;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.FileUtil;
 import com.squareup.otto.Subscribe;
-
 import java.io.File;
-
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -97,6 +88,7 @@ public class DownloadDialog extends DialogFragment {
                 DownloadDialog.this.dismiss();
             }
         });
+        downloadfilename.setText(myfile.getName());
         setMax(myfile.getFilesize().intValue());
         setIcon();
     }
@@ -158,7 +150,7 @@ public class DownloadDialog extends DialogFragment {
         return type;
     }
 
-    //更新文件上传进度
+    //更新文件下载进度
     @Subscribe
     public void onDownloadDataChangeEvent(DownloadDataChangeEvent downloadDataChangeEvent) {
         Message message = new Message();
@@ -166,7 +158,7 @@ public class DownloadDialog extends DialogFragment {
         handler.sendMessage(message);
     }
 
-    //文件上传结束
+    //文件下载结束
     @Subscribe
     public void onDownloadFinishEvent(DownloadFinishEvent downloadFinishEvent) {
         MyFile tempfile = downloadFinishEvent.getMyFile();
@@ -178,7 +170,7 @@ public class DownloadDialog extends DialogFragment {
         dismiss();
     }
 
-    //文件上传出错
+    //文件下载出错
     @Subscribe
     public void onDownloadExceptionEvent(DownloadExceptionEvent downloadExceptionEvent) {
         BusProvider.getInstance().post(new DownloadExceptionEvent());

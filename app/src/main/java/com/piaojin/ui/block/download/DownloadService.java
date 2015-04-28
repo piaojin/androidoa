@@ -69,7 +69,7 @@ public class DownloadService extends Service {
         close();
     }
 
-    //取消文件上传
+    //取消文件下载
     @Subscribe
     public void onDownloadCancelEvent(DownloadCancelEvent downloadCancelEvent) {
         MyToast("取消文件下载!");
@@ -77,7 +77,7 @@ public class DownloadService extends Service {
         close();
     }
 
-    //文件上传出错
+    //文件下载出错
     @Subscribe
     public void onDownloadExceptionEvent(DownloadExceptionEvent downloadExceptionEvent) {
         close();

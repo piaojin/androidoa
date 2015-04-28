@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.piaojin.common.ScheduleResource;
+import com.piaojin.dao.EmployDAO;
+import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.domain.Employ;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.module.AppModule;
@@ -44,6 +47,9 @@ import oa.piaojin.com.androidoa.R;
  */
 @EActivity(R.layout.activity_workmates)
 public class WorkMatesActivity extends FragmentActivity {
+
+    private MySqliteHelper mySqliteHelper;
+    private EmployDAO employDAO;
     @ViewById
     ListView country_lvcountry;
     @ViewById
@@ -56,8 +62,8 @@ public class WorkMatesActivity extends FragmentActivity {
     LinearLayout workmates_list;
     @ViewById
     LinearLayout workmateinfo;
-    @ViewById
-    LinearLayout llpbContent;
+    /*@ViewById
+    LinearLayout llpbContent;*/
     @Inject
     WorkMateInfoFragment workMateInfoFragment;
     @Inject
@@ -89,44 +95,53 @@ public class WorkMatesActivity extends FragmentActivity {
 
     @AfterViews
     void initViews() {
-        boolean isLoadAllEmploy=mySharedPreferences.getBoolean("isLoadAllEmploy",false);
-        if(isLoadAllEmploy){
-            llpbContent.setVisibility(View.GONE);
-            ActionBarTools.setActionBarLayout(R.layout.workmates_actionbar, this);
-            ActionBarTools.setTitleText("微讯同事");
-            ActionBarTools.setButtonText("更新");
-            ActionBarTools.HideBtnaddSchedule(true);
-            //实例化汉字转拼音类
-            characterParser = CharacterParser.getInstance();
-            pinyinComparator = new PinyinComparator();
-            sideBar.setTextView(dialog);
+        mySqliteHelper = new MySqliteHelper(this);
+        employDAO = new EmployDAO(mySqliteHelper.getReadableDatabase());
+        //llpbContent.setVisibility(View.GONE);
+        ActionBarTools.setActionBarLayout(R.layout.workmates_actionbar, this);
+        ActionBarTools.setTitleText("微讯同事");
+        ActionBarTools.setButtonText("更新");
+        ActionBarTools.HideBtnaddSchedule(true);
+        //实例化汉字转拼音类
+        characterParser = CharacterParser.getInstance();
+        pinyinComparator = new PinyinComparator();
+        sideBar.setTextView(dialog);
 
-            //设置右侧触摸监听
-            sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+        //设置右侧触摸监听
+        sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
-                @Override
-                public void onTouchingLetterChanged(String s) {
-                    //该字母首次出现的位置
-                    int position = adapter.getPositionForSection(s.charAt(0));
-                    if (position != -1) {
-                        country_lvcountry.setSelection(position);
-                    }
-
+            @Override
+            public void onTouchingLetterChanged(String s) {
+                //该字母首次出现的位置
+                int position = adapter.getPositionForSection(s.charAt(0));
+                if (position != -1) {
+                    country_lvcountry.setSelection(position);
                 }
-            });
 
-            country_lvcountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            }
+        });
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    //这里要利用adapter.getItem(position)来获取当前position所对应的对象
-                    Toast.makeText(WorkMatesActivity.this, ((SortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
-                    initInfo();
-                }
-            });
+        country_lvcountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            SourceDateList = filledData(getResources().getStringArray(R.array.date));
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //这里要利用adapter.getItem(position)来获取当前position所对应的对象
+                Toast.makeText(WorkMatesActivity.this, ((SortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+                initInfo();
+            }
+        });
+
+        //初始化同事数据
+        List<Employ> list = employDAO.getAllEmploy();
+        if (list != null && list.size() > 0) {
+            String employname[] = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                employname[i] = list.get(i).getName();
+                System.out.println("name:"+list.get(i).getName());
+            }
+            SourceDateList = filledData(employname);
+            //SourceDateList = filledData(getResources().getStringArray(R.array.date));
 
             // 根据a-z进行排序源数据
             Collections.sort(SourceDateList, pinyinComparator);
@@ -151,8 +166,8 @@ public class WorkMatesActivity extends FragmentActivity {
                 public void afterTextChanged(Editable s) {
                 }
             });
-        }else{
-            llpbContent.setVisibility(View.INVISIBLE);
+        } else {
+            //llpbContent.setVisibility(View.VISIBLE);
         }
     }
 
@@ -225,6 +240,7 @@ public class WorkMatesActivity extends FragmentActivity {
     public void addSchedule(View view) {
 
     }
+
     //初始化详细信息
     private void initInfo() {
         workmates_list.setVisibility(View.GONE);

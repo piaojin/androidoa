@@ -22,12 +22,12 @@
             android:layout_marginRight="50dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="10dip"
+            android:background="@drawable/edittext_bg"
             android:hint="接收人..."
             android:singleLine="true"
-            android:textSize="15.0dip"
-            android:background="@drawable/edittext_bg"
             android:textColor="#ababab"
-            />
+            android:textCursorDrawable="@color/cc"
+            android:textSize="15.0dip" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -39,34 +39,49 @@
                 android:id="@+id/starttime"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
+                android:layout_marginEnd="2dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="2dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
                 android:hint="开始时间"
                 android:singleLine="true"
-                android:textSize="15.0dip"
-                android:background="@drawable/edittext_bg"
-                android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
                 android:textColor="#ababab"
-                />
+                android:textSize="15.0dip" />
 
             <com.piaojin.myview.ClearEditText
                 android:id="@+id/endtime"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginLeft="2dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginStart="2dp"
                 android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
                 android:hint="结束时间"
                 android:singleLine="true"
-                android:textSize="15.0dip"
-                android:background="@drawable/edittext_bg"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
                 android:textColor="#ababab"
-                />
+                android:textSize="15.0dip" />
         </LinearLayout>
+
+        <com.piaojin.myview.ClearEditText
+            android:id="@+id/taskTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/edittext_bg"
+            android:hint="任务标题"
+            android:singleLine="true"
+            android:textColor="#ababab"
+            android:textCursorDrawable="@color/cc"
+            android:textSize="15.0dip" />
+
 
         <com.piaojin.myview.ClearEditText
             android:id="@+id/content"
@@ -81,9 +96,9 @@
             android:hint="任务内容..."
             android:padding="20dp"
             android:singleLine="false"
-            android:textSize="15.0dip"
             android:textColor="#ababab"
-            />
+            android:textSize="15.0dip" />
+
 
         <Button
             android:id="@+id/sendTask"
@@ -135,6 +150,19 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/btn_exit"
             android:text="删除任务"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/finishTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_login"
+            android:text="完成任务"
             android:textColor="#ffffff" />
 
     </LinearLayout>

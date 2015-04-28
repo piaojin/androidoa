@@ -11,10 +11,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;

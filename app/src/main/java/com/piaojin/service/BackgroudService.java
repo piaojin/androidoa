@@ -117,7 +117,8 @@ public class BackgroudService extends Service {
                     departmentDAO.save(department);
                 }
                 list=departmentDAO.getAllDepartment();
-                departmentDAO.close();
+                //departmentDAO.close();
+                System.out.println("部门个数:" + list.size());
             }
         }
     }
@@ -136,11 +137,11 @@ public class BackgroudService extends Service {
                 myFileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
                 myFileDAO.clear();
                 for (MyFile myfile : list) {
-                    myfile.setPid(myfile.getFid());
                     myfile.setUid(1);//
                     myFileDAO.save(myfile);
                 }
-                myFileDAO.close();
+                //myFileDAO.close();
+                System.out.println("共享文件个数:" + list.size());
             }
         }
     }
@@ -159,13 +160,14 @@ public class BackgroudService extends Service {
                     init();
                     employDAO = new EmployDAO(mySqliteHelper.getWritableDatabase());
                     employDAO.deleteAll();
-                    for (int i = 0; i < list.size(); i++) {
-                        employDAO.save(list.get(i));
+                    for (Employ employ:list) {
+                        System.out.println("dpid:" +employ.getDpid());
+                        employDAO.save(employ);
                     }
                     //员工全部存入数据库后关闭数据库
-                    employDAO.close();
+                    //employDAO.close();
+                    System.out.println("员工个数:" + list.size());
                 }
-                System.out.println("员工个数:"+list.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("$$$error" + e.getMessage());
@@ -176,6 +178,9 @@ public class BackgroudService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(departmentDAO!=null){
+            departmentDAO.close();
+        }
         BusProvider.getInstance().unregister(this);
     }
 

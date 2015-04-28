@@ -72,7 +72,6 @@ public class WorkMateInfoFragment extends Fragment {
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view).create();
         Window window = dialog.getWindow();
-        //WindowManager.LayoutParams lp = window.getAttributes();
         window.setBackgroundDrawableResource(R.drawable.dialog);
         /*// 设置透明度为0.3
         lp.alpha = 0.7f;

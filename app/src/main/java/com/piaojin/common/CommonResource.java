@@ -1,6 +1,7 @@
 package com.piaojin.common;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * Created by piaojin on 2015/4/12.

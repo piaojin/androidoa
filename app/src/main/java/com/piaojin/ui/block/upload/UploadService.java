@@ -52,15 +52,15 @@ public class UploadService extends Service {
         if (myfile2 != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             boolean isUpload = fileDAO.isUpload(myfile2.getName());
-            if (!isUpload) {
+            /*if (!isUpload) {*/
                 //该文件第一次上传
                 System.out.println("******该文件第一次上传");
                 //开启一个线程专门上传文件
                 thread = new Thread(new UploadThread(myfile2, this));
                 thread.start();
-            } else {
+            /*} else {
                 MyToast("该文件已经上传过!");
-            }
+            }*/
 
         }
         return super.onStartCommand(intent, flags, startId);

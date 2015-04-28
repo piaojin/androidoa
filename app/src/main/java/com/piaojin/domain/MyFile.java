@@ -17,15 +17,6 @@ public class MyFile implements java.io.Serializable{
     }
 
     private Integer kid;
-    private Integer pid;
-
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
 
     private Integer uid;
     private Integer type;

@@ -1,13 +1,13 @@
 package com.piaojin.ui.block.personalfile;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
 import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.MyFile;
@@ -20,11 +20,9 @@ import com.piaojin.tools.ExitApplication;
 import com.piaojin.tools.FileUtil;
 import com.piaojin.ui.block.upload.UploadDialog;
 import com.squareup.otto.Subscribe;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +30,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import dagger.ObjectGraph;
 import oa.piaojin.com.androidoa.HomeActivity_;
 import oa.piaojin.com.androidoa.R;
@@ -50,6 +47,8 @@ public class PersonalFileActivity extends Activity {
     private List<Map<String, Object>> list;
     private ObjectGraph objectGraph;
     private SimpleAdapter simpleAdapter;
+    private UploadDialog uploadDialog;
+    private MyFileSelectDialog myFileSelectDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,11 @@ public class PersonalFileActivity extends Activity {
 
     //上传文件按钮事件
     public void addSchedule(View view) {
-        MyFileSelectDialog myFileSelectDialog = new MyFileSelectDialog();
+        myFileSelectDialog = new MyFileSelectDialog();
+        Fragment fragment=getFragmentManager().findFragmentByTag("MyFileSelectDialog");
+        if(fragment!=null&&!fragment.isRemoving()){
+            getFragmentManager().beginTransaction().remove(myFileSelectDialog).commitAllowingStateLoss();
+        }
         myFileSelectDialog.show(getFragmentManager(), "MyFileSelectDialog");
         myFileSelectDialog.setCancelable(true);
     }
@@ -152,8 +155,11 @@ public class PersonalFileActivity extends Activity {
     //开始上传文件
     @Subscribe
     public void onStartUploadEvent(StartUploadEvent startUploadEvent) {
-        System.out.println("onStartUploadEvent");
-        UploadDialog uploadDialog = new UploadDialog(startUploadEvent.getFile());
+        uploadDialog = new UploadDialog(startUploadEvent.getFile());
+        Fragment fragment=getFragmentManager().findFragmentByTag("UploadDialog");
+        if(fragment!=null&&!fragment.isRemoving()) {
+            getFragmentManager().beginTransaction().remove(uploadDialog).commitAllowingStateLoss();
+        }
         uploadDialog.show(getFragmentManager(), "UploadDialog");
     }
 
@@ -162,6 +168,9 @@ public class PersonalFileActivity extends Activity {
     public void onUploadFinishEvent(UploadFinishEvent uploadFinishEvent) {
         if(list!=null){
             list.clear();
+        }
+        if(uploadDialog!=null){
+            getFragmentManager().beginTransaction().remove(uploadDialog).commitAllowingStateLoss();
         }
         init();
         if(list==null||list.size()<=0){

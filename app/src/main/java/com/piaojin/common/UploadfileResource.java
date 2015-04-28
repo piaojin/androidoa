@@ -9,7 +9,8 @@ public class UploadfileResource {
     public static final String UPLOADURL="";//上传到服务器的地址
     public static final String SAVEURL="";//本地保存的地址
     public static final String IP="169.254.195.223";//服务器ip地址
-    public static final String PORT="6666";//服务器端口号
+    public static final String UPLOADPORT ="6666";//上传文件服务器端口号
+    public static final String DOWNLOADPORT ="6600";//下载文件服务器端口号
     public static final String RJSONESULT="";//服务器端返回的结果json
     public static int FID=0;//更新文件的fid
     public static int FILENAME=1;//更新文件的名字

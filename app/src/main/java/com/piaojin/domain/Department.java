@@ -11,8 +11,7 @@ import com.google.gson.annotations.Expose;
  */
 public class Department implements java.io.Serializable {
 
-	@Expose
-	private Integer did;
+	private Integer dpid;
 
 	public Integer getKid() {
 		return kid;
@@ -23,17 +22,14 @@ public class Department implements java.io.Serializable {
 	}
 
 	private Integer kid;//在服务器端的id
-	@Expose
     private Integer uid;
-	@Expose
     private String dname;
-	@Expose
     private String descript;
-    public Integer getDid() {
-		return did;
+    public Integer getDpid() {
+		return dpid;
 	}
-	public void setDid(Integer did) {
-		this.did = did;
+	public void setDpid(Integer did) {
+		this.dpid = dpid;
 	}
 	public Integer getUid() {
 		return uid;

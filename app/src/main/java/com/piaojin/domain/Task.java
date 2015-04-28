@@ -45,6 +45,16 @@ public class Task implements java.io.Serializable {
 	private String title;
 	private String starttime;
 	private String endtime;
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	private String content;
 	private Integer status;
 
 	// Property accessors

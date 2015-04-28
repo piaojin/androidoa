@@ -1,8 +1,10 @@
 package com.piaojin.ui.block.sharedfile;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.piaojin.event.SharedfileLoadFinishEvent;
 import com.piaojin.event.StartDownloadEvent;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
+import com.piaojin.tools.DateUtil;
 import com.piaojin.tools.ExitApplication;
 import com.piaojin.ui.block.download.DownloadDialog;
 import com.squareup.otto.Subscribe;
@@ -32,20 +35,19 @@ import oa.piaojin.com.androidoa.R;
 @EActivity(R.layout.activity_shared_file)
 public class SharedFileActivity extends Activity {
 
-    @ViewById
-    LinearLayout lloading;
+   /* @ViewById
+    LinearLayout lloading;*/
     private SharedFileAdapter sharedFileAdapter;
     private FileDAO fileDAO;
     private List<MyFile> list = null;
     @ViewById
     ListView sharedFileList;
     private MySqliteHelper mySqliteHelper;
+    private DownloadDialog downloadDialog;
 
     private void initList() {
-        if (list != null) {
-            list.clear();
-        }
         list = fileDAO.getAllNotDownFile();
+        MyToast(list.size()+"");
     }
 
     private void initAdapter() {
@@ -65,16 +67,16 @@ public class SharedFileActivity extends Activity {
 
     @AfterViews
     void init() {
-        if (CommonResource.isSharedfileLoading) {
+       /* if (CommonResource.isSharedfileLoading) {
             lloading.setVisibility(View.VISIBLE);
-        }
+        }*/
         mySqliteHelper = new MySqliteHelper(this);
         fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
         initList();
         initActionBar();
         initAdapter();
         sharedFileList.setAdapter(sharedFileAdapter);
-        close();
+        sharedFileList.setOnItemClickListener(new MyOnItemClickListener());
     }
 
     private void initActionBar() {
@@ -105,34 +107,36 @@ public class SharedFileActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        fileDAO.close();
+        close();
         BusProvider.getInstance().unregister(this);
     }
 
     //加载共享文件结束
     @Subscribe
     public void onSharedfileLoadFinishEvent(SharedfileLoadFinishEvent sharedfileLoadFinishEvent) {
-        CommonResource.isSharedfileLoading=false;
-        lloading.setVisibility(View.GONE);
+        //CommonResource.isSharedfileLoading=false;
+        //lloading.setVisibility(View.GONE);
     }
 
-    //开始上传文件
+    //开始下载文件
     @Subscribe
     public void onStartDownloadEvent(StartDownloadEvent startDownloadEvent) {
-        System.out.println("startDownloadEvent");
         DownloadDialog downloadDialog = new DownloadDialog(startDownloadEvent.getMyFile());
+        Fragment fragment=getFragmentManager().findFragmentByTag("DownloadDialog");
+        if(fragment!=null&&!fragment.isRemoving()) {
+            getFragmentManager().beginTransaction().remove(downloadDialog).commitAllowingStateLoss();
+        }
         downloadDialog.show(getFragmentManager(), "DownloadDialog");
     }
 
-    //文件上传结束
+    //文件下载结束
     @Subscribe
     public void onDownloadFinishEvent(DownloadFinishEvent downloadFinishEvent) {
-
-        if (fileDAO == null) {
-            fileDAO = new FileDAO(mySqliteHelper.getReadableDatabase());
+        if(downloadDialog!=null){
+            getFragmentManager().beginTransaction().remove(downloadDialog).commitAllowingStateLoss();
         }
-        initList();
-        sharedFileAdapter.notifyDataSetChanged();
+       /* initList();
+        sharedFileAdapter.notifyDataSetChanged();*/
     }
 
     private void close() {
@@ -141,6 +145,13 @@ public class SharedFileActivity extends Activity {
         }
     }
 
+    private class MyOnItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            MyToast("piaojin!");
+        }
+    }
     void MyToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

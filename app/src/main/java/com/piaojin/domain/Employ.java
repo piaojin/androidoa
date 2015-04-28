@@ -9,6 +9,16 @@ public class Employ implements java.io.Serializable {
 	// Fields
 
 	private Integer uid;
+	private Integer dpid;
+
+	public Integer getDpid() {
+		return dpid;
+	}
+
+	public void setDpid(Integer dpid) {
+		this.dpid = dpid;
+	}
+
 	private Integer kid;//员工服务器端的id
 
 	public Integer getKid() {
@@ -24,9 +34,18 @@ public class Employ implements java.io.Serializable {
 	private String tel;
 	private String email;
 	private String address;
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	private String department;
 	private Integer employeeid;
 	private String pwd;
-	private String department;
 	private String head;
 	private Integer level;
 
@@ -100,14 +119,6 @@ public class Employ implements java.io.Serializable {
 
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
-	}
-
-	public String getDepartment() {
-		return this.department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
 	}
 
 	public String getHead() {
