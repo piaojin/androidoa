@@ -134,6 +134,30 @@ public class EmployDAO {
         }
         return all;
     }
+
+    public Employ getById(int uid){
+        Employ employ=null;
+        String sql="select * from myemploy where uid = "+uid;
+        Cursor result = this.db.query(TABLE, null, null, null, null,
+                null, null);
+        if(result.getCount()>0){
+            employ=new Employ();
+            result.moveToFirst();
+            employ.setUid(uid);
+            employ.setKid(result.getInt(result.getColumnIndex("kid")));
+            employ.setName(result.getString(result.getColumnIndex("name")));
+            employ.setSex(result.getInt(result.getColumnIndex("sex")));
+            employ.setTel(result.getString(result.getColumnIndex("tel")));
+            employ.setEmail(result.getString(result.getColumnIndex("email")));
+            employ.setAddress(result.getString(result.getColumnIndex("address")));
+            employ.setEmployeeid(result.getInt(result.getColumnIndex("employeeid")));
+            employ.setPwd(result.getString(result.getColumnIndex("pwd")));
+            employ.setDpid(result.getInt(result.getColumnIndex("dpid")));
+            employ.setHead(result.getString(result.getColumnIndex("head")));
+            employ.setLevel(result.getInt(result.getColumnIndex("level")));
+        }
+        return employ;
+    }
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

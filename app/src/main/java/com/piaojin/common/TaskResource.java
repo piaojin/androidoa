@@ -9,4 +9,7 @@ public class TaskResource {
     public static final int STATUSFINISH=2;//完成任务
     public static final int ADDTASK=0;//添加任务
     public static final int TASKDETAIL=1;//任务详情
+    public static final int TYPE_MYTASK=0;//我的任务
+    public static final int TYPE_ADDTASK=1;//添加任务
+    public static final int TYPE_TASK=2;//我发布的任务
 }

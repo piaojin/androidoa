@@ -18,6 +18,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/FileDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/MySqliteHelper.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/ScheduleDAO.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/TaskDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/UploadfileDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/Department.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/Employ.java" charset="UTF-8" />
@@ -63,8 +64,10 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/sharedfile/SharedFileActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/sharedfile/SharedFileAdapter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/sharedfile/SharedFileItem.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/task/MyTaskFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/task/SelectEmployDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/task/TaskActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/task/TaskDetailActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/task/TaskFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/upload/UploadDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/upload/UploadService.java" charset="UTF-8" />

@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Looper;
 import android.widget.Toast;
+
 import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
 import com.piaojin.dao.DepartmentDAO;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.dao.TaskDAO;
 import com.piaojin.domain.Department;
 import com.piaojin.domain.Employ;
 import com.piaojin.domain.MyFile;
+import com.piaojin.domain.Task;
 import com.piaojin.event.SharedfileLoadFinishEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.MySharedPreferences;
@@ -34,6 +37,7 @@ import dagger.ObjectGraph;
 public class BackgroudService extends Service {
 
     private MySqliteHelper mySqliteHelper;
+    private TaskDAO taskDAO;
     private DepartmentDAO departmentDAO;
     private FileDAO myFileDAO;
     private EmployDAO employDAO;
@@ -44,12 +48,6 @@ public class BackgroudService extends Service {
     private ObjectGraph objectGraph;
 
     public BackgroudService() {
-    }
-
-    private void init() {
-        if (mySqliteHelper == null) {
-            mySqliteHelper = new MySqliteHelper(BackgroudService.this);
-        }
     }
 
     @Override
@@ -63,6 +61,7 @@ public class BackgroudService extends Service {
         super.onCreate();
         //初始化dagger
         BusProvider.getInstance().register(this);
+        mySqliteHelper = new MySqliteHelper(BackgroudService.this);
         objectGraph = ObjectGraph.create(new AppModule(this));
         objectGraph.inject(this);
         mySharedPreferences = new MySharedPreferences(this);
@@ -94,6 +93,11 @@ public class BackgroudService extends Service {
             new Thread(new HttpLoadAllDepartmentThread()).start();
             mySharedPreferences.putBoolean("isLoadDepartment", true);
         }
+
+        //获取我的任务，任务比较重要所有每次登陆都会去获取
+        new Thread(new HttpgetMytaskThread()).start();
+
+
         if (isLoadAllEmploy && isLoadAllSharedFile && isLoadDepartment) {
             //获取数据结束关闭服务
             stopSelf();
@@ -102,6 +106,7 @@ public class BackgroudService extends Service {
     }
 
     private class HttpLoadAllDepartmentThread implements Runnable {
+        Thread thread = new Thread(this);
 
         @Override
         public void run() {
@@ -110,20 +115,27 @@ public class BackgroudService extends Service {
             }.getType();
             List<Department> list = CommonResource.gson.fromJson(httpHelper.getAllDepartment().toString(), typelist);
             if (list != null && list.size() > 0) {
-                init();
-                departmentDAO=new DepartmentDAO(mySqliteHelper.getWritableDatabase());
+                departmentDAO = new DepartmentDAO(mySqliteHelper.getWritableDatabase());
                 departmentDAO.clear();
                 for (Department department : list) {
                     departmentDAO.save(department);
                 }
-                list=departmentDAO.getAllDepartment();
+             /*   list = departmentDAO.getAllDepartment();
+                System.out.println("部门个数:" + list.size());*/
                 //departmentDAO.close();
-                System.out.println("部门个数:" + list.size());
+            }
+            close();
+        }
+
+        private void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
             }
         }
     }
 
     private class HttpLoadAllSharedFileThread implements Runnable {
+        Thread thread = new Thread(this);
 
         @Override
         public void run() {
@@ -133,7 +145,6 @@ public class BackgroudService extends Service {
             }.getType();
             List<MyFile> list = CommonResource.gson.fromJson(httpHelper.getAllSharedFile().toString(), typelist);
             if (list != null && list.size() > 0) {
-                init();
                 myFileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
                 myFileDAO.clear();
                 for (MyFile myfile : list) {
@@ -141,12 +152,20 @@ public class BackgroudService extends Service {
                     myFileDAO.save(myfile);
                 }
                 //myFileDAO.close();
-                System.out.println("共享文件个数:" + list.size());
+               /* System.out.println("共享文件个数:" + list.size());*/
+            }
+            close();
+        }
+
+        private void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
             }
         }
     }
 
     private class HttpLoadAllEmployThread implements Runnable {
+        Thread thread = new Thread(this);
 
         @Override
         public void run() {
@@ -157,20 +176,59 @@ public class BackgroudService extends Service {
                 }.getType();
                 List<Employ> list = CommonResource.gson.fromJson(httpHelper.getAllEmploy().toString(), typelist);
                 if (list != null && list.size() > 0) {
-                    init();
                     employDAO = new EmployDAO(mySqliteHelper.getWritableDatabase());
                     employDAO.deleteAll();
-                    for (Employ employ:list) {
-                        System.out.println("dpid:" +employ.getDpid());
+                    for (Employ employ : list) {
+                        System.out.println("dpid:" + employ.getDpid());
                         employDAO.save(employ);
                     }
                     //员工全部存入数据库后关闭数据库
                     //employDAO.close();
-                    System.out.println("员工个数:" + list.size());
+                    /*System.out.println("员工个数:" + list.size());*/
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("$$$error" + e.getMessage());
+            }
+            close();
+        }
+
+        private void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
+            }
+        }
+    }
+
+    private class HttpgetMytaskThread implements Runnable {
+
+        Thread thread = new Thread(this);
+
+        @Override
+        public void run() {
+            Looper.prepare();
+            taskDAO = new TaskDAO(mySqliteHelper.getWritableDatabase());
+            taskDAO.clear();
+            List<Task> myTasklist = httpHelper.getMyTask(1);//setUid(1)
+            if (myTasklist != null && myTasklist.size() > 0) {
+                for (Task t : myTasklist) {
+                    taskDAO.save(t);
+                }
+            }
+
+            List<Task> tasklist = httpHelper.getTask(1);//setUid(1)
+            if (tasklist != null && tasklist.size() > 0) {
+                for (Task t : tasklist) {
+                    taskDAO.save(t);
+                }
+            }
+            //taskDAO.close();
+            close();
+        }
+
+        private void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
             }
         }
     }
@@ -178,7 +236,7 @@ public class BackgroudService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(departmentDAO!=null){
+        if (departmentDAO != null) {
             departmentDAO.close();
         }
         BusProvider.getInstance().unregister(this);

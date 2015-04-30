@@ -114,6 +114,12 @@
             android:theme="@style/MyActivityTheme"
             >
         </activity>
+        <activity
+            android:name="com.piaojin.ui.block.task.TaskDetailActivity_"
+            android:label="@string/title_activity_task"
+            android:theme="@style/MyActivityTheme"
+            >
+        </activity>
     </application>
 
 </manifest>

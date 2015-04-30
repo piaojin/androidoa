@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
-
 import com.piaojin.common.CommonResource;
 import com.piaojin.ui.block.personalfile.PersonalFileActivity_;
 import com.piaojin.ui.block.schedule.ScheduleActivity_;

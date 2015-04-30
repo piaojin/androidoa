@@ -37,7 +37,8 @@ public class FileDAO {
 
     public void clear(){
         String sql="delete from myfile where status=1 and type=1";
-        db.execSQL(sql);
+        db.delete(TABLE,"status = ? and type = ?",new String[]{String.valueOf(1),String.valueOf(1)});
+        //db.execSQL(sql);
     }
 
     public FileDAO(SQLiteDatabase db) {
@@ -61,7 +62,7 @@ public class FileDAO {
         values.put("completedsize", file.getCompletedsize());
         values.put("iscomplete", file.getIscomplete());
         values.put("completedate", file.getCompletedate());
-        long n=db.insert(TABLE, null, values);
+        db.insert(TABLE, null, values);
     }
 
     public List<MyFile> getAllDownFile() {

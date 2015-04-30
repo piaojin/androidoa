@@ -72,7 +72,7 @@ public class TaskFragment extends Fragment {
     private boolean issend=false;
 
 
-    private int type = 0;//0添加任务,1查看已有任务
+    private int type = 0;//0添加任务,1我的任务,2我发布的任务
 
     public int getType() {
         return type;
@@ -94,10 +94,10 @@ public class TaskFragment extends Fragment {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 String message="任务标题:"+title
-                        +"任务开始时间:"+starttime+"    任务结束时间:"+endtime+
+                        +"任务开始时间:"+starttimetext+"    任务结束时间:"+endtimetext+
                         "任务内容:"+contenttext;//短信任务内容
                 if(!issend){
-                    SmSHelper.sendSmS(context,"13665009746",message);
+                    //SmSHelper.sendSmS(context,"13666902838",message);
                     issend=true;
                 }
                 MyToast("发布任务成功!");

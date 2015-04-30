@@ -1,0 +1,188 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context="com.piaojin.ui.block.task.TaskActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        tools:context="com.piaojin.ui.block.task.TaskActivity">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dip"
+            >
+
+            <TextView
+                android:id="@+id/taskEmploy"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="36dp"
+                android:hint="接收人:飘金"
+                android:singleLine="true"
+                android:textColor="#ababab"
+                android:textSize="15.0dip" />
+
+            <TextView
+                android:id="@+id/taskStatus"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="36dp"
+                android:hint="任务状态:进行中"
+                android:singleLine="true"
+                android:textColor="#ababab"
+                android:textSize="15.0dip" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.piaojin.myview.ClearEditText
+                android:id="@+id/starttime"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:hint="开始时间"
+                android:singleLine="true"
+                android:textColor="#ababab"
+                android:textSize="15.0dip" />
+
+            <com.piaojin.myview.ClearEditText
+                android:id="@+id/endtime"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_bg"
+                android:hint="结束时间"
+                android:singleLine="true"
+                android:textColor="#ababab"
+                android:textSize="15.0dip" />
+        </LinearLayout>
+
+        <com.piaojin.myview.ClearEditText
+            android:id="@+id/taskTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/edittext_bg"
+            android:hint="任务标题"
+            android:singleLine="true"
+            android:textColor="#ababab"
+            android:textCursorDrawable="@color/cc"
+            android:textSize="15.0dip" />
+
+
+        <com.piaojin.myview.ClearEditText
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/edittext_bg"
+            android:hint="任务内容..."
+            android:padding="20dp"
+            android:singleLine="false"
+            android:textColor="#ababab"
+            android:textSize="15.0dip" />
+
+
+        <Button
+            android:id="@+id/sendTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_logout"
+            android:enabled="false"
+            android:text="发布任务"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/editTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_green"
+            android:text="编辑任务"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/acceptTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_light_blue"
+            android:text="接收任务"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/deleteTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_exit"
+            android:text="删除任务"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/finishTask"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/btn_login"
+            android:text="完成任务"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

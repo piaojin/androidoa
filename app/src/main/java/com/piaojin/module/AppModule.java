@@ -1,7 +1,6 @@
 package com.piaojin.module;
 
 import android.content.Context;
-
 import com.piaojin.common.UserInfo;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.helper.HttpHepler;
@@ -13,6 +12,7 @@ import com.piaojin.ui.block.schedule.ScheduleActivity_;
 import com.piaojin.ui.block.schedule.ScheduleFragment;
 import com.piaojin.ui.block.schedule.ScheduleFragment_;
 import com.piaojin.ui.block.task.TaskActivity_;
+import com.piaojin.ui.block.task.TaskDetailActivity_;
 import com.piaojin.ui.block.task.TaskFragment;
 import com.piaojin.ui.block.task.TaskFragment_;
 import com.piaojin.ui.block.workmates.ContainerActivity_;
@@ -29,9 +29,7 @@ import com.piaojin.ui.more.MoreFragment;
 import com.piaojin.ui.more.MoreFragment_;
 import com.piaojin.ui.sms.SmSFragment;
 import com.piaojin.ui.sms.SmSFragment_;
-
 import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import oa.piaojin.com.androidoa.HomeActivity_;
@@ -43,7 +41,7 @@ import oa.piaojin.com.androidoa.MainActivity_;
                 , SmSFragment_.class, MoreFragment_.class, WorkMateInfoFragment_.class, ContainerActivity_.class, LookFragment_.class
                 , ChatFragment_.class, HttpHepler.class, MainActivity_.class, MySharedPreferences.class, NetWorkHelper.class, MySqliteHelper.class
                 , BackgroudService_.class, ScheduleActivity_.class, ScheduleFragment_.class, UserInfo.class, MySqliteHelper.class, PersonalFileActivity_.class
-                , TaskFragment_.class, TaskActivity_.class
+                , TaskFragment_.class, TaskActivity_.class, TaskDetailActivity_.class
         },
         complete = false,
         library = true
