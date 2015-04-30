@@ -22,6 +22,7 @@ public class TaskDAO {
             "uid INTEGER not null," +
             "eid INTEGER not null," +
             "time varchar(20) not null," +
+            "content varchar(200) not null," +
             "title varchar(36) not null," +
             "starttime varchar(20) not null," +
             "endtime varchar(20) not null," +
@@ -38,6 +39,7 @@ public class TaskDAO {
         values.put("starttime", task.getStarttime());
         values.put("endtime", task.getEndtime());
         values.put("status", task.getStatus());
+        values.put("content", task.getContent());
         db.insert(TABLE, null, values);
     }
 
@@ -77,14 +79,20 @@ public class TaskDAO {
                 task.setStarttime(result.getString(result.getColumnIndex("starttime")));
                 task.setEndtime(result.getString(result.getColumnIndex("endtime")));
                 task.setStatus(result.getInt(result.getColumnIndex("status")));
+                task.setContent(result.getString(result.getColumnIndex("content")));
                 list.add(task);
             }
         }
         return list;
     }
 
-    public void clear(){
-        String sql="delete from mytask";
+    public void clearMyTask(int eid){
+        String sql="delete from mytask where eid = "+ eid;
+        db.execSQL(sql);
+    }
+
+    public void clearTask(int uid){
+        String sql="delete from mytask where uid = "+ uid;
         db.execSQL(sql);
     }
 
@@ -98,6 +106,32 @@ public class TaskDAO {
         }
         return task;
     }
+
+    //更新任务状态
+    public void updateTaskStatus(int kid,int status){
+        ContentValues values = new ContentValues();
+        values.put("status",status);
+        db.update(TABLE,values,"kid = ?",new String[]{String.valueOf(kid)});
+    }
+
+    //删除任务
+    public void deleteTask(int kid){
+        ContentValues values = new ContentValues();
+        db.delete(TABLE, "kid = ?", new String[]{String.valueOf(kid)});
+    }
+
+    //更新任务
+    public void updateTask(Task task){
+        ContentValues values = new ContentValues();
+        values.put("time", task.getTime());
+        values.put("title", task.getTitle());
+        values.put("starttime", task.getStarttime());
+        values.put("endtime", task.getEndtime());
+        values.put("status", task.getStatus());
+        values.put("content", task.getContent());
+        db.update(TABLE,values,"kid = ?",new String[]{String.valueOf(task.getKid())});
+    }
+
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

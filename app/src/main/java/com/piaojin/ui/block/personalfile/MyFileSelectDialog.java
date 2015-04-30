@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;
 import com.piaojin.domain.MyFile;
+import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.tools.FileUtil;
 import com.piaojin.ui.block.upload.UploadService;
 
@@ -259,6 +260,10 @@ public class MyFileSelectDialog extends DialogFragment {
         public void onClick(View view) {
             if (path.getText().toString() == null || "".equals(path.getText().toString())) {
                 MyToast("请选择上传文件");
+                return;
+            }
+
+            if(!NetWorkHelper.isNetWorkAvailable(getActivity())){
                 return;
             }
             File file = new File(path.getText().toString());

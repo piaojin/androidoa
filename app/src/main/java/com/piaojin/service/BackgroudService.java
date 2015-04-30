@@ -122,7 +122,7 @@ public class BackgroudService extends Service {
                 }
              /*   list = departmentDAO.getAllDepartment();
                 System.out.println("部门个数:" + list.size());*/
-                //departmentDAO.close();
+                departmentDAO.close();
             }
             close();
         }
@@ -151,7 +151,7 @@ public class BackgroudService extends Service {
                     myfile.setUid(1);//
                     myFileDAO.save(myfile);
                 }
-                //myFileDAO.close();
+                myFileDAO.close();
                /* System.out.println("共享文件个数:" + list.size());*/
             }
             close();
@@ -183,7 +183,7 @@ public class BackgroudService extends Service {
                         employDAO.save(employ);
                     }
                     //员工全部存入数据库后关闭数据库
-                    //employDAO.close();
+                    employDAO.close();
                     /*System.out.println("员工个数:" + list.size());*/
                 }
             } catch (Exception e) {
@@ -208,9 +208,9 @@ public class BackgroudService extends Service {
         public void run() {
             Looper.prepare();
             taskDAO = new TaskDAO(mySqliteHelper.getWritableDatabase());
-            taskDAO.clear();
             List<Task> myTasklist = httpHelper.getMyTask(1);//setUid(1)
             if (myTasklist != null && myTasklist.size() > 0) {
+                taskDAO.clearMyTask(1);//setUid(1)
                 for (Task t : myTasklist) {
                     taskDAO.save(t);
                 }
@@ -218,11 +218,12 @@ public class BackgroudService extends Service {
 
             List<Task> tasklist = httpHelper.getTask(1);//setUid(1)
             if (tasklist != null && tasklist.size() > 0) {
+                taskDAO.clearTask(1);//setUid(1)
                 for (Task t : tasklist) {
                     taskDAO.save(t);
                 }
             }
-            //taskDAO.close();
+            taskDAO.close();
             close();
         }
 

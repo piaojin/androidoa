@@ -20,6 +20,7 @@ import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.TaskDAO;
 import com.piaojin.domain.Task;
 import com.piaojin.helper.HttpHepler;
+import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.helper.SmSHelper;
 import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.DateUtil;
@@ -53,14 +54,6 @@ public class TaskFragment extends Fragment {
     com.piaojin.myview.ClearEditText content;
     @ViewById
     Button sendTask;
-    @ViewById
-    Button editTask;
-    @ViewById
-    Button acceptTask;
-    @ViewById
-    Button deleteTask;
-    @ViewById
-    Button finishTask;
     InputMethodManager inputMethodManager;
     private int kid;
     private String employname;
@@ -117,50 +110,28 @@ public class TaskFragment extends Fragment {
     //发布任务
     @Click
     void sendTask() {
-        initText();
-        if (TextUtils.isEmpty(employname) ||
-                TextUtils.isEmpty(starttimetext) ||
-                TextUtils.isEmpty(endtimetext) ||
-                TextUtils.isEmpty(contenttext)||
-                TextUtils.isEmpty(title)) {
-            MyToast("请确认所有都填了!");
-        } else {
-            //封装成task对象
-            Task task = new Task();
-            task.setTitle(title);
-            task.setEid(kid);
-            task.setUid(1);//
-            task.setStarttime(starttimetext);
-            task.setEndtime(endtimetext);
-            task.setStatus(TaskResource.STATUSSEND);
-            task.setContent(contenttext);
-            task.setTime(DateUtil.CurrentTime());
-            new Thread(new HttpsendTaskThread(task)).start();
+        if(NetWorkHelper.isNetWorkAvailable(context)){
+            initText();
+            if (TextUtils.isEmpty(employname) ||
+                    TextUtils.isEmpty(starttimetext) ||
+                    TextUtils.isEmpty(endtimetext) ||
+                    TextUtils.isEmpty(contenttext)||
+                    TextUtils.isEmpty(title)) {
+                MyToast("请确认所有都填了!");
+            } else {
+                //封装成task对象
+                Task task = new Task();
+                task.setTitle(title);
+                task.setEid(kid);
+                task.setUid(1);//
+                task.setStarttime(starttimetext);
+                task.setEndtime(endtimetext);
+                task.setStatus(TaskResource.STATUSSEND);
+                task.setContent(contenttext);
+                task.setTime(DateUtil.CurrentTime());
+                new Thread(new HttpsendTaskThread(task)).start();
+            }
         }
-    }
-
-    //编辑任务
-    @Click
-    void editTask() {
-
-    }
-
-    //接受任务
-    @Click
-    void acceptTask() {
-
-    }
-
-    //删除任务
-    @Click
-    void deleteTask() {
-
-    }
-
-    //完成任务
-    @Click
-    void finishTask() {
-
     }
 
     //完成任务

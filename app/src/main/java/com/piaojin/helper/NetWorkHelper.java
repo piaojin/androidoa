@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 /**
  * by piaojin on 13-9-12.
@@ -101,6 +102,16 @@ public class NetWorkHelper {
 
     public static boolean isAvailableNetwork(Context context) {
         return getNetWorkType(context) != NETWORKTYPE_INVALID;
+    }
+
+    public static boolean isNetWorkAvailable(Context context) {
+        boolean isnetworkavailable = isAvailableNetwork(context);
+        if (isnetworkavailable) {
+            return true;
+        } else {
+            Toast.makeText(context, "网络不可用,亲!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     public boolean isWiFi(Context context) {

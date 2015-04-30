@@ -63,7 +63,9 @@
                 android:hint="开始时间"
                 android:singleLine="true"
                 android:textColor="#ababab"
-                android:textSize="15.0dip" />
+                android:textSize="15.0dip"
+                android:enabled="false"
+                />
 
             <com.piaojin.myview.ClearEditText
                 android:id="@+id/endtime"
@@ -78,7 +80,9 @@
                 android:hint="结束时间"
                 android:singleLine="true"
                 android:textColor="#ababab"
-                android:textSize="15.0dip" />
+                android:textSize="15.0dip"
+                android:enabled="false"
+                />
         </LinearLayout>
 
         <com.piaojin.myview.ClearEditText
@@ -95,7 +99,9 @@
             android:singleLine="true"
             android:textColor="#ababab"
             android:textCursorDrawable="@color/cc"
-            android:textSize="15.0dip" />
+            android:textSize="15.0dip"
+            android:enabled="false"
+            />
 
 
         <com.piaojin.myview.ClearEditText
@@ -112,7 +118,9 @@
             android:padding="20dp"
             android:singleLine="false"
             android:textColor="#ababab"
-            android:textSize="15.0dip" />
+            android:textSize="15.0dip"
+            android:enabled="false"
+            />
 
 
         <Button
@@ -125,9 +133,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:background="@drawable/btn_logout"
-            android:enabled="false"
             android:text="发布任务"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            />
 
         <Button
             android:id="@+id/editTask"
@@ -140,7 +149,9 @@
             android:layout_marginTop="25dp"
             android:background="@drawable/btn_green"
             android:text="编辑任务"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            />
 
         <Button
             android:id="@+id/acceptTask"

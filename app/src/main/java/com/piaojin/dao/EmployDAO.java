@@ -135,16 +135,16 @@ public class EmployDAO {
         return all;
     }
 
-    public Employ getById(int uid){
+    public Employ getById(int kid){
         Employ employ=null;
-        String sql="select * from myemploy where uid = "+uid;
+        String sql="select * from myemploy where kid = "+kid;
         Cursor result = this.db.query(TABLE, null, null, null, null,
                 null, null);
         if(result.getCount()>0){
             employ=new Employ();
             result.moveToFirst();
-            employ.setUid(uid);
-            employ.setKid(result.getInt(result.getColumnIndex("kid")));
+            employ.setKid(kid);
+            employ.setUid(result.getInt(result.getColumnIndex("uid")));
             employ.setName(result.getString(result.getColumnIndex("name")));
             employ.setSex(result.getInt(result.getColumnIndex("sex")));
             employ.setTel(result.getString(result.getColumnIndex("tel")));

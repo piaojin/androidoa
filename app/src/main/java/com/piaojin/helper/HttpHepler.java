@@ -1,11 +1,8 @@
 package com.piaojin.helper;
 
-import android.text.TextUtils;
-
 import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
 import com.piaojin.domain.Task;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -14,16 +11,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +28,50 @@ public class HttpHepler {
     public final String ERROR = "error";
     public final String NULLERROR = "nullerror";
     //服务器ip地址
+    //发布任务
     public static final String SENDTASK = "http://219.228.251.102:8080/cecWeb/taskAddTask";
+    //更新任务
+    public static final String SENDEDITTASK = "http://219.228.251.102:8080/cecWeb/tasksendEditTask";
+    //删除任务
+    public static final String DELETETASK = "http://219.228.251.102:8080/cecWeb/taskdeleteTask";
+    //完成任务
+    public static final String FINISHTASK = "http://219.228.251.102:8080/cecWeb/taskfinishTask";
+    //接收任务
+    public static final String ACCEPTTASK = "http://219.228.251.102:8080/cecWeb/taskacceptTask";
+    //获取我发布的任务
     public static final String GETTASK = "http://219.228.251.102:8080/cecWeb/taskgetTask";
+    //获取我的任务
     public static final String GETMYTASK = "http://219.228.251.102:8080/cecWeb/taskgetMyTask";
+    //获取共享文件
     public static final String GETALLSHAREDFILE = "http://219.228.251.102:8080/cecWeb/filegetAllSharedFile";
+    //获取所有部门
     public static final String GETALLDEPARTMENT = "http://219.228.251.102:8080/cecWeb/departmentgetAllDepartment";
+    //登录验证
     public static final String LOGIN = "http://219.228.251.102:8080/cecWeb/employLogin";
+    //获取所有同事
     public static final String GETALLEMPLOY = "http://219.228.251.102:8080/cecWeb/employgetAllEmploy";
+    //瞎子啊文件
     public static final String DOWNFILE = "http://219.228.251.102:8080/cecWeb/downDownFile";
+
+    //接收任务
+    public String acceptTask(int kid) {
+        return HttpPost(String.valueOf(kid),ACCEPTTASK);
+    }
+
+    //更新任务
+    public String sendEditTask(Task task) {
+        return HttpPost(CommonResource.gson.toJson(task),SENDEDITTASK);
+    }
+
+    //删除任务
+    public String deleteTask(int kid) {
+        return HttpPost(String.valueOf(kid),DELETETASK);
+    }
+
+    //完成任务
+    public String finishTask(int kid) {
+        return HttpPost(String.valueOf(kid),FINISHTASK);
+    }
 
     //发布任务
     public String sendTask(String taskjson, String httpurl) {

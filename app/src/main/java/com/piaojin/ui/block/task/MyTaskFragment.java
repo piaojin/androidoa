@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -120,6 +121,21 @@ public class MyTaskFragment extends Fragment {
         if (taskList != null && taskList.size() > 0) {
             for (Task t : taskList) {
                 Map map = new HashMap();
+                //用图标表示任务的状态
+                switch(t.getStatus()){
+                    case TaskResource.STATUSSEND:
+                        map.put("statusicon", R.drawable.smiley_50);
+                        break;
+                    case TaskResource.STATUSACCEPT:
+                        map.put("statusicon", R.drawable.smiley_30);
+                        break;
+                    case TaskResource.STATUSFINISH:
+                        map.put("statusicon", R.drawable.smiley_16);
+                        break;
+                    default:
+                        map.put("statusicon", R.drawable.smiley_50);
+                        break;
+                }
                 map.put("kid", t.getKid());
                 map.put("title", t.getTitle());
                 map.put("time", t.getEndtime());
@@ -139,7 +155,7 @@ public class MyTaskFragment extends Fragment {
         if (list.size() > 0) {
             if (simpleAdapter == null) {
                 simpleAdapter = new SimpleAdapter(context, list, R.layout.task_item,
-                        new String[]{"kid", "title", "time", "name"}, new int[]{R.id.kid, R.id.title, R.id.time, R.id.name});
+                        new String[]{"kid", "title","statusicon", "time", "name"}, new int[]{R.id.kid, R.id.title,R.id.statusicon, R.id.time, R.id.name});
                 mytaskList.setAdapter(simpleAdapter);
             }
         }

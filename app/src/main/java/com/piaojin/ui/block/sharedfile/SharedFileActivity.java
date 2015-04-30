@@ -149,7 +149,6 @@ public class SharedFileActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            MyToast("piaojin!");
         }
     }
     void MyToast(String msg) {
