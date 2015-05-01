@@ -6,42 +6,27 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.piaojin.common.FileResource;
+import com.piaojin.common.CommonResource;
 import com.piaojin.common.UserInfo;
-import com.piaojin.dao.EmployDAO;
-import com.piaojin.dao.MySqliteHelper;
-import com.piaojin.domain.Employ;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.module.AppModule;
-import com.piaojin.myview.MyEditText;
-import com.piaojin.service.BackgroudService;
 import com.piaojin.service.BackgroudService_;
 import com.piaojin.tools.ExitApplication;
-
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import dagger.ObjectGraph;
 
 @EActivity(R.layout.login)
@@ -95,7 +80,7 @@ public class MainActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ipaddress.setAdapter(adapter);
         handler = new MyHandler();
-        //LoadConfig();
+        LoadConfig();
         //AutoLogin();
     }
 
@@ -136,6 +121,8 @@ public class MainActivity extends Activity {
 
     @Click
     void savepwd() {
+        uname = this.name.getText().toString().trim();
+        upwd = this.pwd.getText().toString().trim();
         boolean isSave = savepwd.isChecked();
         if (isSave && uname != null && !"".equals(uname) && upwd != null && !"".equals(upwd)) {
             mySharedPreferences.putBoolean("isSave", true);
@@ -155,22 +142,7 @@ public class MainActivity extends Activity {
 
     @Click
     void loginClicked() {
-       /* EmployDAO employDAO=new EmployDAO(new MySqliteHelper(this,mySharedPreferences).getWritableDatabase());
-        Employ employ=new Employ();
-        employ.setName("飘金");
-        employ.setSex(0);
-        employ.setTel("13666902838");
-        employ.setEmail("804488815@qq.com");
-        employ.setAddress("福建省莆田市荔城区北高镇北高村坑东30号");
-        employ.setEmployeeid(6);
-        employ.setPwd("804488815");
-        employ.setDepartment("飘金操作系统研发部门");
-        employ.setHead("www.piaojin.com");
-        employ.setLevel(6);
-        mySharedPreferences.putInt("tableId",0);
-        employDAO.save(employ);*/
-
-       /* uname = this.name.getText().toString().trim();
+        uname = this.name.getText().toString().trim();
         upwd = this.pwd.getText().toString().trim();
         if (uname == null || "".equals(uname) || upwd == null || "".equals(upwd)) {
             MyToast("用户名和密码不能为空!");
@@ -181,10 +153,7 @@ public class MainActivity extends Activity {
             savepwd();
         } else {
             MyToast("没有网络!");
-        }*/
-        Intent intent = new Intent(MainActivity.this, BackgroudService_.class);
-        MainActivity.this.startService(intent);
-        HomeActivity_.intent(MainActivity.this).start();
+        }
     }
 
     private void Login(String name[], String value[]) {
@@ -209,6 +178,7 @@ public class MainActivity extends Activity {
                     mySharedPreferences.putString("userinfo", str);
                     //初始化用户信息
                     userInfo.init();
+                    CommonResource.isloginClicked=true;
                     //启动后台服务
                     Intent intent = new Intent(MainActivity.this, BackgroudService_.class);
                     MainActivity.this.startService(intent);

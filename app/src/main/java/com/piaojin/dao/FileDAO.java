@@ -35,9 +35,10 @@ public class FileDAO {
                     "completedate varchar(26)" +
                     ");";
 
-    public void clear(){
-        String sql="delete from myfile where status=1 and type=1";
-        db.delete(TABLE,"status = ? and type = ?",new String[]{String.valueOf(1),String.valueOf(1)});
+    public void clear(int uid){
+        String sql="delete from myfile where uid <> "+uid;
+        int n=db.delete(TABLE,"uid <> ?",new String[]{String.valueOf(uid)});
+        System.out.println("n:"+n);
         //db.execSQL(sql);
     }
 

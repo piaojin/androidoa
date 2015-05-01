@@ -27,12 +27,15 @@ import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.TaskDAO;
 import com.piaojin.domain.Employ;
 import com.piaojin.domain.Task;
+import com.piaojin.event.UpdataTaskEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.SmSHelper;
+import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.DateUtil;
 import com.piaojin.tools.MyAnimationUtils;
 import com.piaojin.ui.block.upload.UploadService;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -53,6 +56,17 @@ import oa.piaojin.com.androidoa.R;
  */
 
 public class MyTaskFragment extends Fragment {
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
+    }
 
     private Context context;
     private View view;
@@ -186,6 +200,16 @@ public class MyTaskFragment extends Fragment {
         }
     }
 
+    @Subscribe
+    public void onUpdataTaskEvent(UpdataTaskEvent updataTaskEvent) {
+        initList();
+        simpleAdapter.notifyDataSetChanged();
+    }
+
+    public void Update(){
+        initList();
+        simpleAdapter.notifyDataSetChanged();
+    }
     void MyToast(String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }

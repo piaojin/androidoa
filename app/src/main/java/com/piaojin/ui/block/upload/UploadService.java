@@ -24,7 +24,7 @@ import java.util.Date;
 public class UploadService extends Service {
 
     private MySqliteHelper mySqliteHelper;
-    private Thread thread=null;
+    private Thread thread = null;
     private FileDAO fileDAO;
 
     public UploadService() {
@@ -41,7 +41,7 @@ public class UploadService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        UploadfileResource.isCancel=false;
+        UploadfileResource.isCancel = false;
         BusProvider.getInstance().unregister(this);
     }
 
@@ -52,16 +52,9 @@ public class UploadService extends Service {
         if (myfile2 != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             boolean isUpload = fileDAO.isUpload(myfile2.getName());
-            /*if (!isUpload) {*/
-                //该文件第一次上传
-                System.out.println("******该文件第一次上传");
-                //开启一个线程专门上传文件
-                thread = new Thread(new UploadThread(myfile2, this));
-                thread.start();
-            /*} else {
-                MyToast("该文件已经上传过!");
-            }*/
-
+            //开启一个线程专门上传文件
+            thread = new Thread(new UploadThread(myfile2, this));
+            thread.start();
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -92,13 +85,15 @@ public class UploadService extends Service {
     public void onUploadExceptionEvent(UploadExceptionEvent uploadExceptionEvent) {
         close();
     }
-    private void close(){
-        if(thread!=null&&!thread.isInterrupted()){
+
+    private void close() {
+        if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
             System.out.println("关闭文件上传线程...");
         }
         stopSelf();
     }
+
     void MyToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

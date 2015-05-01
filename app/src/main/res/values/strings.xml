@@ -13,5 +13,6 @@
     <string name="title_activity_upload">UploadActivity</string>
     <string name="title_activity_shared_file">SharedFileActivity</string>
     <string name="title_activity_task">TaskActivity</string>
+    <string name="title_activity_auto_login">AutoLoginActivity</string>
 
 </resources>

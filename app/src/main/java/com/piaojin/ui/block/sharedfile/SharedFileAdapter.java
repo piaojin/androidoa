@@ -64,4 +64,9 @@ public class SharedFileAdapter extends BaseAdapter {
         view =sharedFileItem;
         return view;
     }
+
+    public void updateDate(List<MyFile> list){
+        this.list=list;
+        notifyDataSetChanged();
+    }
 }

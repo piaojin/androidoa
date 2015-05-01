@@ -21,6 +21,7 @@ public class ActionBarTools {
     private static Button back2;
     private static Button addSchedule;
     private static Context contexts;
+    private static Button update;
 
     @SuppressLint("NewApi")
     public static void setActionBarLayout(int layoutId, Context context) {
@@ -33,6 +34,7 @@ public class ActionBarTools {
             View v = inflator.inflate(layoutId, null);
             title = (TextView) v.findViewById(R.id.title);
             send_msg = (Button) v.findViewById(R.id.send_msg);
+            update = (Button) v.findViewById(R.id.update);
             back = (Button) v.findViewById(R.id.back);
             back2 = (Button) v.findViewById(R.id.back2);
             addSchedule = (Button) v.findViewById(R.id.addSchedule);
@@ -51,6 +53,16 @@ public class ActionBarTools {
             send_msg.setVisibility(View.VISIBLE);
         } else {
             send_msg.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void HideBtnUpdate(boolean hide) {
+        if (hide) {
+            update.setVisibility(View.VISIBLE);
+            MyAnimationUtils.RightIn(update, contexts);
+        } else {
+            update.setVisibility(View.INVISIBLE);
+            MyAnimationUtils.ScaleOut(update, contexts);
         }
     }
 

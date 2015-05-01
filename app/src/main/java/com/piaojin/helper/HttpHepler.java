@@ -2,6 +2,9 @@ package com.piaojin.helper;
 
 import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
+import com.piaojin.domain.Department;
+import com.piaojin.domain.Employ;
+import com.piaojin.domain.MyFile;
 import com.piaojin.domain.Task;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,29 +32,29 @@ public class HttpHepler {
     public final String NULLERROR = "nullerror";
     //服务器ip地址
     //发布任务
-    public static final String SENDTASK = "http://219.228.251.102:8080/cecWeb/taskAddTask";
+    public static final String SENDTASK = "http://219.228.251.127:8080/cecWeb/taskAddTask";
     //更新任务
-    public static final String SENDEDITTASK = "http://219.228.251.102:8080/cecWeb/tasksendEditTask";
+    public static final String SENDEDITTASK = "http://219.228.251.127:8080/cecWeb/tasksendEditTask";
     //删除任务
-    public static final String DELETETASK = "http://219.228.251.102:8080/cecWeb/taskdeleteTask";
+    public static final String DELETETASK = "http://219.228.251.127:8080/cecWeb/taskdeleteTask";
     //完成任务
-    public static final String FINISHTASK = "http://219.228.251.102:8080/cecWeb/taskfinishTask";
+    public static final String FINISHTASK = "http://219.228.251.127:8080/cecWeb/taskfinishTask";
     //接收任务
-    public static final String ACCEPTTASK = "http://219.228.251.102:8080/cecWeb/taskacceptTask";
+    public static final String ACCEPTTASK = "http://219.228.251.127:8080/cecWeb/taskacceptTask";
     //获取我发布的任务
-    public static final String GETTASK = "http://219.228.251.102:8080/cecWeb/taskgetTask";
+    public static final String GETTASK = "http://219.228.251.127:8080/cecWeb/taskgetTask";
     //获取我的任务
-    public static final String GETMYTASK = "http://219.228.251.102:8080/cecWeb/taskgetMyTask";
+    public static final String GETMYTASK = "http://219.228.251.127:8080/cecWeb/taskgetMyTask";
     //获取共享文件
-    public static final String GETALLSHAREDFILE = "http://219.228.251.102:8080/cecWeb/filegetAllSharedFile";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.127:8080/cecWeb/filegetAllSharedFile";
     //获取所有部门
-    public static final String GETALLDEPARTMENT = "http://219.228.251.102:8080/cecWeb/departmentgetAllDepartment";
+    public static final String GETALLDEPARTMENT = "http://219.228.251.127:8080/cecWeb/departmentgetAllDepartment";
     //登录验证
-    public static final String LOGIN = "http://219.228.251.102:8080/cecWeb/employLogin";
+    public static final String LOGIN = "http://219.228.251.127:8080/cecWeb/employLogin";
     //获取所有同事
-    public static final String GETALLEMPLOY = "http://219.228.251.102:8080/cecWeb/employgetAllEmploy";
+    public static final String GETALLEMPLOY = "http://219.228.251.127:8080/cecWeb/employgetAllEmploy";
     //瞎子啊文件
-    public static final String DOWNFILE = "http://219.228.251.102:8080/cecWeb/downDownFile";
+    public static final String DOWNFILE = "http://219.228.251.127:8080/cecWeb/downDownFile";
 
     //接收任务
     public String acceptTask(int kid) {
@@ -186,17 +189,23 @@ public class HttpHepler {
     }
 
     //获取所有部门集合
-    public StringBuffer getAllDepartment() {
+    public List<Department> getAllDepartment() {
         StringBuffer listjson = new StringBuffer("");
         listjson.append(Post(GETALLDEPARTMENT));
-        return listjson;
+        Type typelist = new TypeToken<ArrayList<Department>>() { //TypeToken GSON提供的数据类型转换器
+        }.getType();
+        List<Department> list = CommonResource.gson.fromJson(listjson.toString(), typelist);
+        return list;
     }
 
     //获取所有共享文件集合
-    public StringBuffer getAllSharedFile() {
+    public List<MyFile> getAllSharedFile() {
         StringBuffer listjson = new StringBuffer("");
         listjson.append(Post(GETALLSHAREDFILE));
-        return listjson;
+        Type typelist = new TypeToken<ArrayList<MyFile>>() { //TypeToken GSON提供的数据类型转换器
+        }.getType();
+        List<MyFile> list = CommonResource.gson.fromJson(listjson.toString(), typelist);
+        return list;
     }
 
     //登录验证
@@ -205,10 +214,13 @@ public class HttpHepler {
     }
 
     //获取所有员工集合
-    public StringBuffer getAllEmploy() {
+    public List<Employ> getAllEmploy() {
         StringBuffer listjson = new StringBuffer("");
         listjson.append(Post(GETALLEMPLOY));
-        return listjson;
+        Type typelist = new TypeToken<ArrayList<Employ>>() { //TypeToken GSON提供的数据类型转换器
+        }.getType();
+        List<Employ> list = CommonResource.gson.fromJson(listjson.toString(), typelist);
+        return list;
     }
 
     //获取所有员工集合
@@ -259,7 +271,7 @@ public class HttpHepler {
                 HttpResponse response = new DefaultHttpClient().execute(clientpost);
                 if (response.getStatusLine().getStatusCode() == 200) {    // 现在已经发现了数据了
                     InputStream input = response.getEntity().getContent();
-                    byte data[] = new byte[8829];
+                    byte data[] = new byte[1024];
                     int len = input.read(data); // 输入流读取
                     if (len > 0) {    // 已经读取到内容
                         result = new String(data, 0, len).trim();

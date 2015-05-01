@@ -2,6 +2,8 @@ package com.piaojin.ui.block.workmates;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,11 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.piaojin.common.CommonResource;
 import com.piaojin.common.ScheduleResource;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Employ;
 import com.piaojin.helper.HttpHepler;
+import com.piaojin.helper.HttpLoadAllEmployThread;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.module.AppModule;
 import com.piaojin.myview.SideBar;
@@ -62,8 +66,8 @@ public class WorkMatesActivity extends FragmentActivity {
     LinearLayout workmates_list;
     @ViewById
     LinearLayout workmateinfo;
-    /*@ViewById
-    LinearLayout llpbContent;*/
+    @Inject
+    HttpHepler httpHelper;
     @Inject
     WorkMateInfoFragment workMateInfoFragment;
     @Inject
@@ -71,6 +75,9 @@ public class WorkMatesActivity extends FragmentActivity {
     @Inject
     MySharedPreferences mySharedPreferences;
     SortAdapter adapter;
+    List<Employ> list;
+    String employname[];
+    private Handler handler;
     /**
      * 汉字转换成拼音的类
      */
@@ -96,8 +103,8 @@ public class WorkMatesActivity extends FragmentActivity {
     @AfterViews
     void initViews() {
         mySqliteHelper = new MySqliteHelper(this);
+        handler = new MyHandler();
         employDAO = new EmployDAO(mySqliteHelper.getReadableDatabase());
-        //llpbContent.setVisibility(View.GONE);
         ActionBarTools.setActionBarLayout(R.layout.workmates_actionbar, this);
         ActionBarTools.setTitleText("微讯同事");
         ActionBarTools.setButtonText("更新");
@@ -133,12 +140,12 @@ public class WorkMatesActivity extends FragmentActivity {
         });
 
         //初始化同事数据
-        List<Employ> list = employDAO.getAllEmploy();
+        list = employDAO.getAllEmploy();
         if (list != null && list.size() > 0) {
-            String employname[] = new String[list.size()];
+            employname = new String[list.size()];
             for (int i = 0; i < list.size(); i++) {
                 employname[i] = list.get(i).getName();
-                System.out.println("name:"+list.get(i).getName());
+                System.out.println("name:" + list.get(i).getName());
             }
             SourceDateList = filledData(employname);
             //SourceDateList = filledData(getResources().getStringArray(R.array.date));
@@ -166,8 +173,24 @@ public class WorkMatesActivity extends FragmentActivity {
                 public void afterTextChanged(Editable s) {
                 }
             });
-        } else {
-            //llpbContent.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateData() {
+        if (list != null) {
+            list.clear();
+        }
+        list = employDAO.getAllEmploy();
+        if (list != null && list.size() > 0) {
+            employname = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                employname[i] = list.get(i).getName();
+            }
+            if (SourceDateList != null) {
+                SourceDateList.clear();
+            }
+            SourceDateList = filledData(employname);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -238,7 +261,8 @@ public class WorkMatesActivity extends FragmentActivity {
 
     //更新同事列表按钮点击事件
     public void addSchedule(View view) {
-
+        new Thread(new HttpLoadAllEmployThread(this,mySharedPreferences,httpHelper)).start();
+        new Thread(new HttpThread()).start();
     }
 
     //初始化详细信息
@@ -250,6 +274,39 @@ public class WorkMatesActivity extends FragmentActivity {
         ActionBarTools.setTitleText("详细资料");
         ActionBarTools.HideBtnBack(false);
         ActionBarTools.HideBtnBack2(true);
+    }
+
+    private class HttpThread implements Runnable {
+        private Thread thread = new Thread(this);
+
+        @Override
+        public void run() {
+            while (!thread.isInterrupted()) {
+                if (CommonResource.isLoadEmployFinish) {
+                    break;
+                }
+            }
+            Message message = new Message();
+            handler.sendMessage(message);
+            System.out.println("到服务器刷新同事数据完毕!");
+        }
+
+        public void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
+            }
+        }
+    }
+
+    private class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //更新同事
+            updateData();
+            adapter.updateListView(SourceDateList);
+            MyToast("更新同事成功!");
+        }
     }
 
     void MyToast(String msg) {

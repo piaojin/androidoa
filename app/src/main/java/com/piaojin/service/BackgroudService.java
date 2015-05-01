@@ -17,8 +17,13 @@ import com.piaojin.domain.Department;
 import com.piaojin.domain.Employ;
 import com.piaojin.domain.MyFile;
 import com.piaojin.domain.Task;
+import com.piaojin.event.LoadDataFinishEvent;
 import com.piaojin.event.SharedfileLoadFinishEvent;
 import com.piaojin.helper.HttpHepler;
+import com.piaojin.helper.HttpLoadAllDepartmentThread;
+import com.piaojin.helper.HttpLoadAllEmployThread;
+import com.piaojin.helper.HttpLoadAllSharedFileThread;
+import com.piaojin.helper.HttpgetMytaskThread;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.module.AppModule;
 import com.piaojin.otto.BusProvider;
@@ -36,11 +41,11 @@ import dagger.ObjectGraph;
 @EService
 public class BackgroudService extends Service {
 
-    private MySqliteHelper mySqliteHelper;
-    private TaskDAO taskDAO;
-    private DepartmentDAO departmentDAO;
-    private FileDAO myFileDAO;
-    private EmployDAO employDAO;
+    private Thread employThread;
+    private Thread departmentThread;
+    private Thread sharedfileThread;
+    private Thread taskThread;
+    private Thread httpThread;
     @Inject
     HttpHepler httpHelper;
     @Inject
@@ -61,10 +66,11 @@ public class BackgroudService extends Service {
         super.onCreate();
         //初始化dagger
         BusProvider.getInstance().register(this);
-        mySqliteHelper = new MySqliteHelper(BackgroudService.this);
+        httpThread = new Thread(new HttpThread());
         objectGraph = ObjectGraph.create(new AppModule(this));
         objectGraph.inject(this);
         mySharedPreferences = new MySharedPreferences(this);
+        CommonResource.ThreadCount = 0;
     }
 
     @Override
@@ -73,174 +79,69 @@ public class BackgroudService extends Service {
         boolean isLoadAllEmploy = mySharedPreferences.getBoolean("isLoadAllEmploy", false);
         if (!isLoadAllEmploy) { //未去获取数据
             //去服务器获取
-            new Thread(new HttpLoadAllEmployThread()).start();
-            mySharedPreferences.putBoolean("isLoadAllEmploy", true);
+            employThread = new Thread(new HttpLoadAllEmployThread(this, mySharedPreferences, httpHelper));
+            employThread.start();
+        } else {
+            CommonResource.ThreadCount++;
         }
 
         //判断是否获取过所有共享文件集合
         boolean isLoadAllSharedFile = mySharedPreferences.getBoolean("isLoadAllSharedFile", false);
         if (!isLoadAllSharedFile) {
-            CommonResource.isSharedfileLoading = true;
-            new Thread(new HttpLoadAllSharedFileThread()).start();
-            CommonResource.isSharedfileLoading = false;
-            BusProvider.getInstance().post(new SharedfileLoadFinishEvent());
-            mySharedPreferences.putBoolean("isLoadAllSharedFile", true);
+            sharedfileThread = new Thread(new HttpLoadAllSharedFileThread(this, mySharedPreferences, httpHelper));
+            sharedfileThread.start();
+        } else {
+            CommonResource.ThreadCount++;
         }
 
         //获取所有的部门结合，一般部门数据不会变化，获取一次即可
         boolean isLoadDepartment = mySharedPreferences.getBoolean("isLoadDepartment", false);
         if (!isLoadDepartment) {
-            new Thread(new HttpLoadAllDepartmentThread()).start();
-            mySharedPreferences.putBoolean("isLoadDepartment", true);
+            departmentThread = new Thread(new HttpLoadAllDepartmentThread(this, mySharedPreferences, httpHelper));
+            departmentThread.start();
+        } else {
+            CommonResource.ThreadCount++;
         }
 
         //获取我的任务，任务比较重要所有每次登陆都会去获取
-        new Thread(new HttpgetMytaskThread()).start();
+        taskThread = new Thread(new HttpgetMytaskThread(this, mySharedPreferences, httpHelper));
+        taskThread.start();
 
-
-        if (isLoadAllEmploy && isLoadAllSharedFile && isLoadDepartment) {
-            //获取数据结束关闭服务
-            stopSelf();
-        }
+        //开启线程监听是否加载完数据
+        httpThread.start();
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    private class HttpLoadAllDepartmentThread implements Runnable {
-        Thread thread = new Thread(this);
-
-        @Override
-        public void run() {
-            Looper.prepare();
-            Type typelist = new TypeToken<ArrayList<Department>>() { //TypeToken GSON提供的数据类型转换器
-            }.getType();
-            List<Department> list = CommonResource.gson.fromJson(httpHelper.getAllDepartment().toString(), typelist);
-            if (list != null && list.size() > 0) {
-                departmentDAO = new DepartmentDAO(mySqliteHelper.getWritableDatabase());
-                departmentDAO.clear();
-                for (Department department : list) {
-                    departmentDAO.save(department);
-                }
-             /*   list = departmentDAO.getAllDepartment();
-                System.out.println("部门个数:" + list.size());*/
-                departmentDAO.close();
-            }
-            close();
-        }
-
-        private void close() {
-            if (!thread.isInterrupted()) {
-                thread.interrupt();
-            }
-        }
-    }
-
-    private class HttpLoadAllSharedFileThread implements Runnable {
-        Thread thread = new Thread(this);
-
-        @Override
-        public void run() {
-            //去服务器获取
-            Looper.prepare();
-            Type typelist = new TypeToken<ArrayList<MyFile>>() { //TypeToken GSON提供的数据类型转换器
-            }.getType();
-            List<MyFile> list = CommonResource.gson.fromJson(httpHelper.getAllSharedFile().toString(), typelist);
-            if (list != null && list.size() > 0) {
-                myFileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
-                myFileDAO.clear();
-                for (MyFile myfile : list) {
-                    myfile.setUid(1);//
-                    myFileDAO.save(myfile);
-                }
-                myFileDAO.close();
-               /* System.out.println("共享文件个数:" + list.size());*/
-            }
-            close();
-        }
-
-        private void close() {
-            if (!thread.isInterrupted()) {
-                thread.interrupt();
-            }
-        }
-    }
-
-    private class HttpLoadAllEmployThread implements Runnable {
-        Thread thread = new Thread(this);
-
-        @Override
-        public void run() {
-            //去服务器登录验证
-            try {
-                Looper.prepare();
-                Type typelist = new TypeToken<ArrayList<Employ>>() { //TypeToken GSON提供的数据类型转换器
-                }.getType();
-                List<Employ> list = CommonResource.gson.fromJson(httpHelper.getAllEmploy().toString(), typelist);
-                if (list != null && list.size() > 0) {
-                    employDAO = new EmployDAO(mySqliteHelper.getWritableDatabase());
-                    employDAO.deleteAll();
-                    for (Employ employ : list) {
-                        System.out.println("dpid:" + employ.getDpid());
-                        employDAO.save(employ);
-                    }
-                    //员工全部存入数据库后关闭数据库
-                    employDAO.close();
-                    /*System.out.println("员工个数:" + list.size());*/
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("$$$error" + e.getMessage());
-            }
-            close();
-        }
-
-        private void close() {
-            if (!thread.isInterrupted()) {
-                thread.interrupt();
-            }
-        }
-    }
-
-    private class HttpgetMytaskThread implements Runnable {
-
-        Thread thread = new Thread(this);
-
-        @Override
-        public void run() {
-            Looper.prepare();
-            taskDAO = new TaskDAO(mySqliteHelper.getWritableDatabase());
-            List<Task> myTasklist = httpHelper.getMyTask(1);//setUid(1)
-            if (myTasklist != null && myTasklist.size() > 0) {
-                taskDAO.clearMyTask(1);//setUid(1)
-                for (Task t : myTasklist) {
-                    taskDAO.save(t);
-                }
-            }
-
-            List<Task> tasklist = httpHelper.getTask(1);//setUid(1)
-            if (tasklist != null && tasklist.size() > 0) {
-                taskDAO.clearTask(1);//setUid(1)
-                for (Task t : tasklist) {
-                    taskDAO.save(t);
-                }
-            }
-            taskDAO.close();
-            close();
-        }
-
-        private void close() {
-            if (!thread.isInterrupted()) {
-                thread.interrupt();
-            }
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (departmentDAO != null) {
-            departmentDAO.close();
+        if (!CommonResource.isloginClicked) {
+            BusProvider.getInstance().post(new LoadDataFinishEvent());
         }
+        httpThread.interrupt();
         BusProvider.getInstance().unregister(this);
+    }
+
+    private class HttpThread implements Runnable {
+        private Thread thread = new Thread(this);
+
+        @Override
+        public void run() {
+            while (!thread.isInterrupted()) {
+                if (CommonResource.ThreadCount == CommonResource.CURRENTTHREADCOUNT) {
+                    break;
+                }
+            }
+            System.out.println("到服务器加载数据完毕!");
+            //获取数据结束关闭服务
+            stopSelf();
+        }
+
+        public void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
+            }
+        }
     }
 
     void MyToast(String msg) {

@@ -20,4 +20,10 @@ public class CommonResource {
     public static final int SCHEDULE=4;
     public static final int TASK=2;
     public static final int SHAREDFILE=7;
+    public static int ThreadCount=0;//加载数据的线程数
+    public static final int CURRENTTHREADCOUNT=4;//加载数据完成的线程数
+    public static boolean isLoadSharedfileFinish=false;
+    public static boolean isLoadTaskFinish=false;
+    public static boolean isLoadEmployFinish=false;
+    public static boolean isloginClicked=true;
 }

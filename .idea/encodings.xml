@@ -30,13 +30,19 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadDataChangeEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadExceptionEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadFinishEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/LoadDataFinishEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/SharedfileLoadFinishEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/StartDownloadEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/StartUploadEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/UpdataTaskEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/UploadCancelEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/UploadExceptionEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/UploadFinishEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/HttpHepler.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/HttpLoadAllDepartmentThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/HttpLoadAllEmployThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/HttpLoadAllSharedFileThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/HttpgetMytaskThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/SmSHelper.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/json/TaskJson.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/myview/ClearEditText.java" charset="UTF-8" />
@@ -85,6 +91,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/message/MessageFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/more/MoreFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/sms/SmSFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/oa/piaojin/com/androidoa/AutoLoginActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/oa/piaojin/com/androidoa/DockItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/oa/piaojin/com/androidoa/MainActivity.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/oa/piaojin/com/androidoa/TestActivity.java" charset="UTF-8" />

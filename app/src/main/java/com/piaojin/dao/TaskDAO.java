@@ -40,7 +40,8 @@ public class TaskDAO {
         values.put("endtime", task.getEndtime());
         values.put("status", task.getStatus());
         values.put("content", task.getContent());
-        db.insert(TABLE, null, values);
+        long n=db.insert(TABLE, null, values);
+        System.out.println("save task n:"+n);
     }
 
     public TaskDAO(SQLiteDatabase db) {
@@ -129,9 +130,14 @@ public class TaskDAO {
         values.put("endtime", task.getEndtime());
         values.put("status", task.getStatus());
         values.put("content", task.getContent());
-        db.update(TABLE,values,"kid = ?",new String[]{String.valueOf(task.getKid())});
+        db.update(TABLE, values, "kid = ?", new String[]{String.valueOf(task.getKid())});
     }
 
+    public void clear(){
+        String sql="delete from mytask";
+        long n=db.delete(TABLE,null,null);
+        System.out.println("delete from mytask "+n);
+    }
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

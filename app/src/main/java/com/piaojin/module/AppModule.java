@@ -11,6 +11,7 @@ import com.piaojin.ui.block.personalfile.PersonalFileActivity_;
 import com.piaojin.ui.block.schedule.ScheduleActivity_;
 import com.piaojin.ui.block.schedule.ScheduleFragment;
 import com.piaojin.ui.block.schedule.ScheduleFragment_;
+import com.piaojin.ui.block.sharedfile.SharedFileActivity_;
 import com.piaojin.ui.block.task.TaskActivity_;
 import com.piaojin.ui.block.task.TaskDetailActivity_;
 import com.piaojin.ui.block.task.TaskFragment;
@@ -32,6 +33,7 @@ import com.piaojin.ui.sms.SmSFragment_;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
+import oa.piaojin.com.androidoa.AutoLoginActivity_;
 import oa.piaojin.com.androidoa.HomeActivity_;
 import oa.piaojin.com.androidoa.MainActivity_;
 
@@ -41,7 +43,7 @@ import oa.piaojin.com.androidoa.MainActivity_;
                 , SmSFragment_.class, MoreFragment_.class, WorkMateInfoFragment_.class, ContainerActivity_.class, LookFragment_.class
                 , ChatFragment_.class, HttpHepler.class, MainActivity_.class, MySharedPreferences.class, NetWorkHelper.class, MySqliteHelper.class
                 , BackgroudService_.class, ScheduleActivity_.class, ScheduleFragment_.class, UserInfo.class, MySqliteHelper.class, PersonalFileActivity_.class
-                , TaskFragment_.class, TaskActivity_.class, TaskDetailActivity_.class
+                , TaskFragment_.class, TaskActivity_.class, TaskDetailActivity_.class, SharedFileActivity_.class,AutoLoginActivity_.class
         },
         complete = false,
         library = true

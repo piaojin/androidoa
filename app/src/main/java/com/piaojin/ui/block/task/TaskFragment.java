@@ -19,9 +19,11 @@ import com.piaojin.common.TaskResource;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.TaskDAO;
 import com.piaojin.domain.Task;
+import com.piaojin.event.UpdataTaskEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.helper.SmSHelper;
+import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.DateUtil;
 
@@ -37,6 +39,17 @@ import oa.piaojin.com.androidoa.R;
 
 @EFragment
 public class TaskFragment extends Fragment {
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
+    }
 
     private Context context;
     private TaskDAO taskDAO;
@@ -89,10 +102,8 @@ public class TaskFragment extends Fragment {
                 String message="任务标题:"+title
                         +"任务开始时间:"+starttimetext+"    任务结束时间:"+endtimetext+
                         "任务内容:"+contenttext;//短信任务内容
-                if(!issend){
                     //SmSHelper.sendSmS(context,"13666902838",message);
-                    issend=true;
-                }
+                BusProvider.getInstance().post(new UpdataTaskEvent());
                 MyToast("发布任务成功!");
             }
         };
@@ -123,7 +134,7 @@ public class TaskFragment extends Fragment {
                 Task task = new Task();
                 task.setTitle(title);
                 task.setEid(kid);
-                task.setUid(1);//
+                task.setUid(1);//setUid(1)
                 task.setStarttime(starttimetext);
                 task.setEndtime(endtimetext);
                 task.setStatus(TaskResource.STATUSSEND);
@@ -169,14 +180,12 @@ public class TaskFragment extends Fragment {
         public void run() {
             Looper.prepare();
             String taskjson= CommonResource.gson.toJson(task);
-            System.out.println(taskjson);
             String result=httpHepler.sendTask(taskjson, HttpHepler.SENDTASK);
             if(result!=null&&!"".equals(result)){
                 task=CommonResource.gson.fromJson(result,Task.class);
                 taskDAO.save(task);
                 Message message=new Message();
                 handler.sendMessage(message);
-                issend=false;
             }
         }
     }

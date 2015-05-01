@@ -24,11 +24,6 @@
             android:icon="@drawable/pushicon"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".HomeActivity_"
@@ -111,14 +106,23 @@
         <activity
             android:name="com.piaojin.ui.block.task.TaskActivity_"
             android:label="@string/title_activity_task"
-            android:theme="@style/MyActivityTheme"
-            >
+            android:theme="@style/MyActivityTheme" >
         </activity>
         <activity
             android:name="com.piaojin.ui.block.task.TaskDetailActivity_"
             android:label="@string/title_activity_task"
-            android:theme="@style/MyActivityTheme"
+            android:theme="@style/MyActivityTheme" >
+        </activity>
+        <activity
+            android:name=".AutoLoginActivity_"
+            android:label="@string/title_activity_auto_login"
+            android:theme="@android:style/Theme.NoTitleBar"
             >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
