@@ -25,5 +25,5 @@ public class CommonResource {
     public static boolean isLoadSharedfileFinish=false;
     public static boolean isLoadTaskFinish=false;
     public static boolean isLoadEmployFinish=false;
-    public static boolean isloginClicked=true;
+    public static boolean LoginType =true;//登录类型:true表示点击登录按钮登录,false表示自动登录
 }

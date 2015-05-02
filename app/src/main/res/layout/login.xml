@@ -205,6 +205,9 @@
             </LinearLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     <Button
         android:id="@+id/login"
         android:layout_width="fill_parent"
@@ -217,5 +220,19 @@
         android:background="@drawable/btn_login"
         android:text="确认登入"
         />
+        <ProgressBar
+            android:id="@+id/loginPro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_alignStart="@id/login"
+            android:layout_alignLeft="@id/login"
+            android:layout_alignEnd="@id/login"
+            android:layout_alignRight="@id/login"
+            android:layout_alignTop="@id/login"
+            android:layout_alignBottom="@id/login"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
 </LinearLayout>
 </ScrollView>

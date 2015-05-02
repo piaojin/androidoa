@@ -3,22 +3,10 @@ package com.piaojin.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Looper;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
-import com.piaojin.dao.DepartmentDAO;
-import com.piaojin.dao.EmployDAO;
-import com.piaojin.dao.FileDAO;
-import com.piaojin.dao.MySqliteHelper;
-import com.piaojin.dao.TaskDAO;
-import com.piaojin.domain.Department;
-import com.piaojin.domain.Employ;
-import com.piaojin.domain.MyFile;
-import com.piaojin.domain.Task;
 import com.piaojin.event.LoadDataFinishEvent;
-import com.piaojin.event.SharedfileLoadFinishEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.HttpLoadAllDepartmentThread;
 import com.piaojin.helper.HttpLoadAllEmployThread;
@@ -29,10 +17,6 @@ import com.piaojin.module.AppModule;
 import com.piaojin.otto.BusProvider;
 
 import org.androidannotations.annotations.EService;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -115,9 +99,7 @@ public class BackgroudService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!CommonResource.isloginClicked) {
-            BusProvider.getInstance().post(new LoadDataFinishEvent());
-        }
+        BusProvider.getInstance().post(new LoadDataFinishEvent());
         httpThread.interrupt();
         BusProvider.getInstance().unregister(this);
     }

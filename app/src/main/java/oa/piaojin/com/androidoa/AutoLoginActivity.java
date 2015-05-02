@@ -77,7 +77,9 @@ public class AutoLoginActivity extends Activity {
 
     @Subscribe
     public void onLoadDataFinishEvent(LoadDataFinishEvent loadDataFinishEvent) {
-        HomeActivity_.intent(this).start();
+        if(!CommonResource.LoginType){
+            HomeActivity_.intent(this).start();
+        }
     }
 
     private void Login(String name[], String value[]) {
@@ -103,7 +105,7 @@ public class AutoLoginActivity extends Activity {
                     //初始化用户信息
                     userInfo.init();
                     //启动后台服务
-                    CommonResource.isloginClicked=false;
+                    CommonResource.LoginType =false;
                     Intent intent = new Intent(AutoLoginActivity.this, BackgroudService_.class);
                     AutoLoginActivity.this.startService(intent);
                     return;

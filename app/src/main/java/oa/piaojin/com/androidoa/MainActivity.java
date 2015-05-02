@@ -7,19 +7,26 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.piaojin.common.CommonResource;
 import com.piaojin.common.UserInfo;
+import com.piaojin.event.LoadDataFinishEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.module.AppModule;
+import com.piaojin.otto.BusProvider;
 import com.piaojin.service.BackgroudService_;
 import com.piaojin.tools.ExitApplication;
+import com.squareup.otto.Subscribe;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -34,6 +41,10 @@ public class MainActivity extends Activity {
 
     final String NAME = "name";
     final String PWD = "pwd";
+    @ViewById
+    ProgressBar loginPro;
+    @ViewById
+    Button login;
     @ViewById
     Spinner ipaddress;
     @ViewById
@@ -135,6 +146,16 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Subscribe
+    public void onLoadDataFinishEvent(LoadDataFinishEvent loadDataFinishEvent) {
+        if(CommonResource.LoginType){
+            login.setEnabled(true);
+            login.setText("确认登入");
+            loginPro.setVisibility(View.GONE);
+            HomeActivity_.intent(this).start();
+        }
+    }
+
     @Click
     void autologin() {
         mySharedPreferences.putBoolean("isAutoLogin", autologin.isChecked());
@@ -149,6 +170,9 @@ public class MainActivity extends Activity {
             return;
         }
         if (netWorkHelper.isAvailableNetwork(this)) {
+            login.setEnabled(false);
+            login.setText("");
+            loginPro.setVisibility(View.VISIBLE);
             Login(new String[]{NAME, PWD}, new String[]{uname, upwd});
             savepwd();
         } else {
@@ -178,11 +202,10 @@ public class MainActivity extends Activity {
                     mySharedPreferences.putString("userinfo", str);
                     //初始化用户信息
                     userInfo.init();
-                    CommonResource.isloginClicked=true;
+                    CommonResource.LoginType =true;
                     //启动后台服务
                     Intent intent = new Intent(MainActivity.this, BackgroudService_.class);
                     MainActivity.this.startService(intent);
-                    HomeActivity_.intent(MainActivity.this).start();
                     return;
                 }
             } else {
@@ -216,6 +239,18 @@ public class MainActivity extends Activity {
                 System.out.println("$$$error" + e.getMessage());
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
     }
 
     void MyToast(String msg) {
