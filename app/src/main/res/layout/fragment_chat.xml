@@ -10,10 +10,12 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp">
 
-        <TextView
+        <ListView
+            android:id="@+id/chatListView"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="爱你一万年！" />
+            android:layout_height="wrap_content"
+            android:background="#e4e4e4"
+            />
     </LinearLayout>
 
 

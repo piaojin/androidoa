@@ -61,7 +61,7 @@ public class BackgroudService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //判断是否获取过所有员工集合,员工集合一般只获取一次并不是每次登入都要去获取
         boolean isLoadAllEmploy = mySharedPreferences.getBoolean("isLoadAllEmploy", false);
-        if (!isLoadAllEmploy) { //未去获取数据
+        if (true) { //未去获取数据
             //去服务器获取
             employThread = new Thread(new HttpLoadAllEmployThread(this, mySharedPreferences, httpHelper));
             employThread.start();

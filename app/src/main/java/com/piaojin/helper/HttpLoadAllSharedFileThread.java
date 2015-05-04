@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Looper;
 import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
+import com.piaojin.common.UserInfo;
 import com.piaojin.dao.DepartmentDAO;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.FileDAO;
@@ -41,9 +42,9 @@ public class HttpLoadAllSharedFileThread implements Runnable{
         List<MyFile> list = httpHelper.getAllSharedFile();
         if (list != null && list.size() > 0) {
             myFileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
-            myFileDAO.clear(1);//setUid(1)
+            myFileDAO.clear(UserInfo.employ.getUid());//setUid(1)
             for (MyFile myfile : list) {
-                myfile.setUid(1);//setUid(1)
+                //myfile.setUid(1);//setUid(1)
                 myFileDAO.save(myfile);
             }
             mySharedPreferences.putBoolean("isLoadAllSharedFile", true);

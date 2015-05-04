@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.piaojin.common.CommonResource;
 import com.piaojin.common.TaskResource;
+import com.piaojin.common.UserInfo;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.TaskDAO;
 import com.piaojin.domain.Task;
@@ -134,7 +135,7 @@ public class TaskFragment extends Fragment {
                 Task task = new Task();
                 task.setTitle(title);
                 task.setEid(kid);
-                task.setUid(1);//setUid(1)
+                task.setUid(UserInfo.employ.getUid());//setUid(1)
                 task.setStarttime(starttimetext);
                 task.setEndtime(endtimetext);
                 task.setStatus(TaskResource.STATUSSEND);

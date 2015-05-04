@@ -115,6 +115,7 @@ public class UploadThread implements Runnable {
                     //上传完成，把信息保存入数据库
                     if(!UploadfileResource.isCancel){
                         sendMessage(UploadfileResource.UPLOADFINISH);
+                        this.myfile.setKid(0);
                         this.myfile.setCompletedate(DateUtil.CurrentTime());
                         this.myfile.setIscomplete(1);
                         fileDAO.save(this.myfile);

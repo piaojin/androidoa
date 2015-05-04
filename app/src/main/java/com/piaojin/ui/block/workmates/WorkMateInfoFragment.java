@@ -17,10 +17,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.piaojin.domain.Employ;
 import com.piaojin.myview.MyEditText;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSDeliveredBroadcastReceiver;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSSendBroadcastReceiver;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -33,14 +35,36 @@ import oa.piaojin.com.androidoa.R;
 @EFragment
 public class WorkMateInfoFragment extends Fragment {
 
+    private Employ employ;
+
+    public Employ getEmploy() {
+        return employ;
+    }
+
+    public void setEmploy(Employ employ) {
+        this.employ = employ;
+    }
+
     @ViewById
     TextView tel;
+    @ViewById
+    TextView name;
+    @ViewById
+    TextView address;
 
     public static WorkMateInfoFragment newInstance(String param1, String param2) {
         WorkMateInfoFragment fragment = new WorkMateInfoFragment();
         return fragment;
     }
 
+    @AfterViews
+    void init(){
+        if(employ!=null){
+            name.setText(employ.getName());
+            tel.setText(employ.getTel());
+            address.setText(employ.getAddress());
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +75,11 @@ public class WorkMateInfoFragment extends Fragment {
     //按钮点击事件
     @Click
     void sendMessageg() {
-        ContainerActivity_.intent(getActivity()).start();
+        Intent intent = new Intent(getActivity(), ContainerActivity_.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("chat_employ", employ);
+        intent.putExtra("chat_employ_bundle", bundle);
+        getActivity().startActivity(intent);
     }
 
     //按钮点击事件

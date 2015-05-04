@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import com.piaojin.common.CommonResource;
 import com.piaojin.domain.Department;
 import com.piaojin.domain.Employ;
+import com.piaojin.domain.Message;
 import com.piaojin.domain.MyFile;
 import com.piaojin.domain.Task;
 import org.apache.http.HttpResponse;
@@ -32,29 +33,39 @@ public class HttpHepler {
     public final String NULLERROR = "nullerror";
     //服务器ip地址
     //发布任务
-    public static final String SENDTASK = "http://219.228.251.50:8080/cecWeb/taskAddTask";
+    public static final String SENDTASK = "http://219.228.251.73:8080/cecWeb/taskAddTask";
+    //聊天
+    public static final String SENDMESSAGE = "http://219.228.251.73:8080/cecWeb/messagerelayMessage";
     //更新任务
-    public static final String SENDEDITTASK = "http://219.228.251.50:8080/cecWeb/tasksendEditTask";
+    public static final String SENDEDITTASK = "http://219.228.251.73:8080/cecWeb/tasksendEditTask";
     //删除任务
-    public static final String DELETETASK = "http://219.228.251.50:8080/cecWeb/taskdeleteTask";
+    public static final String DELETETASK = "http://219.228.251.73:8080/cecWeb/taskdeleteTask";
     //完成任务
-    public static final String FINISHTASK = "http://219.228.251.50:8080/cecWeb/taskfinishTask";
+    public static final String FINISHTASK = "http://219.228.251.73:8080/cecWeb/taskfinishTask";
     //接收任务
-    public static final String ACCEPTTASK = "http://219.228.251.50:8080/cecWeb/taskacceptTask";
+    public static final String ACCEPTTASK = "http://219.228.251.73:8080/cecWeb/taskacceptTask";
     //获取我发布的任务
-    public static final String GETTASK = "http://219.228.251.50:8080/cecWeb/taskgetTask";
+    public static final String GETTASK = "http://219.228.251.73:8080/cecWeb/taskgetTask";
     //获取我的任务
-    public static final String GETMYTASK = "http://219.228.251.50:8080/cecWeb/taskgetMyTask";
+    public static final String GETMYTASK = "http://219.228.251.73:8080/cecWeb/taskgetMyTask";
     //获取共享文件
-    public static final String GETALLSHAREDFILE = "http://219.228.251.50:8080/cecWeb/filegetAllSharedFile";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.73:8080/cecWeb/filegetAllSharedFile";
     //获取所有部门
-    public static final String GETALLDEPARTMENT = "http://219.228.251.50:8080/cecWeb/departmentgetAllDepartment";
+    public static final String GETALLDEPARTMENT = "http://219.228.251.73:8080/cecWeb/departmentgetAllDepartment";
     //登录验证
-    public static final String LOGIN = "http://219.228.251.50:8080/cecWeb/employLogin";
+    public static final String LOGIN = "http://219.228.251.73:8080/cecWeb/employLogin";
     //获取所有同事
-    public static final String GETALLEMPLOY = "http://219.228.251.50:8080/cecWeb/employgetAllEmploy";
+    public static final String GETALLEMPLOY = "http://219.228.251.73:8080/cecWeb/employgetAllEmploy";
     //瞎子啊文件
-    public static final String DOWNFILE = "http://219.228.251.50:8080/cecWeb/downDownFile";
+    public static final String DOWNFILE = "http://219.228.251.73:8080/cecWeb/downDownFile";
+
+    //发送聊天消息
+    public void sendMessage(Message message){
+        if(message!=null){
+            String messagejson=CommonResource.gson.toJson(message);
+            HttpPost(messagejson,SENDMESSAGE);
+        }
+    }
 
     //接收任务
     public String acceptTask(int kid) {
@@ -101,7 +112,7 @@ public class HttpHepler {
         return list;
     }
 
-    //带大量数据的额请求,原生post方式
+    //带大量数据的请求
     private String HttpPost(String parameter, String httpurl) {
         StringBuffer result = new StringBuffer("");
         try {

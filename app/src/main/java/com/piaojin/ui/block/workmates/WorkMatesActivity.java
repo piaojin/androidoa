@@ -83,7 +83,6 @@ public class WorkMatesActivity extends FragmentActivity {
      */
     private CharacterParser characterParser;
     private List<SortModel> SourceDateList;
-
     /**
      * 根据拼音来排列ListView里面的数据类
      */
@@ -134,22 +133,20 @@ public class WorkMatesActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
-                Toast.makeText(WorkMatesActivity.this, ((SortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
-                initInfo();
+                int kid=((SortModel) adapter.getItem(position)).getKid();
+                Employ e=employDAO.getById(kid);
+                MyToast(e.getName());
+                if(e!=null){
+                    workMateInfoFragment.setEmploy(e);
+                    initInfo();
+                }
             }
         });
 
         //初始化同事数据
         list = employDAO.getAllEmploy();
         if (list != null && list.size() > 0) {
-            employname = new String[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                employname[i] = list.get(i).getName();
-                System.out.println("name:" + list.get(i).getName());
-            }
-            SourceDateList = filledData(employname);
-            //SourceDateList = filledData(getResources().getStringArray(R.array.date));
-
+            SourceDateList = filledData(list);
             // 根据a-z进行排序源数据
             Collections.sort(SourceDateList, pinyinComparator);
             adapter = new SortAdapter(WorkMatesActivity.this, SourceDateList);
@@ -182,14 +179,10 @@ public class WorkMatesActivity extends FragmentActivity {
         }
         list = employDAO.getAllEmploy();
         if (list != null && list.size() > 0) {
-            employname = new String[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                employname[i] = list.get(i).getName();
-            }
             if (SourceDateList != null) {
                 SourceDateList.clear();
             }
-            SourceDateList = filledData(employname);
+            SourceDateList = filledData(list);
             adapter.notifyDataSetChanged();
         }
     }
@@ -200,14 +193,15 @@ public class WorkMatesActivity extends FragmentActivity {
      * @param date
      * @return
      */
-    private List<SortModel> filledData(String[] date) {
+    private List<SortModel> filledData(List<Employ> date) {
         List<SortModel> mSortList = new ArrayList<SortModel>();
 
-        for (int i = 0; i < date.length; i++) {
+        for (Employ employ:date) {
             SortModel sortModel = new SortModel();
-            sortModel.setName(date[i]);
+            sortModel.setKid(employ.getKid());
+            sortModel.setName(employ.getName());
             //汉字转换成拼音
-            String pinyin = characterParser.getSelling(date[i]);
+            String pinyin = characterParser.getSelling(employ.getName());
             String sortString = pinyin.substring(0, 1).toUpperCase();
 
             // 正则表达式，判断首字母是否是英文字母
@@ -252,6 +246,7 @@ public class WorkMatesActivity extends FragmentActivity {
 
     //详细信息返回按钮点击事件
     public void back2(View view) {
+        ActionBarTools.setTitleText("微讯同事");
         workmates_list.setVisibility(View.VISIBLE);
         getSupportFragmentManager().beginTransaction().remove(workMateInfoFragment).commit();
         workmateinfo.setVisibility(View.GONE);

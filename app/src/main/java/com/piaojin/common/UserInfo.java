@@ -30,4 +30,9 @@ public class UserInfo {
         this.context = context;
         this.mySharedPreferences= mySharedPreferences;
     }
+
+    public UserInfo(Context context) {
+        this.context = context;
+        this.mySharedPreferences= new MySharedPreferences(context);
+    }
 }

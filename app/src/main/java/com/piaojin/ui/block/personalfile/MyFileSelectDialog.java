@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;
+import com.piaojin.common.UserInfo;
 import com.piaojin.domain.MyFile;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.tools.FileUtil;
@@ -61,12 +62,15 @@ public class MyFileSelectDialog extends DialogFragment {
     private SimpleAdapter simpleAdapter;
     private StringBuffer pathstr;//当前文件或目录绝对路径
     private boolean isfile = false;
+    UserInfo userInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         view = inflater.inflate(R.layout.file_select, null);
         init(view);
+        userInfo=new UserInfo(getActivity());
+        userInfo.init();
         return view;
     }
 
@@ -271,7 +275,7 @@ public class MyFileSelectDialog extends DialogFragment {
                 MyFile myfile = new MyFile();
                 myfile.setType(FileResource.TYPE_MY);
                 myfile.setAbsoluteurl(file.getAbsolutePath());
-                myfile.setUid(1);//setUid(1)
+                myfile.setUid(UserInfo.employ.getUid());//setUid(1)
                 myfile.setUrl(UploadfileResource.UPLOADURL);
                 myfile.setHttpurl(UploadfileResource.SAVEURL);
                 myfile.setUname("飘金");

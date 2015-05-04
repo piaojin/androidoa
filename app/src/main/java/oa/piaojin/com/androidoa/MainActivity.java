@@ -24,6 +24,7 @@ import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.module.AppModule;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.service.BackgroudService_;
+import com.piaojin.service.MessageService;
 import com.piaojin.tools.ExitApplication;
 import com.squareup.otto.Subscribe;
 
@@ -39,6 +40,8 @@ import dagger.ObjectGraph;
 @EActivity(R.layout.login)
 public class MainActivity extends Activity {
 
+    final String PHONEIP="phoneip";
+    final String PhoneIP=CommonResource.getLocalIpAddress();
     final String NAME = "name";
     final String PWD = "pwd";
     @ViewById
@@ -173,7 +176,7 @@ public class MainActivity extends Activity {
             login.setEnabled(false);
             login.setText("");
             loginPro.setVisibility(View.VISIBLE);
-            Login(new String[]{NAME, PWD}, new String[]{uname, upwd});
+            Login(new String[]{NAME, PWD,PHONEIP}, new String[]{uname, upwd,PhoneIP});
             savepwd();
         } else {
             MyToast("没有网络!");
@@ -204,8 +207,7 @@ public class MainActivity extends Activity {
                     userInfo.init();
                     CommonResource.LoginType =true;
                     //启动后台服务
-                    Intent intent = new Intent(MainActivity.this, BackgroudService_.class);
-                    MainActivity.this.startService(intent);
+                    StartService();
                     return;
                 }
             } else {
@@ -213,6 +215,16 @@ public class MainActivity extends Activity {
             }
             MyToast(str);
         }
+    }
+
+    //启动一些后台服务
+    private void StartService(){
+        //初始化数据服务
+        Intent backgroundintent = new Intent(MainActivity.this, BackgroudService_.class);
+        MainActivity.this.startService(backgroundintent);
+        //聊天服务
+        Intent MessageServiceintent=new Intent(MainActivity.this, MessageService.class);
+        MainActivity.this.startService(MessageServiceintent);
     }
 
     private class HttpThreadHelper implements Runnable {
@@ -250,6 +262,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent MessageServiceintent=new Intent(MainActivity.this, MessageService.class);
+        MainActivity.this.startService(MessageServiceintent);
         BusProvider.getInstance().unregister(this);
     }
 

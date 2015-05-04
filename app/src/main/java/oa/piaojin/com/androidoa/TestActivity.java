@@ -77,8 +77,7 @@ public class TestActivity extends Activity {
             // TODO: handle exception
            System.out.println(e.getMessage());
         }
-
-        return "空";
+        return null;
     }
 
 

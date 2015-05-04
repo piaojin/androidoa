@@ -14,16 +14,24 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.piaojin.common.LookResource;
+import com.piaojin.common.MessageResource;
+import com.piaojin.common.UserInfo;
+import com.piaojin.dao.MessageDAO;
+import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.domain.Employ;
+import com.piaojin.domain.Message;
+import com.piaojin.helper.HttpHepler;
+import com.piaojin.tools.DateUtil;
 import com.piaojin.tools.MyAnimationUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import oa.piaojin.com.androidoa.MyPagerAdapter;
 import oa.piaojin.com.androidoa.R;
@@ -31,7 +39,21 @@ import oa.piaojin.com.androidoa.R;
 @EFragment
 public class ChatFragment extends Fragment {
 
+    private MySqliteHelper mySqliteHelper;
+    private MessageDAO messageDAO;
+
+    public Employ getEmploy() {
+        return employ;
+    }
+
+    public void setEmploy(Employ employ) {
+        this.employ = employ;
+    }
+
+    private Message message;
+    private Employ employ;
     private static boolean tag = true;//标志语音还是文字
+    HttpHepler httpHepler;
     @ViewById
     ViewPager vp_contains;
     @ViewById
@@ -51,19 +73,20 @@ public class ChatFragment extends Fragment {
     @ViewById
     LinearLayout fileContent;
     LookFragment lookFragment;
+    private int type=0;//消息类型
+    private UserInfo userInfo;
 
     public List<Fragment> fragmentList = new ArrayList<Fragment>();
     private MyPagerAdapter mypageradapter;
 
-    public static com.piaojin.ui.block.workmates.chat.ChatFragment newInstance(String param1, String param2) {
-        com.piaojin.ui.block.workmates.chat.ChatFragment fragment = new com.piaojin.ui.block.workmates.chat.ChatFragment();
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        userInfo=new UserInfo(getActivity());
+        mySqliteHelper=new MySqliteHelper(getActivity());
+        userInfo.init();
+        messageDAO=new MessageDAO(mySqliteHelper.getWritableDatabase());
+        httpHepler=new HttpHepler();
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 
@@ -120,7 +143,7 @@ public class ChatFragment extends Fragment {
         }
     }
 
-    //按钮点击事件
+    //语音按钮点击事件
     @Click
     void video() {
         tag = !tag;
@@ -152,6 +175,7 @@ public class ChatFragment extends Fragment {
         MyAnimationUtils.DownOut(lookContent, getActivity());
     }
 
+    //表情
     @Click
     void look() {
         //隐藏文件，显示表情
@@ -162,9 +186,11 @@ public class ChatFragment extends Fragment {
         isHidleSend();
     }
 
+    //图片
     @Click
     void add() {
         //隐藏表情，显示文件
+        type=MessageResource.VIDEO;
         lookContent.setVisibility(View.GONE);
         MyAnimationUtils.DownOut(lookContent, getActivity());
         fileContent.setVisibility(View.VISIBLE);
@@ -176,16 +202,47 @@ public class ChatFragment extends Fragment {
         look.setVisibility(View.VISIBLE);
     }
 
+    //封装信息
+    private void initMessage(){
+        message=new Message();
+        //判断消息的类型
+        switch(type){
+            case MessageResource.TEXT:
+                message.setMsg(msg.getText().toString());
+                message.setSenderid(UserInfo.employ.getUid());
+                message.setReceiverid(employ.getUid());
+                message.setType(type);
+                message.setKid(0);
+                message.setSendtime(DateUtil.CurrentTime());
+                message.setPhotourl("");
+                message.setReceivetime("");
+                message.setStatus(0);
+                message.setVideourl("");
+                message.setReceiverip(employ.getPhoneip());
+                messageDAO.save(message);
+                break;
+            case MessageResource.VIDEO:
+                break;
+            case MessageResource.PICTURE:
+                break;
+        }
+        message.setMsg(msg.getText().toString());
+    }
+
     @Click
     void send() {
+        initMessage();
+        new Thread(new ChatThread(getActivity(),httpHepler,message)).start();
+        type=MessageResource.TEXT;
         msg.setText("");
         send.setVisibility(View.GONE);
-        MyAnimationUtils.ScaleOut(send,getActivity());
+        MyAnimationUtils.ScaleOut(send, getActivity());
     }
 
     @Click
     void start_speak() {
         MyToast("123");
+        type= MessageResource.VIDEO;
     }
 
     private void isHidleSend() {

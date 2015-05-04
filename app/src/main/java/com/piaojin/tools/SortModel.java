@@ -3,7 +3,7 @@ package com.piaojin.tools;
 public class SortModel {
 
 	private String name;   //显示的数据
-	private int kid;
+	private int kid;//同事的服务器短的id
 
 	public int getKid() {
 		return kid;

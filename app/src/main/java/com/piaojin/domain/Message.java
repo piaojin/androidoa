@@ -18,7 +18,25 @@ public class Message implements java.io.Serializable {
 		this.kid = kid;
 	}
 
+	public Integer getReceiverid() {
+		return receiverid;
+	}
+
+	public void setReceiverid(Integer receiverid) {
+		this.receiverid = receiverid;
+	}
+
+	public Integer getSenderid() {
+		return senderid;
+	}
+
+	public void setSenderid(Integer senderid) {
+		this.senderid = senderid;
+	}
+
 	private Integer kid;
+	private Integer receiverid;
+	private Integer senderid;
 	private Employ employByReceiverid;
 	private Employ employBySenderid;
 	private String sendtime;
@@ -28,38 +46,16 @@ public class Message implements java.io.Serializable {
 	private String photourl;
 	private String videourl;
 	private Integer status;
+	private String receiverip;
 
+	public String getReceiverip() {
+		return receiverip;
+	}
+
+	public void setReceiverip(String receiverip) {
+		this.receiverip = receiverip;
+	}
 	// Constructors
-
-	/** default constructor */
-	public Message() {
-	}
-
-	/** minimal constructor */
-	public Message(Employ employByReceiverid, Employ employBySenderid,
-			String sendtime, String receivetime, Integer type, Integer status) {
-		this.employByReceiverid = employByReceiverid;
-		this.employBySenderid = employBySenderid;
-		this.sendtime = sendtime;
-		this.receivetime = receivetime;
-		this.type = type;
-		this.status = status;
-	}
-
-	/** full constructor */
-	public Message(Employ employByReceiverid, Employ employBySenderid,
-			String sendtime, String receivetime, Integer type, String msg,
-			String photourl, String videourl, Integer status) {
-		this.employByReceiverid = employByReceiverid;
-		this.employBySenderid = employBySenderid;
-		this.sendtime = sendtime;
-		this.receivetime = receivetime;
-		this.type = type;
-		this.msg = msg;
-		this.photourl = photourl;
-		this.videourl = videourl;
-		this.status = status;
-	}
 
 	// Property accessors
 

@@ -17,6 +17,7 @@ import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.service.BackgroudService_;
+import com.piaojin.service.MessageService;
 import com.squareup.otto.Subscribe;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -26,6 +27,8 @@ import dagger.ObjectGraph;
 @EActivity(R.layout.activity_auto_login)
 public class AutoLoginActivity extends Activity {
 
+    final String PHONEIP="phoneip";
+    final String PhoneIP=CommonResource.getLocalIpAddress();
     final String NAME = "name";
     final String PWD = "pwd";
     @Inject
@@ -66,7 +69,7 @@ public class AutoLoginActivity extends Activity {
             String sharename = mySharedPreferences.getString(NAME, "");
             String sharepwd = mySharedPreferences.getString(PWD, "");
             if (!TextUtils.isEmpty(sharename) && !TextUtils.isEmpty(sharepwd)) {
-                Login(new String[]{NAME, PWD}, new String[]{sharename, sharepwd});
+                Login(new String[]{NAME, PWD,PHONEIP}, new String[]{sharename, sharepwd,PhoneIP});
             } else {
                 MainActivity_.intent(this).start();
             }
@@ -106,8 +109,7 @@ public class AutoLoginActivity extends Activity {
                     userInfo.init();
                     //启动后台服务
                     CommonResource.LoginType =false;
-                    Intent intent = new Intent(AutoLoginActivity.this, BackgroudService_.class);
-                    AutoLoginActivity.this.startService(intent);
+                    StartService();
                     return;
                 }
             } else {
@@ -115,6 +117,16 @@ public class AutoLoginActivity extends Activity {
             }
             MyToast(str);
         }
+    }
+
+    //启动一些后台服务
+    private void StartService(){
+        //初始化数据服务
+        Intent backgroundintent = new Intent(AutoLoginActivity.this, BackgroudService_.class);
+        AutoLoginActivity.this.startService(backgroundintent);
+        //聊天服务
+        Intent MessageServiceintent=new Intent(AutoLoginActivity.this, MessageService.class);
+        AutoLoginActivity.this.startService(MessageServiceintent);
     }
 
     private class HttpThreadHelper implements Runnable {
@@ -150,6 +162,8 @@ public class AutoLoginActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent MessageServiceintent=new Intent(AutoLoginActivity.this, MessageService.class);
+        AutoLoginActivity.this.startService(MessageServiceintent);
         BusProvider.getInstance().unregister(this);
     }
 

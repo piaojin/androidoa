@@ -35,6 +35,16 @@ public class Employ implements java.io.Serializable {
 	private String email;
 	private String address;
 
+	public String getPhoneip() {
+		return phoneip;
+	}
+
+	public void setPhoneip(String phoneip) {
+		this.phoneip = phoneip;
+	}
+
+	private String phoneip;
+
 	public String getDepartment() {
 		return department;
 	}
