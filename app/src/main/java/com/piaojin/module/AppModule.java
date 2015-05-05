@@ -20,7 +20,6 @@ import com.piaojin.ui.block.workmates.ContainerActivity_;
 import com.piaojin.ui.block.workmates.WorkMateInfoFragment;
 import com.piaojin.ui.block.workmates.WorkMateInfoFragment_;
 import com.piaojin.ui.block.workmates.WorkMatesActivity_;
-import com.piaojin.ui.block.workmates.chat.ChatFragment_;
 import com.piaojin.ui.block.workmates.chat.LookFragment_;
 import com.piaojin.ui.home.HomeFragment;
 import com.piaojin.ui.home.HomeFragment_;
@@ -41,7 +40,7 @@ import oa.piaojin.com.androidoa.MainActivity_;
         injects = {
                 HomeActivity_.class, WorkMatesActivity_.class, HomeFragment_.class, MessageFragment_.class
                 , SmSFragment_.class, MoreFragment_.class, WorkMateInfoFragment_.class, ContainerActivity_.class, LookFragment_.class
-                , ChatFragment_.class, HttpHepler.class, MainActivity_.class, MySharedPreferences.class, NetWorkHelper.class, MySqliteHelper.class
+                , HttpHepler.class, MainActivity_.class, MySharedPreferences.class, NetWorkHelper.class, MySqliteHelper.class
                 , BackgroudService_.class, ScheduleActivity_.class, ScheduleFragment_.class, UserInfo.class, MySqliteHelper.class, PersonalFileActivity_.class
                 , TaskFragment_.class, TaskActivity_.class, TaskDetailActivity_.class, SharedFileActivity_.class,AutoLoginActivity_.class
         },

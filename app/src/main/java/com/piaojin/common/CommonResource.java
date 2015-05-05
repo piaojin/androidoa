@@ -1,19 +1,26 @@
 package com.piaojin.common;
 
+import android.app.ActivityManager;
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.piaojin.ui.block.workmates.chat.ChatActivity;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by piaojin on 2015/4/12.
  */
 public class CommonResource {
+    public static int test=0;
     public static boolean isSharedfileLoading = false;
     public static Gson gson = new Gson();
     public static final int ACTION_MESSAGE = 0;//删除聊天
@@ -33,6 +40,27 @@ public class CommonResource {
     public static boolean isLoadTaskFinish = false;
     public static boolean isLoadEmployFinish = false;
     public static boolean LoginType = true;//登录类型:true表示点击登录按钮登录,false表示自动登录
+    public static ChatActivity chatActivity=null;
+    public static List<ChatActivity> chatlist=new ArrayList<ChatActivity>();
+
+    //判断服务是否运行
+    public static boolean isServiceRunning(Context mContext, String className) {
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager)
+                mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList
+                = activityManager.getRunningServices(30);
+        if (!(serviceList.size() > 0)) {
+            return false;
+        }
+        for (int i = 0; i < serviceList.size(); i++) {
+            if (serviceList.get(i).service.getClassName().equals(className) == true) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
+    }
 
     public static String getLocalIpAddress() {
         try {

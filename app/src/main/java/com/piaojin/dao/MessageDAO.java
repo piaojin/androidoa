@@ -47,9 +47,11 @@ public class MessageDAO {
     //获取聊天记录
     public List<Message> getMessage(int senderid,int receiverid){
         List<Message> list=null;
+        String sql="select * from mymessage where (senderid = ? and receiverid = ?) or (senderid = ? and receiverid = ?) order mid";
         Cursor result=db.query(TABLE, null, "(senderid = ? and receiverid = ?) or (senderid = ? and receiverid = ?)",
                 new String[]{String.valueOf(senderid), String.valueOf(receiverid), String.valueOf(receiverid), String.valueOf(senderid)},
                 null, null, "mid");
+        System.out.println("聊天记录:"+result.getCount()+",senderid"+senderid+",receiverid"+receiverid);
        return enclosure(result);
     }
 

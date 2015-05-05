@@ -5,8 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.piaojin.common.LookResource;
 
@@ -48,8 +50,8 @@ public class LookFragment extends Fragment {
 
     @AfterViews
     void init() {
-        System.out.println("init()...");
         initLook();
+        GVlook.setOnItemClickListener(new MyItemClickListener());
         simpleAdapter = new SimpleAdapter(getActivity(), list, R.layout.gvlook_item, new String[]{"look_img"}, new int[]{R.id.look_img});
         GVlook.setAdapter(simpleAdapter);
 
@@ -93,10 +95,23 @@ public class LookFragment extends Fragment {
 
     }
 
+    //表情点击事件
+    private class MyItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            MyToast(i+"");
+        }
+    }
+
     //更新表情
     public void notifyDataSetChanged(){
         list.clear();
         initLook();
         simpleAdapter.notifyDataSetChanged();
+    }
+
+    void MyToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 }

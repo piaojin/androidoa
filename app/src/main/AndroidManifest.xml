@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:icon="@drawable/pushicon"
@@ -47,6 +50,11 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_container"
             android:theme="@style/MyActivityTheme" >
+        </activity>
+        <activity android:name="com.piaojin.ui.block.workmates.chat.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/MyActivityTheme"
+            >
         </activity>
 
         <service
@@ -123,11 +131,12 @@
             android:label="@string/title_activity_auto_login"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-
         <service
             android:name="com.piaojin.service.MessageService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true"
+            >
+            <!--android:process=":remote_1"-->
         </service>
 
         <receiver
@@ -136,6 +145,9 @@
             android:exported="true" >
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.USER_PRESENT" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>

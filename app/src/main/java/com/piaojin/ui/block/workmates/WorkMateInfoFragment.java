@@ -17,19 +17,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.piaojin.common.CommonResource;
 import com.piaojin.domain.Employ;
 import com.piaojin.myview.MyEditText;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSDeliveredBroadcastReceiver;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSSendBroadcastReceiver;
-
+import com.piaojin.ui.block.workmates.chat.ChatActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.Iterator;
 import java.util.List;
-
 import oa.piaojin.com.androidoa.R;
 
 @EFragment
@@ -68,14 +67,13 @@ public class WorkMateInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.workmate_info, container, false);
     }
 
     //按钮点击事件
     @Click
     void sendMessageg() {
-        Intent intent = new Intent(getActivity(), ContainerActivity_.class);
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("chat_employ", employ);
         intent.putExtra("chat_employ_bundle", bundle);

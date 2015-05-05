@@ -8,7 +8,9 @@
     <!--聊天内容-->
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
         <ListView
             android:id="@+id/chatListView"
@@ -46,7 +48,9 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="7dp"
                 android:layout_centerVertical="true"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:onClick="video"
+                />
 
 
             <ImageButton
@@ -58,7 +62,9 @@
                 android:background="@drawable/btn_add"
                 android:scaleType="fitCenter"
                 android:layout_margin="7dp"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:onClick="add"
+                />
 
             <Button
                 android:id="@+id/send"
@@ -76,7 +82,9 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_centerVertical="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:onClick="send"
+                />
 
             <EditText
                 android:id="@+id/msg"
@@ -104,7 +112,9 @@
                 android:text="按住 说话"
                 android:textColor="#cccccc"
                 android:textSize="17sp"
-                android:background="@drawable/btn_start_speak" />
+                android:background="@drawable/btn_start_speak"
+                android:onClick="start_speak"
+                />
 
             <ImageButton
                 android:id="@+id/look"
@@ -116,7 +126,9 @@
                 android:layout_centerVertical="true"
                 android:layout_alignEnd="@id/msg"
                 android:layout_alignRight="@id/msg"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:onClick="look"
+                />
         </RelativeLayout>
 
         <!--表情，文件区域-->
