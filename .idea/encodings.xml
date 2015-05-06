@@ -14,6 +14,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/common/ScheduleResource.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/common/TaskResource.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/common/UploadfileResource.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/ChatDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/DepartmentDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/EmployDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/FileDAO.java" charset="UTF-8" />
@@ -22,6 +23,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/ScheduleDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/TaskDAO.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/dao/UploadfileDAO.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/Chat.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/Department.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/Employ.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/domain/MyFile.java" charset="UTF-8" />
@@ -33,6 +35,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadExceptionEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/DownloadFinishEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/LoadDataFinishEvent.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/LookEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/MessageEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/ReceiveMessageEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/event/SharedfileLoadFinishEvent.java" charset="UTF-8" />
@@ -59,7 +62,9 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/service/MyAlarmService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/CharacterParser.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/DateTimePickDialogUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/EmojiUtil.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/FileUtil.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/MediaRecorderUtil.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/MyAlarmManager.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/MyAnimationUtils.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/tools/SortAdapter.java" charset="UTF-8" />
@@ -95,6 +100,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/ChatItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/ChatThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/LookFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/VideoThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/home/GVhomeItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/home/HomeFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/message/MessageFragment.java" charset="UTF-8" />

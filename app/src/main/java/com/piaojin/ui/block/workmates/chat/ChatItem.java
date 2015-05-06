@@ -10,10 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.piaojin.domain.MyFile;
+import com.piaojin.tools.MediaRecorderUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.File;
 
 import oa.piaojin.com.androidoa.R;
 
@@ -22,6 +25,8 @@ import oa.piaojin.com.androidoa.R;
  */
 @EViewGroup(R.layout.chat_listview_item)
 public class ChatItem extends RelativeLayout {
+
+    private MediaRecorderUtil mediaRecorderUtil=null;
     Context context;
     @ViewById
     TextView tvleftmsg;
@@ -33,6 +38,10 @@ public class ChatItem extends RelativeLayout {
     LinearLayout lleft;
     @ViewById
     LinearLayout lright;
+    @ViewById
+    ImageView leftvideo;
+    @ViewById
+    ImageView rightvideo;
 
     public ChatItem(Context context) {
         super(context);
@@ -51,6 +60,22 @@ public class ChatItem extends RelativeLayout {
     @AfterViews
     void init() {
 
+        mediaRecorderUtil=new MediaRecorderUtil();
+        rightvideo.setOnClickListener(new MyOnClickListener());
+        leftvideo.setOnClickListener(new MyOnClickListener());
+    }
+
+    private class MyOnClickListener implements OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+
+            String videourl=((ImageView)view).getTag().toString();
+            File tempfile=new File(videourl);
+            if(tempfile.isFile()){
+                mediaRecorderUtil.startPlaying(videourl);
+            }
+        }
     }
 
     void MyToast(String msg) {

@@ -3,6 +3,7 @@ package com.piaojin.ui.block.workmates;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -18,8 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.piaojin.common.CommonResource;
+import com.piaojin.dao.ChatDAO;
+import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.domain.Chat;
 import com.piaojin.domain.Employ;
 import com.piaojin.myview.MyEditText;
+import com.piaojin.tools.DateUtil;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSDeliveredBroadcastReceiver;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSSendBroadcastReceiver;
 import com.piaojin.ui.block.workmates.chat.ChatActivity;
@@ -34,6 +39,9 @@ import oa.piaojin.com.androidoa.R;
 @EFragment
 public class WorkMateInfoFragment extends Fragment {
 
+    private Context context;
+    private MySqliteHelper mySqliteHelper;
+    private ChatDAO chatDAO;
     private Employ employ;
 
     public Employ getEmploy() {
@@ -58,6 +66,9 @@ public class WorkMateInfoFragment extends Fragment {
 
     @AfterViews
     void init(){
+        context=getActivity();
+        mySqliteHelper=new MySqliteHelper(context);
+        chatDAO=new ChatDAO(mySqliteHelper.getWritableDatabase());
         if(employ!=null){
             name.setText(employ.getName());
             tel.setText(employ.getTel());
@@ -72,7 +83,18 @@ public class WorkMateInfoFragment extends Fragment {
 
     //按钮点击事件
     @Click
-    void sendMessageg() {
+    void sendMessage() {
+        Chat chat=chatDAO.findById(employ.getKid());
+        if(chat==null){
+            chat=new Chat();
+            chat.setKid(employ.getKid());
+            chat.setHead("暂无");
+            chat.setMsg("后退，我要开始装逼了!");
+            chat.setName(employ.getName());
+            chat.setSex(0);
+            chat.setTime(DateUtil.CurrentTime());
+            chatDAO.save(chat);
+        }
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("chat_employ", employ);

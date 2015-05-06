@@ -2,11 +2,14 @@ package com.piaojin.ui.block.workmates.chat;
 
 import android.content.Context;
 
+import com.piaojin.common.CommonResource;
 import com.piaojin.common.MessageResource;
 import com.piaojin.dao.MessageDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Message;
 import com.piaojin.helper.HttpHepler;
+
+import java.io.File;
 
 /**
  * Created by piaojin on 2015/5/3.,聊天线程
@@ -31,6 +34,8 @@ public class ChatThread implements Runnable{
                 sendText();
                 break;
             case MessageResource.VIDEO:
+                System.out.println("piaojin!");
+                sendVideo();
                 break;
             case MessageResource.PICTURE:
                 break;
@@ -49,6 +54,14 @@ public class ChatThread implements Runnable{
 
     //语音聊天
     private void sendVideo(){
-
+        try {
+            boolean result=httpHelper.postFile(HttpHepler.SENDVIDEO,message);
+            System.out.println("result"+result);
+            if(result){
+                httpHelper.sendMessage(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -11,6 +11,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.piaojin.common.LookResource;
+import com.piaojin.event.LookEvent;
+import com.piaojin.otto.BusProvider;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -100,7 +102,7 @@ public class LookFragment extends Fragment {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            MyToast(i+"");
+            BusProvider.getInstance().post(new LookEvent(i+""));
         }
     }
 
@@ -109,6 +111,18 @@ public class LookFragment extends Fragment {
         list.clear();
         initLook();
         simpleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
     }
 
     void MyToast(String msg) {

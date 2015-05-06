@@ -6,16 +6,19 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.piaojin.common.CommonResource;
+import com.piaojin.common.FileResource;
 import com.piaojin.common.LookResource;
 import com.piaojin.common.MessageResource;
 import com.piaojin.common.UserInfo;
@@ -23,24 +26,34 @@ import com.piaojin.dao.MessageDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Employ;
 import com.piaojin.domain.Message;
+import com.piaojin.event.LookEvent;
 import com.piaojin.event.ReceiveMessageEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
 import com.piaojin.tools.DateUtil;
+import com.piaojin.tools.EmojiUtil;
 import com.piaojin.tools.ExitApplication;
+import com.piaojin.tools.MediaRecorderUtil;
 import com.piaojin.tools.MyAnimationUtils;
 import com.piaojin.ui.block.workmates.WorkMatesActivity_;
 import com.squareup.otto.Subscribe;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import oa.piaojin.com.androidoa.HomeActivity_;
 import oa.piaojin.com.androidoa.MyPagerAdapter;
 import oa.piaojin.com.androidoa.R;
 
 public class ChatActivity extends FragmentActivity {
 
+    private boolean isStartRecord=false;
+    private File dir;
+    private File videofile;
+    private MediaRecorderUtil mediaRecorderUtil=null;
     private ChatAdapter chatAdapter = null;
     private List<Message> list = new ArrayList<Message>();//存放聊天信息
     private MySqliteHelper mySqliteHelper;
@@ -65,6 +78,7 @@ public class ChatActivity extends FragmentActivity {
     Button send;
     Button start_speak;
     EditText msg;
+    ImageView volume;
     RelativeLayout lookContent;
     LinearLayout fileContent;
     LookFragment lookFragment;
@@ -84,6 +98,7 @@ public class ChatActivity extends FragmentActivity {
         userInfo.init();
         messageDAO = new MessageDAO(mySqliteHelper.getWritableDatabase());
         httpHepler = new HttpHepler();
+        mediaRecorderUtil=new MediaRecorderUtil();
         //把当前Activity放入集合，方便最后完全退出程序
         ExitApplication.getInstance().addActivity(this);
         employ = (Employ) getIntent().getBundleExtra("chat_employ_bundle").getSerializable("chat_employ");
@@ -98,7 +113,10 @@ public class ChatActivity extends FragmentActivity {
         look = (ImageButton) findViewById(R.id.look);
         add = (ImageButton) findViewById(R.id.add);
         send = (Button) findViewById(R.id.send);
+        volume = (ImageView) findViewById(R.id.volume);
         start_speak = (Button) findViewById(R.id.start_speak);
+        start_speak.setOnLongClickListener(new RecordListener());
+        start_speak.setOnTouchListener(new MyOnTouchListener());
         msg = (EditText) findViewById(R.id.msg);
         lookContent = (RelativeLayout) findViewById(R.id.lookContent);
         fileContent = (LinearLayout) findViewById(R.id.fileContent);
@@ -138,6 +156,7 @@ public class ChatActivity extends FragmentActivity {
         initList();
         initChatAdapter();
         initActionBar();
+        chatListView.setSelection(chatListView.getBottom());
     }
 
     private void initActionBar() {
@@ -230,23 +249,27 @@ public class ChatActivity extends FragmentActivity {
         switch (type) {
             case MessageResource.TEXT:
                 message.setMsg(msg.getText().toString());
-                message.setSenderid(UserInfo.employ.getKid());
-                message.setReceiverid(employ.getKid());
-                message.setType(type);
-                message.setKid(0);
-                message.setSendtime(DateUtil.CurrentTime());
-                message.setPhotourl("");
-                message.setReceivetime("");
-                message.setStatus(0);
                 message.setVideourl("");
-                message.setReceiverip(employ.getPhoneip());
+                message.setPhotourl("");
                 break;
             case MessageResource.VIDEO:
+                message.setPhotourl("");
+                message.setMsg("");
+                message.setVideourl(videofile.getAbsolutePath());
                 break;
             case MessageResource.PICTURE:
+                message.setMsg("");
+                message.setVideourl("");
                 break;
         }
-        message.setMsg(msg.getText().toString());
+        message.setSenderid(UserInfo.employ.getKid());
+        message.setReceiverid(employ.getKid());
+        message.setType(type);
+        message.setKid(0);
+        message.setSendtime(DateUtil.CurrentTime());
+        message.setReceivetime("");
+        message.setStatus(0);
+        message.setReceiverip(employ.getPhoneip());
         messageDAO.save(message);
     }
 
@@ -261,8 +284,8 @@ public class ChatActivity extends FragmentActivity {
     }
 
     public void start_speak(View view) {
-        MyToast("123");
         type = MessageResource.VIDEO;
+
     }
 
     private void isHidleSend() {
@@ -299,8 +322,12 @@ public class ChatActivity extends FragmentActivity {
         @Subscribe
         public void onReceiveMessageEvent(ReceiveMessageEvent receiveMessageEvent) {
             Message tempmessage = receiveMessageEvent.getMessage();
-            MyToast(tempmessage.getMsg());
             updateView();
+        }
+
+        @Subscribe
+        public void onLookEvent(LookEvent lookEvent){
+            msg.append("["+lookEvent.getLookmsg()+"]");
         }
     }
 
@@ -313,7 +340,7 @@ public class ChatActivity extends FragmentActivity {
 
     //返回点击事件
     public void back2(View view) {
-        WorkMatesActivity_.intent(this).start();
+        HomeActivity_.intent(this).start();
     }
 
     @Override
@@ -323,7 +350,52 @@ public class ChatActivity extends FragmentActivity {
         BusProvider.getInstance().unregister(eventHandler);
     }
 
+
     void MyToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private class MyOnTouchListener implements View.OnTouchListener {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    MyToast("停止录音");
+                    if(isStartRecord){
+                        mediaRecorderUtil.stopRecording();
+                        //把录音发送出去
+                        initMessage();
+                        new Thread(new ChatThread(ChatActivity.this, httpHepler, message)).start();
+                    }
+                    isStartRecord=false;
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        }
+    }
+
+    private class RecordListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View view) {
+            type = MessageResource.VIDEO;
+            MyToast("开始录音");
+            String SDPath = FileResource.getExternalSdCardPath();
+            dir = new File(SDPath + File.separator + "MyVideo" + File.separator);
+            if (!dir.exists())
+                dir.mkdirs();
+            videofile = new File(dir, DateUtil.CurrentTime2()+".arm");
+            if (!videofile.exists()) {
+                try {
+                    videofile.createNewFile();
+                    mediaRecorderUtil.startRecording(videofile.getAbsolutePath());
+                    isStartRecord=true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }
     }
 }

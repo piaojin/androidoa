@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 import com.piaojin.common.CommonResource;
+import com.piaojin.common.MessageResource;
 import com.piaojin.dao.MessageDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Message;
@@ -19,6 +20,7 @@ import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.DateUtil;
 import com.piaojin.tools.StreamTool;
 import com.piaojin.ui.block.workmates.chat.ChatActivity;
+import com.piaojin.ui.block.workmates.chat.VideoThread;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ import oa.piaojin.com.androidoa.R;
 public class MessageService extends Service {
 
     private MySqliteHelper mySqliteHelper;
+    private Handler handler2;
     private Handler handler;
     private MessageDAO messageDAO;
     private ServerSocket serverSocket = null;
@@ -42,6 +45,7 @@ public class MessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        handler2=new MyHandler2();
         handler=new MyHandler();
         mySqliteHelper=new MySqliteHelper(this);
         messageDAO=new MessageDAO(mySqliteHelper.getWritableDatabase());
@@ -60,14 +64,32 @@ public class MessageService extends Service {
         return super.onStartCommand(intent, START_STICKY, startId);
     }
 
-    private class MyHandler extends Handler{
+    private class MyHandler2 extends Handler{
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
             Message message=(Message)msg.obj;
             BusProvider.getInstance().post(new ReceiveMessageEvent(message));
-            BusProvider.getInstance().post(new MessageEvent(message));
-            Notification("","","");
+        }
+    }
+
+    private class MyHandler extends Handler{
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            Message message=(Message)msg.obj;
+            switch (message.getType()) {
+                case MessageResource.TEXT:
+                    BusProvider.getInstance().post(new ReceiveMessageEvent(message));
+                    break;
+                case MessageResource.VIDEO:
+                    new Thread(new VideoThread(MessageService.this,message)).start();
+                    new Thread(new HttpThread(message)).start();
+                    break;
+                case MessageResource.PICTURE:
+                    break;
+            }
+            Notification("", "", "");
         }
     }
 
@@ -138,6 +160,37 @@ public class MessageService extends Service {
         Intent sevice = new Intent(this, MessageService.class);
         this.startService(sevice);
         stopForeground(true);
+    }
+
+    private class HttpThread implements Runnable {
+
+        private Message message;
+
+        public HttpThread(Message message) {
+            this.message = message;
+        }
+
+        private Thread thread = new Thread(this);
+
+        @Override
+        public void run() {
+            while (!thread.isInterrupted()) {
+                if (CommonResource.isLoadVideoFinish) {
+                    CommonResource.isLoadVideoFinish=false;
+                    break;
+                }
+            }
+            android.os.Message m=new android.os.Message();
+            m.obj=message;
+            handler2.sendMessage(m);
+            System.out.println("下载语音完毕!");
+        }
+
+        public void close() {
+            if (!thread.isInterrupted()) {
+                thread.interrupt();
+            }
+        }
     }
 
     void MyToast(String msg) {

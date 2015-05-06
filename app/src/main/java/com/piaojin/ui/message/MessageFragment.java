@@ -1,13 +1,23 @@
 package com.piaojin.ui.message;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import com.piaojin.dao.ChatDAO;
+import com.piaojin.dao.EmployDAO;
+import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.domain.Chat;
+import com.piaojin.domain.Employ;
+import com.piaojin.ui.block.workmates.chat.ChatActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -23,11 +33,17 @@ import oa.piaojin.com.androidoa.R;
 @EFragment
 public class MessageFragment extends Fragment {
 
+    private Employ employ;
+    private EmployDAO employDAO;
+    private ChatDAO chatDAO;
+    private MySqliteHelper mySqliteHelper;
+    private List<Chat> chatList;
     @ViewById
     public ListView MessaeList;
     private SimpleAdapter msgAdapter;
     private Context context;
     private List<Map<String,Object>> list;
+
     public static MessageFragment newInstance(String param1, String param2) {
         MessageFragment fragment = new MessageFragment();
         return fragment;
@@ -36,20 +52,37 @@ public class MessageFragment extends Fragment {
     @AfterViews
     void init(){
         context=getActivity();
+        mySqliteHelper=new MySqliteHelper(context);
+        chatDAO=new ChatDAO(mySqliteHelper.getReadableDatabase());
+        chatList=new ArrayList<Chat>();
         list=new ArrayList<Map<String, Object>>();
-        for(int i=0;i<6;i++){
+        initList();
+        initData();
+        msgAdapter =new SimpleAdapter(context,list,R.layout.messagelist_item,new String[]{
+                "tvKid","head_icon","name","msg","last_time"
+        },new int[]{R.id.tvKid,R.id.head_icon,R.id.name,R.id.msg,R.id.last_time});
+        MessaeList.setAdapter(msgAdapter);
+        MessaeList.setOnItemClickListener(new MyOnItemClickListener());
+    }
+
+    private void initList(){
+
+        chatList=chatDAO.getAllChat();
+    }
+
+    private void initData(){
+        list.clear();
+        for(Chat chat:chatList){
             Map<String,Object> map=new HashMap<String,Object>();
             map.put("head_icon",R.drawable.avatar0);
-            map.put("sender","桂煌");
-            map.put("msg","后退，我要开始装逼了！");
-            map.put("last_time","2015-3-26");
+            map.put("tvKid",chat.getKid());
+            map.put("name",chat.getName());
+            map.put("msg",chat.getMsg());
+            map.put("last_time",chat.getTime());
             list.add(map);
         }
-        msgAdapter =new SimpleAdapter(context,list,R.layout.messagelist_item,new String[]{
-                "head_icon","sender","msg","last_time"
-        },new int[]{R.id.head_icon,R.id.sender,R.id.msg,R.id.last_time});
-        MessaeList.setAdapter(msgAdapter);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,4 +90,42 @@ public class MessageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    private class MyOnItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if(employDAO==null){
+                employDAO=new EmployDAO(mySqliteHelper.getReadableDatabase());
+            }
+            Map<String, Object> map = new HashMap<String, Object>();
+            map = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
+            int kid=Integer.valueOf(map.get("tvKid").toString());
+            employ=employDAO.getById(kid);
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("chat_employ", employ);
+            intent.putExtra("chat_employ_bundle", bundle);
+            getActivity().startActivity(intent);
+        }
+    }
+
+    private void updateView(){
+        initList();
+        initData();
+        msgAdapter.notifyDataSetChanged();
+    }
+
+    void MyToast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
 }

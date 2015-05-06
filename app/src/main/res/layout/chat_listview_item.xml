@@ -37,9 +37,10 @@
             android:background="@drawable/ov"
             >
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/ov"
+                android:id="@+id/leftvideo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/zo"
                 android:layout_centerInParent="true"
                 android:visibility="gone"
                 />
@@ -48,9 +49,10 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_centerInParent="true"
-              android:layout_margin="20dp"
-              android:text="66666666666666666666666"
+              android:layout_margin="26dp"
+              android:text=""
               android:singleLine="false"
+              android:gravity="center"
               />
         </RelativeLayout>
     </LinearLayout>
@@ -86,13 +88,22 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             >
+            <ImageView
+                android:id="@+id/rightvideo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/zo"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                />
             <TextView
                 android:id="@+id/tvrightmsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="666666"
+                android:text=""
                 android:layout_centerInParent="true"
-                android:layout_margin="20dp"
+                android:layout_margin="26dp"
+                android:gravity="center"
                 />
         </RelativeLayout>
         <!--头像-->

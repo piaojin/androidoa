@@ -20,6 +20,8 @@ import java.util.List;
  * Created by piaojin on 2015/4/12.
  */
 public class CommonResource {
+
+    public static boolean isLoadVideoFinish=false;
     public static int test=0;
     public static boolean isSharedfileLoading = false;
     public static Gson gson = new Gson();

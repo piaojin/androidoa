@@ -8,8 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.piaojin.common.MessageResource;
 import com.piaojin.common.UserInfo;
 import com.piaojin.domain.Message;
+import com.piaojin.tools.EmojiUtil;
 
 import java.util.List;
 
@@ -69,10 +71,31 @@ public class ChatAdapter extends BaseAdapter {
         //发送消息
         if (IMsgViewType.MSGTYPE == IMsgViewType.IMVT_TO_MSG) {
 
-            chatItem.tvrightmsg.setText(message.getMsg());
+            switch (message.getType()) {
+                case MessageResource.TEXT:
+                    chatItem.tvrightmsg.setVisibility(View.VISIBLE);
+                    chatItem.tvrightmsg.append(EmojiUtil.StringToSpan(context, message.getMsg()));
+                    break;
+                case MessageResource.VIDEO:
+                    chatItem.rightvideo.setVisibility(View.VISIBLE);
+                    chatItem.rightvideo.setTag(message.getVideourl());
+                    break;
+                case MessageResource.PICTURE:
+                    break;
+            }
         } else {
-
-            chatItem.tvleftmsg.setText(message.getMsg());
+            switch (message.getType()) {
+                case MessageResource.TEXT:
+                    chatItem.tvleftmsg.setVisibility(View.VISIBLE);
+                    chatItem.tvleftmsg.append(EmojiUtil.StringToSpan(context, message.getMsg()));
+                    break;
+                case MessageResource.VIDEO:
+                    chatItem.leftvideo.setVisibility(View.VISIBLE);
+                    chatItem.leftvideo.setTag(message.getVideourl());
+                    break;
+                case MessageResource.PICTURE:
+                    break;
+            }
         }
         return chatItem;
     }

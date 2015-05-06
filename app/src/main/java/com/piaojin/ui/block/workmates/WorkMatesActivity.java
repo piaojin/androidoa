@@ -135,8 +135,8 @@ public class WorkMatesActivity extends FragmentActivity {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
                 int kid=((SortModel) adapter.getItem(position)).getKid();
                 Employ e=employDAO.getById(kid);
-                MyToast(e.getName());
                 if(e!=null){
+                    e.setKid(kid);
                     workMateInfoFragment.setEmploy(e);
                     initInfo();
                 }

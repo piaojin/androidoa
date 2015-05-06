@@ -45,6 +45,7 @@ dependencies {
     compile files('E:/androidworkspace/AndroidOA/libs/commons-io-2.4.jar')
     //NumberProgressBar
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    compile files('E:/androidworkspace/AndroidOA/libs/httpmime-4.1.1.jar')
 }
 
 apt {

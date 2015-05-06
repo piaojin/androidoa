@@ -35,7 +35,12 @@ public class DateUtil {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	return sdf.format(new Date());
     }
-    
+
+    public static String CurrentTime2(){
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+    	return sdf.format(new Date());
+    }
+
     public static Date dayBeforeBeginTime(int num) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -num);
