@@ -1,6 +1,7 @@
 package com.piaojin.ui.block.personalfile;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +18,17 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.piaojin.common.FileResource;
 import com.piaojin.common.UploadfileResource;
 import com.piaojin.common.UserInfo;
 import com.piaojin.domain.MyFile;
+import com.piaojin.event.StartUploadEvent;
 import com.piaojin.helper.NetWorkHelper;
+import com.piaojin.myview.MyDialog;
+import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.FileUtil;
 import com.piaojin.ui.block.upload.UploadService;
+import com.squareup.otto.Subscribe;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -33,7 +37,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -42,6 +45,7 @@ import oa.piaojin.com.androidoa.R;
 
 public class MyFileSelectDialog extends DialogFragment {
 
+    private Context context;
     private View view;
     private ImageView nothing;
     private EditText path;
@@ -63,6 +67,7 @@ public class MyFileSelectDialog extends DialogFragment {
     private StringBuffer pathstr;//当前文件或目录绝对路径
     private boolean isfile = false;
     UserInfo userInfo;
+    private MyDialog myDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,6 +76,8 @@ public class MyFileSelectDialog extends DialogFragment {
         init(view);
         userInfo=new UserInfo(getActivity());
         userInfo.init();
+        context=getActivity();
+        myDialog=new MyDialog(context);
         return view;
     }
 
@@ -213,21 +220,6 @@ public class MyFileSelectDialog extends DialogFragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
     //获取文件类型
     private int getFileType(File file) {
         int type = -1;
@@ -284,6 +276,7 @@ public class MyFileSelectDialog extends DialogFragment {
                 myfile.setStatus(FileResource.STATUS_DOWN);
                 myfile.setCompletedsize(0.00);
                 myfile.setIscomplete(0);
+                myDialog.show();
                 Intent intent = new Intent(getActivity(), UploadService.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("myfile", myfile);
@@ -309,6 +302,40 @@ public class MyFileSelectDialog extends DialogFragment {
             initList(file.getAbsolutePath());
             simpleAdapter.notifyDataSetChanged();
         }
+    }
+
+    //开始上传文件
+    @Subscribe
+    public void onStartUploadEvent(StartUploadEvent startUploadEvent) {
+
+        myDialog.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     void MyToast(String msg) {

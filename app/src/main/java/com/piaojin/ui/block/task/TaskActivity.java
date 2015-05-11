@@ -127,6 +127,7 @@ public class TaskActivity extends FragmentActivity {
     }
 
     public void update(View view){
+        MyToast("开始更新！");
         new Thread(new HttpgetMytaskThread(this,mySharedPreferences,httpHelper)).start();
         new Thread(new HttpThread()).start();
     }

@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:icon="@drawable/pushicon"
@@ -53,10 +53,10 @@
             android:label="@string/title_activity_container"
             android:theme="@style/MyActivityTheme" >
         </activity>
-        <activity android:name="com.piaojin.ui.block.workmates.chat.ChatActivity"
+        <activity
+            android:name="com.piaojin.ui.block.workmates.chat.ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/MyActivityTheme"
-            >
+            android:theme="@style/MyActivityTheme" >
         </activity>
 
         <service
@@ -73,11 +73,6 @@
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TestActivity2"
@@ -138,26 +133,29 @@
             android:label="@string/title_activity_auto_login"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+
         <service
             android:name="com.piaojin.service.MessageService"
             android:enabled="true"
-            android:exported="true"
-            >
-            <!--android:process=":remote_1"-->
+            android:exported="true" >
+
+            <!-- android:process=":remote_1" -->
         </service>
 
         <receiver
             android:name="com.piaojin.broadcastreceiver.BackgroundReceiver"
             android:enabled="true"
             android:exported="true" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

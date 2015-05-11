@@ -34,7 +34,6 @@ public class ChatThread implements Runnable{
                 sendText();
                 break;
             case MessageResource.VIDEO:
-                System.out.println("piaojin!");
                 sendVideo();
                 break;
             case MessageResource.PICTURE:
@@ -56,7 +55,6 @@ public class ChatThread implements Runnable{
     private void sendVideo(){
         try {
             boolean result=httpHelper.postFile(HttpHepler.SENDVIDEO,message);
-            System.out.println("result"+result);
             if(result){
                 httpHelper.sendMessage(message);
             }

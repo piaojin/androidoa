@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.piaojin.common.FileResource;
 import com.piaojin.domain.MyFile;
 
 import java.util.ArrayList;
@@ -37,9 +38,11 @@ public class FileDAO {
 
     public void clear(int uid){
         String sql="delete from myfile where uid <> "+uid;
-        int n=db.delete(TABLE,"uid <> ?",new String[]{String.valueOf(uid)});
-        System.out.println("n:"+n);
-        //db.execSQL(sql);
+       /* int n=db.delete(TABLE," uid <> ? and type = ? ",new String[]{String.valueOf(uid),
+                String.valueOf(FileResource.TYPE_SHARED)});*/
+        int n=db.delete(TABLE,null,null);
+        //int n=db.delete(TABLE,null,null);
+        System.out.println("delete myfile n:"+n);
     }
 
     public FileDAO(SQLiteDatabase db) {

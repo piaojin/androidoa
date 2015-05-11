@@ -54,6 +54,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/helper/UDPServerThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/json/TaskJson.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/myview/ClearEditText.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/myview/MyDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/myview/NoticeNum.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/myview/SideBar.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/otto/BusProvider.java" charset="UTF-8" />
@@ -72,6 +73,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadService.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/DownloadThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/download/MyDownloadDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/personalfile/ActionDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/personalfile/MyFileSelectDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/personalfile/PersonalFileActivity.java" charset="UTF-8" />
@@ -100,6 +102,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/ChatItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/ChatThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/LookFragment.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/VideoDialog.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/block/workmates/chat/VideoThread.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/home/GVhomeItem.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/piaojin/ui/home/HomeFragment.java" charset="UTF-8" />

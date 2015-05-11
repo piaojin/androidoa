@@ -16,31 +16,4 @@
         android:layout_height="wrap_content"
         android:text="piaojin" />
 
-    <Button
-        android:id="@+id/stopRecording"
-        android:layout_below="@id/piaojin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="stopRecording" />
-
-    <Button
-        android:id="@+id/playvideo"
-        android:layout_below="@id/stopRecording"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="playvideo" />
-
-    <Button
-        android:id="@+id/longclick"
-        android:layout_below="@id/playvideo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="longclick" />
-
-    <ImageView
-        android:id="@+id/volume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        />
 </RelativeLayout>

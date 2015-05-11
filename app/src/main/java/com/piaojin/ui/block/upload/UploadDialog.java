@@ -78,7 +78,7 @@ public class UploadDialog extends DialogFragment {
             public void onClick(View view) {
                 //发布结束文件上传
                 UploadfileResource.isCancel = true;
-                UploadDialog.this.dismiss();
+                UploadDialog.this.dismissAllowingStateLoss();
             }
         });
         setMax(myfile.getFilesize().intValue());
@@ -159,7 +159,7 @@ public class UploadDialog extends DialogFragment {
         } else {
             MyToast("文件上传失败!");
         }
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     //文件上传出错
@@ -168,7 +168,7 @@ public class UploadDialog extends DialogFragment {
         BusProvider.getInstance().post(new UploadFinishEvent(
                 myfile));
         MyToast("文件上传出错!");
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     void MyToast(String msg) {

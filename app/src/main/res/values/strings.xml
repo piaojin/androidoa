@@ -15,5 +15,6 @@
     <string name="title_activity_task">TaskActivity</string>
     <string name="title_activity_auto_login">AutoLoginActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_dialog">DialogActivity</string>
 
 </resources>

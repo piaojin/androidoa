@@ -149,6 +149,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    //登录成功并且加载数据结束
     @Subscribe
     public void onLoadDataFinishEvent(LoadDataFinishEvent loadDataFinishEvent) {
         if(CommonResource.LoginType){
@@ -198,7 +199,10 @@ public class MainActivity extends Activity {
                 String result = msg.obj.toString();
                 if (httpHepler.ERROR.equals(result)) {
                     str = "用户名或密码错误!";
-                } else {
+                }else if(httpHepler.NULLERROR.equals(result)){
+                    str="用户不存在!";
+                }
+                else if(result.length()>16){
                     //包含用户信息的json字符串
                     str = result;
                     //保存用户信息
@@ -222,6 +226,7 @@ public class MainActivity extends Activity {
         //初始化数据服务
         Intent backgroundintent = new Intent(MainActivity.this, BackgroudService_.class);
         MainActivity.this.startService(backgroundintent);
+        //new Thread(new HttpThread()).start();
         //聊天服务
         Intent MessageServiceintent=new Intent(MainActivity.this, MessageService.class);
         MainActivity.this.startService(MessageServiceintent);

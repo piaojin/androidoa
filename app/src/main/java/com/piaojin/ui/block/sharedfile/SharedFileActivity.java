@@ -22,6 +22,7 @@ import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.HttpLoadAllSharedFileThread;
 import com.piaojin.helper.MySharedPreferences;
 import com.piaojin.module.AppModule;
+import com.piaojin.myview.MyDialog;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
 import com.piaojin.tools.DateUtil;
@@ -33,6 +34,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,20 +58,13 @@ public class SharedFileActivity extends Activity {
     private ObjectGraph objectGraph;
     private MySharedPreferences mySharedPreferences;
     private Handler handler;
+    private MyDialog myDialog;
 
     private void initList() {
         if(list!=null){
             list.clear();
         }
         list = fileDAO.getAllNotDownFile();
-    }
-
-    private void initAdapter() {
-        if (sharedFileAdapter == null) {
-            if (list != null && list.size() > 0) {
-                sharedFileAdapter = new SharedFileAdapter(this, list);
-            }
-        }
     }
 
     @Override
@@ -84,11 +79,13 @@ public class SharedFileActivity extends Activity {
 
     @AfterViews
     void init() {
+        myDialog=new MyDialog(this);
         mySqliteHelper = new MySqliteHelper(this);
+        list=new ArrayList<MyFile>();
         fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
         initList();
         initActionBar();
-        initAdapter();
+        sharedFileAdapter = new SharedFileAdapter(this, list);
         sharedFileList.setAdapter(sharedFileAdapter);
         sharedFileList.setOnItemClickListener(new MyOnItemClickListener());
         handler=new MyHandler();
@@ -106,9 +103,10 @@ public class SharedFileActivity extends Activity {
     //返回按钮点击事件
     public void back(View view) {
         HomeActivity_.intent(this).start();
-        overridePendingTransition(R.anim.scale_in, R.anim.down_out);
+        overridePendingTransition(R.anim.down_in, R.anim.top_out);
     }
 
+    //刷新共享文件
     public void addSchedule(View view) {
         new Thread(new HttpLoadAllSharedFileThread(this, mySharedPreferences, httpHelper)).start();
         new Thread(new HttpThread()).start();
@@ -130,6 +128,7 @@ public class SharedFileActivity extends Activity {
     //开始下载文件
     @Subscribe
     public void onStartDownloadEvent(StartDownloadEvent startDownloadEvent) {
+        myDialog.dismiss();
         DownloadDialog downloadDialog = new DownloadDialog(startDownloadEvent.getMyFile());
         Fragment fragment=getFragmentManager().findFragmentByTag("DownloadDialog");
         if(fragment!=null&&!fragment.isRemoving()) {
@@ -144,8 +143,6 @@ public class SharedFileActivity extends Activity {
         if(downloadDialog!=null){
             getFragmentManager().beginTransaction().remove(downloadDialog).commitAllowingStateLoss();
         }
-        /*initList();
-        sharedFileAdapter.updateDate(list);*/
     }
 
     private void close() {
@@ -190,9 +187,15 @@ public class SharedFileActivity extends Activity {
             //更新共享文件
             initList();
             sharedFileAdapter.updateDate(list);
-            MyToast("更新共享文件完毕!"+list.size());
+            MyToast("更新共享文件完毕!");
         }
     }
+
+
+    public void ShowWaitDialog(){
+        myDialog.show();
+    }
+
     void MyToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }

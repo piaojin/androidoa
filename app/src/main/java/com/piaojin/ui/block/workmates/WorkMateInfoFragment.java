@@ -59,11 +59,6 @@ public class WorkMateInfoFragment extends Fragment {
     @ViewById
     TextView address;
 
-    public static WorkMateInfoFragment newInstance(String param1, String param2) {
-        WorkMateInfoFragment fragment = new WorkMateInfoFragment();
-        return fragment;
-    }
-
     @AfterViews
     void init(){
         context=getActivity();

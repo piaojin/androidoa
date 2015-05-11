@@ -14,6 +14,7 @@ import com.piaojin.domain.MyFile;
 import com.piaojin.event.StartUploadEvent;
 import com.piaojin.event.UploadFinishEvent;
 import com.piaojin.module.AppModule;
+import com.piaojin.myview.MyDialog;
 import com.piaojin.otto.BusProvider;
 import com.piaojin.tools.ActionBarTools;
 import com.piaojin.tools.ExitApplication;
@@ -155,6 +156,7 @@ public class PersonalFileActivity extends Activity {
     //开始上传文件
     @Subscribe
     public void onStartUploadEvent(StartUploadEvent startUploadEvent) {
+
         uploadDialog = new UploadDialog(startUploadEvent.getFile());
         Fragment fragment=getFragmentManager().findFragmentByTag("UploadDialog");
         if(fragment!=null&&!fragment.isRemoving()) {

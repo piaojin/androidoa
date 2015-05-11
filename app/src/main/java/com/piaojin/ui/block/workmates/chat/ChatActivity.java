@@ -50,6 +50,7 @@ import oa.piaojin.com.androidoa.R;
 
 public class ChatActivity extends FragmentActivity {
 
+    private VideoDialog videoDialog;
     private boolean isStartRecord=false;
     private File dir;
     private File videofile;
@@ -78,7 +79,6 @@ public class ChatActivity extends FragmentActivity {
     Button send;
     Button start_speak;
     EditText msg;
-    ImageView volume;
     RelativeLayout lookContent;
     LinearLayout fileContent;
     LookFragment lookFragment;
@@ -105,6 +105,7 @@ public class ChatActivity extends FragmentActivity {
         initView();
         init();
         initActionBar();
+        videoDialog=new VideoDialog(this);
     }
 
     private void initView() {
@@ -113,7 +114,6 @@ public class ChatActivity extends FragmentActivity {
         look = (ImageButton) findViewById(R.id.look);
         add = (ImageButton) findViewById(R.id.add);
         send = (Button) findViewById(R.id.send);
-        volume = (ImageView) findViewById(R.id.volume);
         start_speak = (Button) findViewById(R.id.start_speak);
         start_speak.setOnLongClickListener(new RecordListener());
         start_speak.setOnTouchListener(new MyOnTouchListener());
@@ -271,6 +271,7 @@ public class ChatActivity extends FragmentActivity {
         message.setStatus(0);
         message.setReceiverip(employ.getPhoneip());
         messageDAO.save(message);
+        updateView();
     }
 
     public void send(View view) {
@@ -335,7 +336,7 @@ public class ChatActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(eventHandler);
-
+        CommonResource.isChatting=true;
     }
 
     //返回点击事件
@@ -346,6 +347,7 @@ public class ChatActivity extends FragmentActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        CommonResource.isChatting=false;
         CommonResource.chatActivity = null;
         BusProvider.getInstance().unregister(eventHandler);
     }
@@ -360,12 +362,12 @@ public class ChatActivity extends FragmentActivity {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:
+                    if(videoDialog.isShowing()){
+                        videoDialog.dismiss();
+                    }
                     MyToast("停止录音");
                     if(isStartRecord){
-                        mediaRecorderUtil.stopRecording();
-                        //把录音发送出去
-                        initMessage();
-                        new Thread(new ChatThread(ChatActivity.this, httpHepler, message)).start();
+                        sendRecord();
                     }
                     isStartRecord=false;
                     break;
@@ -376,9 +378,17 @@ public class ChatActivity extends FragmentActivity {
         }
     }
 
+    public void sendRecord(){
+        mediaRecorderUtil.stopRecording();
+        //把录音发送出去
+        initMessage();
+        new Thread(new ChatThread(ChatActivity.this, httpHepler, message)).start();
+    }
+
     private class RecordListener implements View.OnLongClickListener {
         @Override
         public boolean onLongClick(View view) {
+            videoDialog.show();
             type = MessageResource.VIDEO;
             MyToast("开始录音");
             String SDPath = FileResource.getExternalSdCardPath();

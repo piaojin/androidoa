@@ -38,11 +38,13 @@
             >
             <ImageView
                 android:id="@+id/leftvideo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/zo"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@drawable/playvideoa"
                 android:layout_centerInParent="true"
                 android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:layout_margin="10dp"
                 />
           <TextView
               android:id="@+id/tvleftmsg"
@@ -90,11 +92,13 @@
             >
             <ImageView
                 android:id="@+id/rightvideo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/zo"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@drawable/playvideob"
                 android:layout_centerInParent="true"
                 android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:layout_margin="10dp"
                 />
             <TextView
                 android:id="@+id/tvrightmsg"

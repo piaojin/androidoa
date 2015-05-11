@@ -1,9 +1,8 @@
 package com.piaojin.ui.block.sharedfile;
 
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.piaojin.common.FileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.tools.MyAnimationUtils;
 import com.piaojin.ui.block.download.DownloadService;
-import com.piaojin.ui.block.upload.UploadService;
-
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -30,7 +25,7 @@ import oa.piaojin.com.androidoa.R;
 @EViewGroup(R.layout.sharedfile_item)
 public class SharedFileItem extends LinearLayout {
 
-    private Context context;
+    private SharedFileActivity sharedFileActivity;
 
     public MyFile getMyFile() {
         return myFile;
@@ -61,29 +56,30 @@ public class SharedFileItem extends LinearLayout {
     private MyFile myFile;
     private boolean hide=true;
 
-    public SharedFileItem(Context context) {
+    public SharedFileItem(SharedFileActivity context) {
         super(context);
-        this.context=context;
+        this.sharedFileActivity=context;
     }
 
-    public SharedFileItem(Context context, AttributeSet attrs) {
+    public SharedFileItem(SharedFileActivity context, AttributeSet attrs) {
         super(context, attrs);
-        this.context=context;
+        this.sharedFileActivity=context;
     }
 
-    public SharedFileItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SharedFileItem(SharedFileActivity context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context=context;
+        this.sharedFileActivity=context;
     }
 
     @Click
     void download(){
-            if(NetWorkHelper.isAvailableNetwork(context)){
-                Intent intent =new Intent(context,DownloadService.class);
+            if(NetWorkHelper.isAvailableNetwork(sharedFileActivity)){
+                sharedFileActivity.ShowWaitDialog();
+                Intent intent =new Intent(sharedFileActivity,DownloadService.class);
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("downmyfile",myFile);
                 intent.putExtra("downmyfile_bundle",bundle);
-                context.startService(intent);
+                sharedFileActivity.startService(intent);
             }else{
                 MyToast("没有网络!");
             }
@@ -94,13 +90,19 @@ public class SharedFileItem extends LinearLayout {
         hide=!hide;
         if(hide){
             lldownload.setVisibility(View.GONE);
-            MyAnimationUtils.ScaleOut(lldownload,context);
+            MyAnimationUtils.ScaleOut(lldownload,sharedFileActivity);
         }else{
             lldownload.setVisibility(View.VISIBLE);
-            MyAnimationUtils.ScaleIn(lldownload, context);
+            MyAnimationUtils.ScaleIn(lldownload, sharedFileActivity);
         }
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
     void MyToast(String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(sharedFileActivity, msg, Toast.LENGTH_SHORT).show();
     }
 }

@@ -121,6 +121,7 @@ public class DownloadThread implements Runnable {
                     if(!DownloadfileResource.isCancel){
                         //更新已经下载
                         fileDAO = new FileDAO(mySqliteHelper.getWritableDatabase());
+                        myfile.setStatus(FileResource.STATUS_DOWN);
                         fileDAO.updateDownFile(myfile);
                     }
                 }else{

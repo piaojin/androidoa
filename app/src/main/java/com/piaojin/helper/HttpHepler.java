@@ -7,6 +7,7 @@ import com.piaojin.domain.Employ;
 import com.piaojin.domain.Message;
 import com.piaojin.domain.MyFile;
 import com.piaojin.domain.Task;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -37,35 +39,35 @@ public class HttpHepler {
     public final String NULLERROR = "nullerror";
     //服务器ip地址
     //发布任务
-    public static final String SENDTASK = "http://219.228.251.73:8080/cecWeb/taskAddTask";
+    public static final String SENDTASK = "http://219.228.251.81:8080/cecWeb/taskAddTask";
     //语音准备
-    public static final String RELAY = "http://219.228.251.73:8080/cecWeb/messagerelay";
+    public static final String RELAY = "http://219.228.251.81:8080/cecWeb/messagerelay";
     //发送语音
-    public static final String SENDVIDEO = "http://219.228.251.73:8080/cecWeb/messagerelayVideo";
+    public static final String SENDVIDEO = "http://219.228.251.81:8080/cecWeb/messagerelayVideo";
     //聊天
-    public static final String SENDMESSAGE = "http://219.228.251.73:8080/cecWeb/messagerelayMessage";
+    public static final String SENDMESSAGE = "http://219.228.251.81:8080/cecWeb/messagerelayMessage";
     //更新任务
-    public static final String SENDEDITTASK = "http://219.228.251.73:8080/cecWeb/tasksendEditTask";
+    public static final String SENDEDITTASK = "http://219.228.251.81:8080/cecWeb/tasksendEditTask";
     //删除任务
-    public static final String DELETETASK = "http://219.228.251.73:8080/cecWeb/taskdeleteTask";
+    public static final String DELETETASK = "http://219.228.251.81:8080/cecWeb/taskdeleteTask";
     //完成任务
-    public static final String FINISHTASK = "http://219.228.251.73:8080/cecWeb/taskfinishTask";
+    public static final String FINISHTASK = "http://219.228.251.81:8080/cecWeb/taskfinishTask";
     //接收任务
-    public static final String ACCEPTTASK = "http://219.228.251.73:8080/cecWeb/taskacceptTask";
+    public static final String ACCEPTTASK = "http://219.228.251.81:8080/cecWeb/taskacceptTask";
     //获取我发布的任务
-    public static final String GETTASK = "http://219.228.251.73:8080/cecWeb/taskgetTask";
+    public static final String GETTASK = "http://219.228.251.81:8080/cecWeb/taskgetTask";
     //获取我的任务
-    public static final String GETMYTASK = "http://219.228.251.73:8080/cecWeb/taskgetMyTask";
+    public static final String GETMYTASK = "http://219.228.251.81:8080/cecWeb/taskgetMyTask";
     //获取共享文件
-    public static final String GETALLSHAREDFILE = "http://219.228.251.73:8080/cecWeb/filegetAllSharedFile";
+    public static final String GETALLSHAREDFILE = "http://219.228.251.81:8080/cecWeb/filegetAllSharedFile";
     //获取所有部门
-    public static final String GETALLDEPARTMENT = "http://219.228.251.73:8080/cecWeb/departmentgetAllDepartment";
+    public static final String GETALLDEPARTMENT = "http://219.228.251.81:8080/cecWeb/departmentgetAllDepartment";
     //登录验证
-    public static final String LOGIN = "http://219.228.251.73:8080/cecWeb/employLogin";
+    public static final String LOGIN = "http://219.228.251.81:8080/cecWeb/employLogin";
     //获取所有同事
-    public static final String GETALLEMPLOY = "http://219.228.251.73:8080/cecWeb/employgetAllEmploy";
+    public static final String GETALLEMPLOY = "http://219.228.251.81:8080/cecWeb/employgetAllEmploy";
     //下载文件
-    public static final String DOWNFILE = "http://219.228.251.73:8080/cecWeb/messagerelayFile";
+    public static final String DOWNFILE = "http://219.228.251.81:8080/cecWeb/messagerelayFile";
 
     //发送聊天消息
     public void sendMessage(Message message) {
@@ -152,34 +154,35 @@ public class HttpHepler {
 
     /**
      * 上传的url,f 为要上传的文件
+     *
+     * @return 成功返回true, 失败返回false
      * @url 上传的目标url
      * @f 要上传的文件
-     * @return 成功返回true,失败返回false
      */
     public boolean postFile(String url, Message message) {
 
-            File f=new File(message.getVideourl());
-            System.out.println("***************"+url+"?videoname="+f.getName());
-            if(url == null || !f.isFile()){
-                return false;
-            }
-            HttpClient client = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url+"?videoname="+f.getName());
-            HttpResponse response = null;
-            try {
-                FileEntity entity = new FileEntity(f, "binary/octet-stream");
-                httpPost.setEntity(entity);
-                response = client.execute(httpPost);
-            } catch (Exception e) {
-            } finally {
-            }
-            // 判断上传的状态和打印调试信息
-            if (response != null
-                    && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                // 打印调试信息,上传的url和上传的文件大小
-                System.out.println("$$$$$$$$发送语音成功!");
-                return true;
-            }
+        File f = new File(message.getVideourl());
+        System.out.println("***************" + url + "?videoname=" + f.getName());
+        if (url == null || !f.isFile()) {
+            return false;
+        }
+        HttpClient client = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url + "?videoname=" + f.getName());
+        HttpResponse response = null;
+        try {
+            FileEntity entity = new FileEntity(f, "binary/octet-stream");
+            httpPost.setEntity(entity);
+            response = client.execute(httpPost);
+        } catch (Exception e) {
+        } finally {
+        }
+        // 判断上传的状态和打印调试信息
+        if (response != null
+                && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            // 打印调试信息,上传的url和上传的文件大小
+            System.out.println("$$$$$$$$发送语音成功!");
+            return true;
+        }
         return false;
     }
 

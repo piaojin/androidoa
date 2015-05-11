@@ -21,6 +21,9 @@ import java.util.List;
  */
 public class CommonResource {
 
+    public static boolean isChatting=false;//是否处于聊天界面
+    public static boolean isVideoComm=false;//录音时间是否到了
+    public static int VIDEO_MAX_TIME=60000;
     public static boolean isLoadVideoFinish=false;
     public static int test=0;
     public static boolean isSharedfileLoading = false;

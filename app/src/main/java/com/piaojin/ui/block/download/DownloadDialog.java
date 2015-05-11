@@ -85,7 +85,7 @@ public class DownloadDialog extends DialogFragment {
             public void onClick(View view) {
                 //发布结束文件上传
                 DownloadfileResource.isCancel = true;
-                DownloadDialog.this.dismiss();
+                DownloadDialog.this.dismissAllowingStateLoss();
             }
         });
         downloadfilename.setText(myfile.getName());
@@ -167,7 +167,7 @@ public class DownloadDialog extends DialogFragment {
         } else {
             MyToast("文件下载失败!");
         }
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     //文件下载出错
@@ -175,7 +175,7 @@ public class DownloadDialog extends DialogFragment {
     public void onDownloadExceptionEvent(DownloadExceptionEvent downloadExceptionEvent) {
         BusProvider.getInstance().post(new DownloadExceptionEvent());
         MyToast("文件下载出错!");
-        dismiss();
+        dismissAllowingStateLoss();
     }
 
     void MyToast(String msg) {

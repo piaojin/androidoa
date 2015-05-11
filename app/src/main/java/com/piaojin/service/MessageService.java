@@ -4,15 +4,21 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.widget.Toast;
+
 import com.piaojin.common.CommonResource;
 import com.piaojin.common.MessageResource;
+import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MessageDAO;
 import com.piaojin.dao.MySqliteHelper;
+import com.piaojin.domain.Employ;
 import com.piaojin.domain.Message;
 import com.piaojin.event.MessageEvent;
 import com.piaojin.event.ReceiveMessageEvent;
@@ -33,6 +39,7 @@ import oa.piaojin.com.androidoa.R;
 //聊天服务
 public class MessageService extends Service {
 
+    private EmployDAO employDAO;
     private MySqliteHelper mySqliteHelper;
     private Handler handler2;
     private Handler handler;
@@ -45,10 +52,11 @@ public class MessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        handler2=new MyHandler2();
-        handler=new MyHandler();
-        mySqliteHelper=new MySqliteHelper(this);
-        messageDAO=new MessageDAO(mySqliteHelper.getWritableDatabase());
+        handler2 = new MyHandler2();
+        handler = new MyHandler();
+        mySqliteHelper = new MySqliteHelper(this);
+        messageDAO = new MessageDAO(mySqliteHelper.getWritableDatabase());
+        employDAO = new EmployDAO(mySqliteHelper.getReadableDatabase());
         new Thread(new SocketServerThread()).start();
         BusProvider.getInstance().register(this);
     }
@@ -64,55 +72,72 @@ public class MessageService extends Service {
         return super.onStartCommand(intent, START_STICKY, startId);
     }
 
-    private class MyHandler2 extends Handler{
+    private class MyHandler2 extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
-            Message message=(Message)msg.obj;
+            Message message = (Message) msg.obj;
             BusProvider.getInstance().post(new ReceiveMessageEvent(message));
         }
     }
 
-    private class MyHandler extends Handler{
+    private class MyHandler extends Handler {
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
-            Message message=(Message)msg.obj;
+            Message message = (Message) msg.obj;
+            String msgtext=null;
             switch (message.getType()) {
                 case MessageResource.TEXT:
                     BusProvider.getInstance().post(new ReceiveMessageEvent(message));
                     break;
                 case MessageResource.VIDEO:
-                    new Thread(new VideoThread(MessageService.this,message)).start();
+                    msgtext="语音消息";
+                    new Thread(new VideoThread(MessageService.this, message)).start();
                     new Thread(new HttpThread(message)).start();
                     break;
                 case MessageResource.PICTURE:
                     break;
             }
-            Notification("", "", "");
+            if(!CommonResource.isChatting) {
+                if(TextUtils.isEmpty(msgtext)){
+                    msgtext=message.getMsg();
+                }
+                Employ employ = null;
+                employ = employDAO.getById(message.getSenderid());
+                Notification(employ.getName(), msgtext, "您有新消息到来！", employ);
+            }
         }
     }
 
-    public PendingIntent getDefalutIntent(int flags){
-        PendingIntent pendingIntent= PendingIntent.getActivity(this, 1, new Intent(), flags);
+    public PendingIntent getDefalutIntent(int flags) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, new Intent(), flags);
         return pendingIntent;
     }
 
-    private void  Notification(String title,String text,String tickertext){
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MessageService.this);
-        mBuilder.setContentTitle("测试标题")//设置通知栏标题
-                .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL)) //设置通知栏点击意图
-                .setContentText("测试内容") //设置通知栏显示内容
-                .setTicker("测试通知来啦") //通知首次出现在通知栏，带上升动画效果的
-                .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
-                .setPriority(Notification.PRIORITY_DEFAULT) //设置该通知优先级
-                .setAutoCancel(true)//设置这个标志当用户单击面板就可以让通知将自动取消
-                .setOngoing(false)//ture，设置他为一个正在进行的通知。他们通常是用来表示一个后台任务,用户积极参与(如播放音乐)或以某种方式正在等待,因此占用设备(如一个文件下载,同步操作,主动网络连接)
-                .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果的最简单、最一致的方式是使用当前的用户默认设置，使用defaults属性，可以组合
-                        //Notification.DEFAULT_ALL  Notification.DEFAULT_SOUND 添加声音 // requires VIBRATE permission
-                .setSmallIcon(R.drawable.pushicon);//设置通知小ICON
-        mNotificationManager.notify(1, mBuilder.build());
+    private void Notification(String title, String text, String tickertext, Employ employ) {
+        // 在Android进行通知处理，首先需要重系统哪里获得通知管理器NotificationManager，它是一个系统Service。
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // 创建一个PendingIntent，和Intent类似，不同的是由于不是马上调用，需要在下拉状态条出发的activity，所以采用的是PendingIntent,即点击Notification跳转启动到哪个Activity
+        Intent intent = new Intent(this, ChatActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("chat_employ", employ);
+        intent.putExtra("chat_employ_bundle", bundle);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent
+                , PendingIntent.FLAG_UPDATE_CURRENT);
+        // 下面需兼容Android 2.x版本是的处理方式
+        // Notification notify1 = new Notification(R.drawable.message,
+        // "TickerText:" + "您有新短消息，请注意查收！", System.currentTimeMillis());
+        Notification notify1 = new Notification();
+        notify1.icon = R.drawable.pushicon;
+        notify1.tickerText = tickertext;
+        notify1.when = System.currentTimeMillis();
+        notify1.setLatestEventInfo(this, title,
+                text, pendingIntent);
+        notify1.number = 1;
+        notify1.flags |= Notification.FLAG_AUTO_CANCEL; // FLAG_AUTO_CANCEL表明当通知被用户点击时，通知将被清除。
+        // 通过通知管理器来发起通知。如果id不同，则每click，在statu那里增加一个提示
+        manager.notify(1, notify1);
     }
 
     //接收消息的后台线程
@@ -123,7 +148,7 @@ public class MessageService extends Service {
 
         @Override
         public void run() {
-                SocketServer(thread);
+            SocketServer(thread);
         }
 
         //Socket方式
@@ -139,11 +164,11 @@ public class MessageService extends Service {
                                 socket.getInputStream());
                         String messagejson = StreamTool.readLine(inStream);
                         System.out.println("来着服务器端转发的消息:" + messagejson);
-                        Message message= CommonResource.gson.fromJson(messagejson,Message.class);
+                        Message message = CommonResource.gson.fromJson(messagejson, Message.class);
                         message.setReceivetime(DateUtil.CurrentTime());
                         messageDAO.save(message);
-                        android.os.Message m=new android.os.Message();
-                        m.obj=message;
+                        android.os.Message m = new android.os.Message();
+                        m.obj = message;
                         handler.sendMessage(m);
                     }
                 }
@@ -176,12 +201,12 @@ public class MessageService extends Service {
         public void run() {
             while (!thread.isInterrupted()) {
                 if (CommonResource.isLoadVideoFinish) {
-                    CommonResource.isLoadVideoFinish=false;
+                    CommonResource.isLoadVideoFinish = false;
                     break;
                 }
             }
-            android.os.Message m=new android.os.Message();
-            m.obj=message;
+            android.os.Message m = new android.os.Message();
+            m.obj = message;
             handler2.sendMessage(m);
             System.out.println("下载语音完毕!");
         }

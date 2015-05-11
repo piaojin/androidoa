@@ -35,15 +35,7 @@ public class ScheduleDAO {
     }
 
     public void save(Schedule schedule) {
-     /*   String sql="insert into schedule(uid,title,content" +
-                ",remindtime,status,isremind,time,endtime" +
-                ") values(?,?,?,?,?,?,?,?);";*/
         try{
-            // 开始事务处理
-            //db.beginTransaction();
-          /*  db.execSQL(sql, new Object[]{schedule.getUid(), schedule.getTitle(), schedule.getContent()
-                    , schedule.getRemindtime(), schedule.getStatus(), schedule.getIsremind(), schedule.getTime()
-                    , schedule.getEndtime()});*/
             ContentValues values = new ContentValues();
             values.put("uid", schedule.getUid());
             values.put("title", schedule.getTitle());
@@ -54,9 +46,6 @@ public class ScheduleDAO {
             values.put("time", schedule.getTime());
             values.put("endtime", schedule.getEndtime());
             long id=db.insert(TABLE, null, values);
-            // 结束事务处理
-            //db.endTransaction();
-            db.close();
         }catch (Exception e){
             System.out.println("###"+e.getMessage());
         }
@@ -75,7 +64,6 @@ public class ScheduleDAO {
         values.put("time", schedule.getTime());
         values.put("endtime", schedule.getEndtime());
         db.update(TABLE, values, wherecase, cases);
-        db.close();
     }
 
     public List<Schedule> getAllSchedule() {
@@ -96,7 +84,6 @@ public class ScheduleDAO {
             schedule.setEndtime(result.getString(8));
             all.add(schedule);
         }
-        this.db.close();
         return all;
     }
 
@@ -105,6 +92,5 @@ public class ScheduleDAO {
         String wherecase = "sid=?";
         String cases[] = new String[]{String.valueOf(sid)};
         db.delete(TABLE, wherecase, cases);
-        db.close();
     }
 }

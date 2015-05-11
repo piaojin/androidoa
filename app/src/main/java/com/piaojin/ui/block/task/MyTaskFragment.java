@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.piaojin.common.CommonResource;
 import com.piaojin.common.TaskResource;
+import com.piaojin.common.UserInfo;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.TaskDAO;
@@ -80,6 +81,7 @@ public class MyTaskFragment extends Fragment {
     private int type = 0;//0添加任务,1查看我的任务,2查看我发布的任务
     private SimpleAdapter simpleAdapter;
     private String typetext="发布人:";
+    private UserInfo userInfo;
 
     public int getType() {
         return type;
@@ -102,6 +104,8 @@ public class MyTaskFragment extends Fragment {
 
     void init(View view) {
         context = getActivity();
+        userInfo=new UserInfo(context);
+        userInfo.init();
         mytaskList = (ListView) view.findViewById(R.id.mytaskList);
         httpHepler = new HttpHepler();
         mySqliteHelper = new MySqliteHelper(context);
@@ -111,28 +115,33 @@ public class MyTaskFragment extends Fragment {
         list = new ArrayList<Map<String, Object>>();
         mytaskList.setOnItemClickListener(new MyOnItemClickListener());
         initList();
+        simpleAdapter = new SimpleAdapter(context, list, R.layout.task_item,
+                new String[]{"kid", "title","statusicon", "time", "name"}, new int[]{R.id.kid, R.id.title,R.id.statusicon, R.id.time, R.id.name});
+        mytaskList.setAdapter(simpleAdapter);
     }
 
     public void initList() {
-        if (taskList != null && taskList.size() > 0) {
+        if (taskList != null) {
             taskList.clear();
         }
         switch (type) {
             case TaskResource.TYPE_MYTASK:
                 typetext="发布人:";
-                taskList = taskDAO.getMyTask(1);//1这边应填写登入用户的uid
+                taskList = taskDAO.getMyTask(UserInfo.employ.getUid());//1这边应填写登入用户的uid
                 break;
             case TaskResource.TYPE_TASK:
                 typetext="接收人:";
-                taskList = taskDAO.getTask(1);//1这边应填写登入用户的uid
+                taskList = taskDAO.getTask(UserInfo.employ.getUid());//1这边应填写登入用户的uid
                 break;
         }
         initListMap();
-        initAdapter();
     }
 
-    private void initListMap() {
-        if (taskList != null && taskList.size() > 0) {
+    private void initListMap(){
+        if(list!=null&&list.size()>0){
+            list.clear();
+        }
+        if (taskList != null) {
             for (Task t : taskList) {
                 Map map = new HashMap();
                 //用图标表示任务的状态
@@ -161,16 +170,6 @@ public class MyTaskFragment extends Fragment {
                 }
                 map.put("name", typetext + e.getName());
                 list.add(map);
-            }
-        }
-    }
-
-    private void initAdapter() {
-        if (list.size() > 0) {
-            if (simpleAdapter == null) {
-                simpleAdapter = new SimpleAdapter(context, list, R.layout.task_item,
-                        new String[]{"kid", "title","statusicon", "time", "name"}, new int[]{R.id.kid, R.id.title,R.id.statusicon, R.id.time, R.id.name});
-                mytaskList.setAdapter(simpleAdapter);
             }
         }
     }

@@ -24,8 +24,8 @@ public class FileResource {
     public static final String ROOT_PATH = "/storage";
     public static final String PHONE_PATH = "/storage/sdcard0";
     public static final String SD_PATH = "/storage/sdcard1";
-    public static final int TYPE_MY = 0;//文件为我的
-    public static final int TYPE_SHARED = 1;//文件为共享的
+    public static final int TYPE_MY = 1;//文件为我的
+    public static final int TYPE_SHARED = 0;//文件为共享的
     public static final int STATUS_NOT_DOWN = 0;//文件还未下载
     public static final int STATUS_DOWN = 1;//文件已经下载
     public static PersonalFileItem personalFileItem;

@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class SharedFileAdapter extends BaseAdapter {
 
-    private Context context;
+    private SharedFileActivity context;
     private List<MyFile> list=null;
 
-    public SharedFileAdapter(Context context, List<MyFile> list) {
+    public SharedFileAdapter(SharedFileActivity context, List<MyFile> list) {
         this.context = context;
         this.list = list;
     }
@@ -51,9 +51,9 @@ public class SharedFileAdapter extends BaseAdapter {
         }*/
         MyFile myFile=list.get(i);
         sharedFileItem.setMyFile(myFile);
-        if(myFile.getStatus()!= FileResource.STATUS_NOT_DOWN){
+        /*if(myFile.getStatus()!= FileResource.STATUS_NOT_DOWN){
             sharedFileItem.setVisibility(View.GONE);
-        }
+        }*/
         sharedFileItem.sharedfileicon.setBackgroundResource(FileUtil.getFileType(myFile.getName()));
         sharedFileItem.sharedfileperson.setText("共享者:" + myFile.getUname());
         sharedFileItem.sharedfilename.setText(myFile.getName());

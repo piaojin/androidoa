@@ -4,21 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
-
 import com.piaojin.common.UploadfileResource;
 import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
-import com.piaojin.dao.UploadfileDAO;
 import com.piaojin.domain.MyFile;
-import com.piaojin.domain.Uploadfile;
+import com.piaojin.event.StartUploadEvent;
 import com.piaojin.event.UploadCancelEvent;
 import com.piaojin.event.UploadExceptionEvent;
 import com.piaojin.event.UploadFinishEvent;
 import com.piaojin.otto.BusProvider;
 import com.squareup.otto.Subscribe;
-
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 //上传文件服务
 public class UploadService extends Service {
@@ -63,6 +59,13 @@ public class UploadService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    //开始上传文件
+    @Subscribe
+    public void onStartUploadEvent(StartUploadEvent startUploadEvent) {
+
+
     }
 
     //文件上传结束

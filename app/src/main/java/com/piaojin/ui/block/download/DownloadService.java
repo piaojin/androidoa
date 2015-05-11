@@ -4,17 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
-
 import com.piaojin.common.DownloadfileResource;
-import com.piaojin.common.UploadfileResource;
 import com.piaojin.domain.MyFile;
 import com.piaojin.event.DownloadCancelEvent;
 import com.piaojin.event.DownloadExceptionEvent;
 import com.piaojin.event.DownloadFinishEvent;
-import com.piaojin.event.UploadCancelEvent;
-import com.piaojin.event.UploadExceptionEvent;
-import com.piaojin.event.UploadFinishEvent;
-import com.piaojin.helper.HttpHepler;
 import com.squareup.otto.Subscribe;
 
 public class DownloadService extends Service {

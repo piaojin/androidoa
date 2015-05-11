@@ -45,13 +45,11 @@ public class HttpgetMytaskThread implements Runnable {
             taskDAO.clear();
         }
         if (myTasklist != null && myTasklist.size() > 0) {
-            //taskDAO.clearMyTask(1);//setUid(1)
             for (Task t : myTasklist) {
                 taskDAO.save(t);
             }
         }
         if (tasklist != null && tasklist.size() > 0) {
-            //taskDAO.clearTask(1);//setUid(1)
             for (Task t : tasklist) {
                 taskDAO.save(t);
             }

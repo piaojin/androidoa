@@ -100,7 +100,10 @@ public class AutoLoginActivity extends Activity {
                 String result = msg.obj.toString();
                 if (httpHepler.ERROR.equals(result)) {
                     str = "用户名或密码错误!";
-                } else {
+                } else if(httpHepler.NULLERROR.equals(result)){
+                    str="用户不存在!";
+                }
+                else if(result.length()>16) {
                     //包含用户信息的json字符串
                     str = result;
                     //保存用户信息

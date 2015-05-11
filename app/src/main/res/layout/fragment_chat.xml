@@ -2,32 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.piaojin.fragments.MessageFragment"
-    android:background="#e4e4e4">
-
-    <ImageView
-        android:id="@+id/volume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/pushicon"
-        android:layout_centerInParent="true"
-        />
+    android:background="#e4e4e4"
+    tools:context="com.piaojin.fragments.MessageFragment">
 
     <!--聊天内容-->
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <ListView
             android:id="@+id/chatListView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#e4e4e4"
-            />
-    </LinearLayout>
+            android:background="#e4e4e4" />
 
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,18 +37,17 @@
                 android:layout_height="36dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:background="@drawable/btn_video"
-                android:scaleType="fitCenter"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="7dp"
                 android:layout_centerVertical="true"
-                android:visibility="visible"
+                android:layout_marginBottom="7dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/btn_video"
                 android:onClick="video"
-                />
+                android:scaleType="fitCenter"
+                android:visibility="visible" />
 
 
             <ImageButton
@@ -67,12 +56,11 @@
                 android:layout_height="36dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/btn_add"
-                android:scaleType="fitCenter"
-                android:layout_margin="7dp"
                 android:layout_centerVertical="true"
+                android:layout_margin="7dp"
+                android:background="@drawable/btn_add"
                 android:onClick="add"
-                />
+                android:scaleType="fitCenter" />
 
             <Button
                 android:id="@+id/send"
@@ -80,63 +68,59 @@
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/btn_green"
-                android:text="发送"
-                android:textSize="15sp"
-                android:textColor="#ffffff"
-                android:scaleType="fitCenter"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
+                android:layout_marginEnd="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/btn_green"
                 android:onClick="send"
-                />
+                android:scaleType="fitCenter"
+                android:text="发送"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/video"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/video"
                 android:layout_toLeftOf="@id/add"
+                android:layout_toRightOf="@id/video"
                 android:layout_toStartOf="@id/add"
-                android:layout_centerVertical="true"
-                android:visibility="visible"
                 android:textColor="#000000"
-                />
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/start_speak"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_toRightOf="@id/video"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/video"
                 android:layout_toLeftOf="@id/add"
+                android:layout_toRightOf="@id/video"
                 android:layout_toStartOf="@id/add"
-                android:layout_centerVertical="true"
-                android:visibility="gone"
+                android:background="@drawable/btn_start_speak"
+                android:onClick="start_speak"
                 android:text="按住 说话"
                 android:textColor="#cccccc"
                 android:textSize="17sp"
-                android:background="@drawable/btn_start_speak"
-                android:onClick="start_speak"
-                />
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/look"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:background="@drawable/btn_look"
-                android:scaleType="fitCenter"
-                android:layout_margin="10dp"
-                android:layout_centerVertical="true"
                 android:layout_alignEnd="@id/msg"
                 android:layout_alignRight="@id/msg"
-                android:visibility="visible"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_look"
                 android:onClick="look"
-                />
+                android:scaleType="fitCenter"
+                android:visibility="visible" />
         </RelativeLayout>
 
         <!--表情，文件区域-->
@@ -162,16 +146,16 @@
                 android:id="@+id/fileContent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                android:gravity="center">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/pi"
                     android:layout_margin="10dp"
+                    android:background="@drawable/pi"
                     android:scaleType="fitCenter" />
 
                 <ImageView
