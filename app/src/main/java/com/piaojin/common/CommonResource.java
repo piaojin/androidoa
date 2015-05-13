@@ -22,6 +22,7 @@ import java.util.List;
 public class CommonResource {
 
     public static boolean isChatting=false;//是否处于聊天界面
+    public static int ChattingKid=-1;//正在聊天的同事的kid
     public static boolean isVideoComm=false;//录音时间是否到了
     public static int VIDEO_MAX_TIME=60000;
     public static boolean isLoadVideoFinish=false;
@@ -38,6 +39,7 @@ public class CommonResource {
     public static final int MYFILE = 6;
     public static final int SCHEDULE = 4;
     public static final int TASK = 2;
+    public static final int EMAIL = 0;
     public static final int SHAREDFILE = 7;
     public static int ThreadCount = 0;//加载数据的线程数
     public static final int CURRENTTHREADCOUNT = 4;//加载数据完成的线程数

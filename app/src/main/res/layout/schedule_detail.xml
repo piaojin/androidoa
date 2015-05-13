@@ -80,6 +80,7 @@
             android:background="@drawable/edittext_bg"
             android:padding="10dp"
             android:singleLine="false"
+            android:layout_marginBottom="20dp"
             />
         <Button
             android:id="@+id/save"
@@ -91,7 +92,8 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/btn_green"
             android:textColor="#ffffff"
-            android:text="保存" />
+            android:text="保存"
+            />
 
         <Button
             android:id="@+id/edit"

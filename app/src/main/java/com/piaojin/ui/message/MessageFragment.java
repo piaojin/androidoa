@@ -12,11 +12,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.piaojin.common.ActionResource;
 import com.piaojin.dao.ChatDAO;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.Chat;
 import com.piaojin.domain.Employ;
+import com.piaojin.ui.block.personalfile.ActionDialog;
 import com.piaojin.ui.block.workmates.chat.ChatActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import oa.piaojin.com.androidoa.HomeActivity;
 import oa.piaojin.com.androidoa.R;
 
 @EFragment
@@ -43,11 +46,7 @@ public class MessageFragment extends Fragment {
     private SimpleAdapter msgAdapter;
     private Context context;
     private List<Map<String,Object>> list;
-
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
-        return fragment;
-    }
+    private ActionDialog actionDialog;
 
     @AfterViews
     void init(){
@@ -63,6 +62,7 @@ public class MessageFragment extends Fragment {
         },new int[]{R.id.tvKid,R.id.head_icon,R.id.name,R.id.msg,R.id.last_time});
         MessaeList.setAdapter(msgAdapter);
         MessaeList.setOnItemClickListener(new MyOnItemClickListener());
+        MessaeList.setOnItemLongClickListener(new MyOnItemLongClickListener());
     }
 
     private void initList(){
@@ -86,7 +86,6 @@ public class MessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
@@ -118,8 +117,21 @@ public class MessageFragment extends Fragment {
             getActivity().startActivity(intent);
         }
     }
+    private class MyOnItemLongClickListener implements AdapterView.OnItemLongClickListener{
 
-    private void updateView(){
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
+            int kid=Integer.valueOf(map.get("tvKid").toString());
+            actionDialog=new ActionDialog(ActionResource.ACTION_CHAT,getActivity(),"聊天列表",kid,MessageFragment.this);
+            actionDialog.show(getActivity().getFragmentManager(),"ActionDialog2");
+            return true;
+        }
+    }
+
+    public void updateView(){
         initList();
         initData();
         msgAdapter.notifyDataSetChanged();

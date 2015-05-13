@@ -27,6 +27,11 @@ public class MyAlarmManager{
         alarmManager= (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
+    public void setAlarm(String titlestr,String endtimestr){
+
+
+    }
+
     //设置闹钟开启
     public void setAlarmManager(){
         alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);

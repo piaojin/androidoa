@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffff"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <TextView
@@ -10,11 +10,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:gravity="left"
         android:text="动作标题"
         android:textColor="#00cc00"
-        android:textSize="21sp"
-        android:gravity="left"
-        />
+        android:textSize="21sp" />
 
     <View
         android:layout_width="fill_parent"
@@ -25,14 +24,27 @@
         android:layout_marginStart="6dp"
         android:background="#ababab" />
 
-    <TextView
-        android:id="@+id/action"
+    <Button
+        android:id="@+id/open"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="删除"
+        android:background="@drawable/btn_login"
+        android:gravity="center"
+        android:text="打开"
         android:textColor="#000000"
         android:textSize="17sp"
-        android:gravity="left"
+        android:visibility="gone"
         />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_login"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="#000000"
+        android:textSize="17sp" />
 </LinearLayout>

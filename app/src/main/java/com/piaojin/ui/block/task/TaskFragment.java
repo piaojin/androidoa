@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.piaojin.common.CommonResource;
 import com.piaojin.common.TaskResource;
 import com.piaojin.common.UserInfo;
@@ -23,15 +22,12 @@ import com.piaojin.domain.Task;
 import com.piaojin.event.UpdataTaskEvent;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.NetWorkHelper;
-import com.piaojin.helper.SmSHelper;
+import com.piaojin.myview.DateDialog;
 import com.piaojin.otto.BusProvider;
-import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.DateUtil;
-
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -77,6 +73,7 @@ public class TaskFragment extends Fragment {
     private String contenttext;
     private Handler handler;
     private boolean issend=false;
+    private UserInfo userInfo;
 
 
     private int type = 0;//0添加任务,1我的任务,2我发布的任务
@@ -108,6 +105,8 @@ public class TaskFragment extends Fragment {
                 MyToast("发布任务成功!");
             }
         };
+        userInfo=new UserInfo(context);
+        userInfo.init();
         return inflater.inflate(R.layout.task_fragment, container, false);
     }
 
@@ -136,6 +135,7 @@ public class TaskFragment extends Fragment {
                 task.setTitle(title);
                 task.setEid(kid);
                 task.setUid(UserInfo.employ.getUid());//setUid(1)
+                System.out.println(UserInfo.employ.getUid());
                 task.setStarttime(starttimetext);
                 task.setEndtime(endtimetext);
                 task.setStatus(TaskResource.STATUSSEND);
@@ -149,15 +149,17 @@ public class TaskFragment extends Fragment {
     //完成任务
     @Click
     void starttime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(getActivity(), "");
-        dateTimePicKDialog.dateTimePicKDialog(starttime);
+
+        DateDialog dateDialog = new DateDialog(getActivity(),starttime);
+        dateDialog.show(((TaskActivity_)context).getFragmentManager(),"starttime2");
     }
 
     //完成任务
     @Click
     void endtime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(getActivity(), "");
-        dateTimePicKDialog.dateTimePicKDialog(endtime);
+
+        DateDialog dateDialog = new DateDialog(getActivity(),endtime);
+        dateDialog.show(((TaskActivity_)context).getFragmentManager(),"endtime2");
     }
 
     private void initText() {
@@ -184,6 +186,7 @@ public class TaskFragment extends Fragment {
             String result=httpHepler.sendTask(taskjson, HttpHepler.SENDTASK);
             if(result!=null&&!"".equals(result)){
                 task=CommonResource.gson.fromJson(result,Task.class);
+                task.setUid(UserInfo.employ.getUid());
                 taskDAO.save(task);
                 Message message=new Message();
                 handler.sendMessage(message);

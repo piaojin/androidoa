@@ -40,8 +40,7 @@ public class TaskDAO {
         values.put("endtime", task.getEndtime());
         values.put("status", task.getStatus());
         values.put("content", task.getContent());
-        long n=db.insert(TABLE, null, values);
-        System.out.println("save task n:"+n);
+        db.insert(TABLE, null, values);
     }
 
     public TaskDAO(SQLiteDatabase db) {

@@ -31,6 +31,7 @@ import oa.piaojin.com.androidoa.R;
  */
 public class SelectEmployDialog extends DialogFragment {
 
+    public static Employ employ;
     private View view;
     private Context context;
     private ListView departmentList;
@@ -165,6 +166,7 @@ public class SelectEmployDialog extends DialogFragment {
             String name = map.get("name").toString();
             taskEmploy.setText(name);
             taskEmploy.setTag(kid);
+            employ=employDAO.getById(Integer.parseInt(kid));
             SelectEmployDialog.this.dismiss();
         }
     }

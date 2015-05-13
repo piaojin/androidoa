@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.piaojin.common.ActionResource;
 import com.piaojin.dao.FileDAO;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.domain.MyFile;
@@ -50,6 +53,7 @@ public class PersonalFileActivity extends Activity {
     private SimpleAdapter simpleAdapter;
     private UploadDialog uploadDialog;
     private MyFileSelectDialog myFileSelectDialog;
+    private ActionDialog actionDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +67,7 @@ public class PersonalFileActivity extends Activity {
 
     private void initMyFileList() {
         if (list != null && list.size() > 0) {
-            simpleAdapter = new SimpleAdapter(this, list, R.layout.explore_item,
-                    new String[]{"explorefileicon", "explorefilename", "explorefiletime", "explorefilesize", "explorefilefid"}, new int[]{R.id.explorefileicon, R.id.explorefilename
-                    , R.id.explorefiletime, R.id.explorefilesize, R.id.explorefilefid});
-                myFileListView.setAdapter(simpleAdapter);
+            empty.setVisibility(View.GONE);
         }else{
             empty.setVisibility(View.VISIBLE);
         }
@@ -74,7 +75,6 @@ public class PersonalFileActivity extends Activity {
 
     private void initList() {
         if (myFileList != null && myFileList.size() > 0) {
-            list = new ArrayList<Map<String, Object>>();
             for (int i = 0; i < myFileList.size(); i++) {
                 MyFile tempfile = myFileList.get(i);
                 Map map = new HashMap();
@@ -105,11 +105,17 @@ public class PersonalFileActivity extends Activity {
     @AfterViews
     void init() {
         mySqliteHelper = new MySqliteHelper(this);
+        list = new ArrayList<Map<String, Object>>();
         fileDAO = new FileDAO(mySqliteHelper.getReadableDatabase());
         myFileList = fileDAO.getAllDownFile();
         initActionBar();
         initList();
         initMyFileList();
+        simpleAdapter = new SimpleAdapter(this, list, R.layout.explore_item,
+                new String[]{"explorefileicon", "explorefilename", "explorefiletime", "explorefilesize", "explorefilefid"}, new int[]{R.id.explorefileicon, R.id.explorefilename
+                , R.id.explorefiletime, R.id.explorefilesize, R.id.explorefilefid});
+        myFileListView.setAdapter(simpleAdapter);
+        myFileListView.setOnItemLongClickListener(new MyOnItemLongClickListener());
     }
 
     @Override
@@ -174,13 +180,30 @@ public class PersonalFileActivity extends Activity {
         if(uploadDialog!=null){
             getFragmentManager().beginTransaction().remove(uploadDialog).commitAllowingStateLoss();
         }
-        init();
-        if(list==null||list.size()<=0){
-            empty.setVisibility(View.VISIBLE);
-        }else{
-            simpleAdapter.notifyDataSetChanged();
-            empty.setVisibility(View.GONE);
+        updateView();
+    }
+
+    private class MyOnItemLongClickListener implements AdapterView.OnItemLongClickListener{
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            Map<String,Object> map=new HashMap<String,Object>();
+            map=(HashMap<String,Object>)adapterView.getItemAtPosition(i);
+            int id=Integer.parseInt(map.get("explorefilefid").toString());
+            actionDialog=new ActionDialog(ActionResource.ACTION_FILE,PersonalFileActivity.this,"个人文件",id);
+            actionDialog.show(getFragmentManager(),"ActionDialog");
+            return true;
         }
+    }
+
+    public void updateView(){
+
+        myFileList=fileDAO.getAllDownFile();
+        list.clear();
+        initList();
+        initMyFileList();
+        simpleAdapter.notifyDataSetChanged();
     }
 
     void MyToast(String msg) {

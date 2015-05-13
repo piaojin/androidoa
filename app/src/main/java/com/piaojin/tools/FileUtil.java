@@ -19,6 +19,14 @@ public class FileUtil {
     public static final int SIZETYPE_MB = 3;//获取文件大小单位为MB的double值
     public static final int SIZETYPE_GB = 4;//获取文件大小单位为GB的double值
 
+    //删除文件
+    public static void delete(String filepath){
+        File file=new File(filepath);
+        if(file.isFile()){
+            file.delete();
+        }
+    }
+
     public static void saveFile(File myfile, int mode, Context context) {
         FileInputStream inputStream = null;
         FileOutputStream outputStream = null;

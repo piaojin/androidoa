@@ -3,7 +3,6 @@ package com.piaojin.ui.block.schedule;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -15,29 +14,24 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import com.piaojin.broadcastreceiver.MyAlarmReceiver;
 import com.piaojin.common.ScheduleResource;
 import com.piaojin.common.UserInfo;
 import com.piaojin.dao.MySqliteHelper;
 import com.piaojin.dao.ScheduleDAO;
 import com.piaojin.domain.Schedule;
+import com.piaojin.myview.DateDialog;
 import com.piaojin.tools.ActionBarTools;
-import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.MyAlarmManager;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import javax.inject.Inject;
-
+import java.util.Locale;
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -47,8 +41,7 @@ import oa.piaojin.com.androidoa.R;
 @EFragment
 public class ScheduleFragment extends Fragment {
 
-    @Inject
-    Context context;
+    private Context context;
     MySqliteHelper mySqliteHelper;
     @ViewById
     EditText remindtime;
@@ -64,11 +57,10 @@ public class ScheduleFragment extends Fragment {
     Button edit;
     @ViewById
     Button delete;
-    private String initDateTime; // 初始化开始时间
-    public ScheduleDAO scheduleDAO;
-    public int remindTag = 0;
+    public int remindTag = 0;//是否提醒,0不提醒,1提醒
     private boolean editable = false;
     private Calendar calendar = Calendar.getInstance();
+    private UserInfo userInfo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +69,9 @@ public class ScheduleFragment extends Fragment {
 
     @AfterViews
     void init() {
+        context=getActivity();
+        userInfo=new UserInfo(context);
+        userInfo.init();
         remindtime.setInputType(InputType.TYPE_NULL);
         endtime.setInputType(InputType.TYPE_NULL);
         remindSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -125,20 +120,23 @@ public class ScheduleFragment extends Fragment {
 
     @Click(R.id.remindtime)
     void remindtime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(getActivity(), "");
-        dateTimePicKDialog.dateTimePicKDialog(remindtime);
+
+        DateDialog dateTimePicKDialog = new DateDialog(getActivity(),remindtime);
+        dateTimePicKDialog.show(((ScheduleActivity) context).getFragmentManager(), "remindtime");
     }
 
     @Click
     void endtime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(getActivity(), "");
-        dateTimePicKDialog.dateTimePicKDialog(endtime);
+
+        DateDialog dateTimePicKDialog = new DateDialog(getActivity(),endtime);
+        dateTimePicKDialog.show(((ScheduleActivity)context).getFragmentManager(),"endtime");
     }
 
     @Click
     void save(){
         String titlestr = title.getText().toString().trim();
         String remindtimestr = remindtime.getText().toString().trim();
+        System.out.println(remindtimestr);
         String endtimestr = endtime.getText().toString().trim();
         String contentstr = content.getText().toString().trim();
         if (titlestr.equals("") || titlestr.equals(null) ||
@@ -160,10 +158,12 @@ public class ScheduleFragment extends Fragment {
         schedule.setStatus(0);//默认状态0表示正常
         schedule.setUid(UserInfo.employ.getUid());
         if (editable) { //若为更新则sid已有值，否则为添加sid为自增
-            schedule.setSid(ScheduleResource.scheduledetail.getSid());
+            if(ScheduleResource.scheduledetail!=null){
+                schedule.setSid(ScheduleResource.scheduledetail.getSid());
+            }
         }
-        SimpleDateFormat dateFormat24 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
-        schedule.setTime(dateFormat24.format(new Date()).toString());
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE);
+        schedule.setTime(simpleDateFormat.format(new Date()).toString());
         schedule.setIsremind(0);//默认0表示不提醒
         if (remindTag == 1) {
             schedule.setRemindtime(remindtimestr);
@@ -180,17 +180,18 @@ public class ScheduleFragment extends Fragment {
             scheduleDAO.save(schedule);
             msg = "创建日程成功!";
         }
-        scheduleDAO.save(schedule);
-        if (remindTag == 1) {
+
+        if(remindTag==1){
             Date date = null;
             try {
-                date = dateFormat24.parse(remindtimestr+":0");
+                date = simpleDateFormat.parse(remindtimestr);
+                calendar.setTimeInMillis(date.getTime());
                 setAlarm(titlestr,endtimestr,calendar);
             } catch (ParseException e) {
                 System.out.println("###"+e.getMessage());
                 e.printStackTrace();
             }
-            calendar.setTime(date);
+
         }
         Editable(false);
         edit.setTextColor(getResources().getColor(R.color.bai));
@@ -241,6 +242,12 @@ public class ScheduleFragment extends Fragment {
         MyAlarmManager myAlarmManager = new MyAlarmManager(getActivity(), sender, calendar, intent);
         myAlarmManager.setAlarmManager();
         ScheduleResource.alarmmap.put(titlestr, myAlarmManager);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ScheduleResource.scheduledetail=null;
     }
 
     void MyToast(String msg) {

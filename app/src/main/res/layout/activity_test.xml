@@ -16,4 +16,20 @@
         android:layout_height="wrap_content"
         android:text="piaojin" />
 
+    <Button
+        android:id="@+id/setbut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置"
+        android:layout_below="@id/piaojin"
+        />
+
+    <EditText
+        android:id="@+id/naozhong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setbut"
+        android:text="设置闹钟"
+        />
+
 </RelativeLayout>

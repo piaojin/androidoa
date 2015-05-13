@@ -102,6 +102,7 @@ public class ChatActivity extends FragmentActivity {
         //把当前Activity放入集合，方便最后完全退出程序
         ExitApplication.getInstance().addActivity(this);
         employ = (Employ) getIntent().getBundleExtra("chat_employ_bundle").getSerializable("chat_employ");
+        CommonResource.ChattingKid=employ.getKid();
         initView();
         init();
         initActionBar();
@@ -342,11 +343,15 @@ public class ChatActivity extends FragmentActivity {
     //返回点击事件
     public void back2(View view) {
         HomeActivity_.intent(this).start();
+        CommonResource.ChattingKid=-1;
+        CommonResource.isChatting=false;
+        CommonResource.chatActivity = null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        CommonResource.ChattingKid=-1;
         CommonResource.isChatting=false;
         CommonResource.chatActivity = null;
         BusProvider.getInstance().unregister(eventHandler);

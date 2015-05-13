@@ -14,7 +14,7 @@ public class ChatDAO {
     private SQLiteDatabase db = null;
     private static final String TABLE = "chat";
 
-    public static final String EMPLOY = "create table IF NOT EXISTS chat(" +
+    public static final String CHAT = "create table IF NOT EXISTS chat(" +
             "cid INTEGER PRIMARY KEY AUTOINCREMENT," +
             "kid INTEGER not null default 0," +
             "name varchar(20) not null," +
@@ -24,9 +24,22 @@ public class ChatDAO {
             "head varchar(36) not null" +
             ");";
 
+
+    public boolean isFind(int id){
+
+        Cursor result=db.query(TABLE,null,"kid = ?",new String[]{String.valueOf(id)},null,null,null);
+        if(result.getCount()>0){
+
+            return true;
+        }else{
+
+            return false;
+        }
+    }
+
     public ChatDAO(SQLiteDatabase db) {
         this.db = db;
-        db.execSQL(EMPLOY);
+        db.execSQL(CHAT);
     }
 
     public void delete(int kid) {

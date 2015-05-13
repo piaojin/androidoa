@@ -7,6 +7,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,9 @@ public class VideoDialog extends AlertDialog {
         video = (ImageView) view.findViewById(R.id.video);
         handler=new MyHandler();
         tvtime = (TextView) view.findViewById(R.id.tvtime);
+        WindowManager.LayoutParams lp=getWindow().getAttributes();
+        lp.alpha=0.6f;
+        getWindow().setAttributes(lp);
     }
 
     @Override

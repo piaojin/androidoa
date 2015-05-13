@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+
 import oa.piaojin.com.androidoa.R;
 
 /**
@@ -25,6 +27,9 @@ public class MyDialog extends AlertDialog {
         layoutInflater=LayoutInflater.from(context);
         view=layoutInflater.inflate(R.layout.wait, null);
         setView(view);
+        WindowManager.LayoutParams lp=getWindow().getAttributes();
+        lp.alpha=0.6f;
+        getWindow().setAttributes(lp);
     }
 
 }

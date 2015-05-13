@@ -35,7 +35,7 @@ public class ScheduleDAO {
     }
 
     public void save(Schedule schedule) {
-        try{
+
             ContentValues values = new ContentValues();
             values.put("uid", schedule.getUid());
             values.put("title", schedule.getTitle());
@@ -46,16 +46,12 @@ public class ScheduleDAO {
             values.put("time", schedule.getTime());
             values.put("endtime", schedule.getEndtime());
             long id=db.insert(TABLE, null, values);
-        }catch (Exception e){
-            System.out.println("###"+e.getMessage());
-        }
     }
 
     public void update(Schedule schedule) {
         ContentValues values = new ContentValues();
-        String wherecase = "sid=?";
-        System.out.println("***"+schedule.getSid()+"");
-        String cases[] = new String[]{String.valueOf(schedule.getSid())};
+        String wherecase = "sid = ? or title = ?";
+        String cases[] = new String[]{String.valueOf(schedule.getSid()),schedule.getTitle()};
         values.put("title", schedule.getTitle());
         values.put("content", schedule.getContent());
         values.put("remindtime", schedule.getRemindtime());
@@ -68,7 +64,6 @@ public class ScheduleDAO {
 
     public List<Schedule> getAllSchedule() {
         List<Schedule> all = new ArrayList<Schedule>();
-        //this.db.rawQuery("select * from schedule",null);
         Cursor result = this.db.query(TABLE, null, null, null, null,
                 null, null);    // 这些条件根据自己的情况增加
         for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {    // 采用循环的方式检索数据

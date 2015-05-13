@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import com.piaojin.common.CommonResource;
+import com.piaojin.ui.block.EmailActivity_;
 import com.piaojin.ui.block.personalfile.PersonalFileActivity_;
 import com.piaojin.ui.block.schedule.ScheduleActivity_;
 import com.piaojin.ui.block.sharedfile.SharedFileActivity_;
@@ -76,6 +77,9 @@ public class HomeFragment extends Fragment {
                     break;
                 case CommonResource.TASK://工作流
                     TaskActivity_.intent(getActivity()).start();
+                    break;
+                case CommonResource.EMAIL://邮件
+                    EmailActivity_.intent(getActivity()).start();
                     break;
             }
         }

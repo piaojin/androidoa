@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.piaojin.common.CommonResource;
 import com.piaojin.common.TaskResource;
 import com.piaojin.dao.EmployDAO;
 import com.piaojin.dao.MySqliteHelper;
@@ -23,17 +21,15 @@ import com.piaojin.domain.Task;
 import com.piaojin.helper.HttpHepler;
 import com.piaojin.helper.NetWorkHelper;
 import com.piaojin.helper.SmSHelper;
+import com.piaojin.myview.DateDialog;
 import com.piaojin.tools.ActionBarTools;
-import com.piaojin.tools.DateTimePickDialogUtil;
 import com.piaojin.tools.DateUtil;
 import com.piaojin.tools.ExitApplication;
 import com.piaojin.tools.MyAnimationUtils;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
 import dagger.ObjectGraph;
 import oa.piaojin.com.androidoa.R;
 
@@ -80,7 +76,6 @@ public class TaskDetailActivity extends FragmentActivity {
     private boolean issend = false;
     private Task task = null;
     private Employ employ;
-    private ObjectGraph objectGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,15 +270,17 @@ public class TaskDetailActivity extends FragmentActivity {
     //完成任务
     @Click
     void starttime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(this, "");
-        dateTimePicKDialog.dateTimePicKDialog(starttime);
+
+        DateDialog dateDialog = new DateDialog(this,starttime);
+        dateDialog.show(getFragmentManager(),"starttime1");
     }
 
     //完成任务
     @Click
     void endtime() {
-        DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(this, "");
-        dateTimePicKDialog.dateTimePicKDialog(endtime);
+
+        DateDialog dateDialog = new DateDialog(this,endtime);
+        dateDialog.show(getFragmentManager(),"endtime1");
     }
 
     private void initText() {

@@ -36,13 +36,26 @@ public class FileDAO {
                     "completedate varchar(26)" +
                     ");";
 
+    public boolean  deleteById(int fid){
+
+        int n=db.delete(TABLE,"fid = ?",new String[]{String.valueOf(fid)});
+        return n>0?true:false;
+    }
+
+    public MyFile getById(int myfileid){
+
+        MyFile myFile=null;
+        String sql="select * from myfile";
+        Cursor result=db.query(TABLE, null, "fid = ?", new String[]{String.valueOf(myfileid)}, null, null, null);
+        myFile=enclosure(result).get(0);
+        return myFile!=null?myFile:null;
+    }
+
     public void clear(int uid){
         String sql="delete from myfile where uid <> "+uid;
        /* int n=db.delete(TABLE," uid <> ? and type = ? ",new String[]{String.valueOf(uid),
                 String.valueOf(FileResource.TYPE_SHARED)});*/
-        int n=db.delete(TABLE,null,null);
-        //int n=db.delete(TABLE,null,null);
-        System.out.println("delete myfile n:"+n);
+        int n=db.delete(TABLE, null, null);
     }
 
     public FileDAO(SQLiteDatabase db) {
@@ -75,7 +88,7 @@ public class FileDAO {
         Cursor result = db.rawQuery(sql, null);
         if (result.getCount() > 0) {
             list = new ArrayList<MyFile>();
-            for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
+            /*for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
                 file.setKid(result.getInt(result.getColumnIndex("kid")));
@@ -95,7 +108,8 @@ public class FileDAO {
                     file.setCompletedate(result.getString(result.getColumnIndex("completedate")));
                 }
                 list.add(file);
-            }
+            }*/
+            list=enclosure(result);
         }
         return list;
     }
@@ -107,7 +121,7 @@ public class FileDAO {
                 null, null);
         if (result.getCount() > 0) {
             list = new ArrayList<MyFile>();
-            for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
+            /*for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
                 MyFile file = new MyFile();
                 file.setFid(result.getInt(result.getColumnIndex("fid")));
                 file.setKid(result.getInt(result.getColumnIndex("kid")));
@@ -127,7 +141,8 @@ public class FileDAO {
                     file.setCompletedate(result.getString(result.getColumnIndex("completedate")));
                 }
                 list.add(file);
-            }
+            }*/
+            list=enclosure(result);
         }
         return list;
     }
@@ -154,7 +169,7 @@ public class FileDAO {
         String sql = "select * from file where filename = ?";
         Cursor result = db.rawQuery(sql, new String[]{filename});
         if (result.getCount() > 0) {
-            result.moveToFirst();
+            /*result.moveToFirst();
             myfile = new MyFile();
             myfile.setFid(result.getInt(result.getColumnIndex("fid")));
             myfile.setKid(result.getInt(result.getColumnIndex("kid")));
@@ -171,7 +186,8 @@ public class FileDAO {
             myfile.setIscomplete(result.getInt(result.getColumnIndex("iscomplete")));
             if (result.getString(result.getColumnIndex("completedate")) != null) {
                 myfile.setCompletedate(result.getString(result.getColumnIndex("completedate")));
-            }
+            }*/
+            myfile=enclosure(result).get(0);
         }
         return myfile;
     }
@@ -181,6 +197,34 @@ public class FileDAO {
                 +"'"+" where fid = "+myfile.getFid();
         db.execSQL(sql);
     }
+
+    private List<MyFile> enclosure(Cursor result){
+
+        List<MyFile> list=new ArrayList<MyFile>();
+        for (result.moveToFirst(); !result.isAfterLast(); result.moveToNext()) {
+            MyFile file = new MyFile();
+            file.setFid(result.getInt(result.getColumnIndex("fid")));
+            file.setKid(result.getInt(result.getColumnIndex("kid")));
+            file.setUid(result.getInt(result.getColumnIndex("uid")));
+            file.setType(result.getInt(result.getColumnIndex("type")));
+            file.setUrl(result.getString(result.getColumnIndex("url")));
+            file.setHttpurl(result.getString(result.getColumnIndex("httpurl")));
+            file.setStatus(result.getInt(result.getColumnIndex("status")));
+            file.setDescribes(result.getString(result.getColumnIndex("describes")));
+            file.setAbsoluteurl(result.getString(result.getColumnIndex("absoluteurl")));
+            file.setUname(result.getString(result.getColumnIndex("uname")));
+            file.setName(result.getString(result.getColumnIndex("name")));
+            file.setFilesize(result.getDouble(result.getColumnIndex("filesize")));
+            file.setCompletedsize(result.getDouble(result.getColumnIndex("completedsize")));
+            file.setIscomplete(result.getInt(result.getColumnIndex("iscomplete")));
+            if (result.getString(result.getColumnIndex("completedate")) != null) {
+                file.setCompletedate(result.getString(result.getColumnIndex("completedate")));
+            }
+            list.add(file);
+        }
+        return list;
+    }
+
     public void close() {
         if (db != null && db.isOpen()) {
             db.close();

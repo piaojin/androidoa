@@ -25,6 +25,7 @@ import com.piaojin.domain.Chat;
 import com.piaojin.domain.Employ;
 import com.piaojin.myview.MyEditText;
 import com.piaojin.tools.DateUtil;
+import com.piaojin.ui.block.EmailActivity_;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSDeliveredBroadcastReceiver;
 import com.piaojin.ui.block.workmates.broadcastreceiver.SMSSendBroadcastReceiver;
 import com.piaojin.ui.block.workmates.chat.ChatActivity;
@@ -165,7 +166,10 @@ public class WorkMateInfoFragment extends Fragment {
 
     @Click
     void sendeMail() {
-        MyToast("sendeMail()...");
+
+        Intent intent=new Intent(context,EmailActivity_.class);
+        intent.putExtra("emailaddress",employ.getEmail());
+        context.startActivity(intent);
     }
 
     void MyToast(String msg) {
