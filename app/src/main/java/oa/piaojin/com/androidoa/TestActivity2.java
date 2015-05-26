@@ -46,7 +46,6 @@ public class TestActivity2 extends Activity {
         String endtime=intent.getStringExtra("endtime");
         FileResource.init();
         String mp3path=FileResource.SDPath+"/"+"Music/shake_match.mp3";
-        System.out.println(mp3path);
         if(new File(mp3path).isFile()){
 
             startPlaying(mp3path);
